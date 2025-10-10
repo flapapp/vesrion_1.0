@@ -130,7 +130,8 @@
         .main-menu {
             padding: 30px 20px;
             text-align: center;
-            display: block;
+            display: block !important;
+            min-height: calc(100vh - 200px);
         }
 
         .menu-title {
@@ -1317,7 +1318,9 @@
             generateCalendar();
             // Auto-login user
             currentUser = demoData.users.user1;
-            // Main menu is already visible by default
+            // Ensure main menu is visible
+            document.getElementById('mainMenu').style.display = 'block';
+            console.log('Main menu should be visible now');
         });
 
 
@@ -1343,7 +1346,7 @@
         }
 
         function hideAllScreens() {
-            const screens = ['mainMenu', 'createRoomScreen', 'joinRoomScreen', 'roomsScreen', 'constructorScreen', 'partnerRoomScreen'];
+            const screens = ['createRoomScreen', 'joinRoomScreen', 'roomsScreen', 'constructorScreen', 'partnerRoomScreen'];
             screens.forEach(screen => {
                 document.getElementById(screen).style.display = 'none';
             });
