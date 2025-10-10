@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORU4 - Створення кімнати - Покроковий гід</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: white;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        .app-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .app-subtitle {
+            font-size: 16px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .step-container {
+            padding: 30px 20px;
+        }
+
+        .step {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .step-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .step-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .step-example {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .example-text {
+            color: #666;
+            font-style: italic;
+        }
+
+        .step-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #FF9800, #FFC107);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        .progress-bar {
+            background: #f0f0f0;
+            border-radius: 15px;
+            height: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            height: 100%;
+            border-radius: 15px;
+            transition: width 0.5s ease;
+        }
+
+        .feature-highlight {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .feature-text {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .tips {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .tips-title {
+            font-weight: 700;
+            color: #856404;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tips-list {
+            color: #856404;
+            padding-left: 20px;
+        }
+
+        .tips-list li {
+            margin-bottom: 8px;
+        }
+
+        .code-display {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            text-align: center;
+            margin: 20px 0;
+            letter-spacing: 3px;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #ff5252, #ff7979);
+            transform: translateX(-3px);
+        }
+
+        @keyframes slideInUp {
+            0% {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .step {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .step:nth-child(2) { animation-delay: 0.1s; }
+        .step:nth-child(3) { animation-delay: 0.2s; }
+        .step:nth-child(4) { animation-delay: 0.3s; }
+        .step:nth-child(5) { animation-delay: 0.4s; }
+        .step:nth-child(6) { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <img src="logo.png" alt="PORU4 Logo">
+            </div>
+            <h1 class="app-title">PORU4</h1>
+            <p class="app-subtitle">Покроковий гід створення кімнати</p>
+        </div>
+
+        <div class="step-container">
+            <button class="back-btn" onclick="window.location.href='poru4-complete-mvp.html'">
+                ← Повернутися до застосунку
+            </button>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+
+            <!-- Step 1: Welcome -->
+            <div class="step" id="step1">
+                <div class="step-number">1</div>
+                <h2 class="step-title">Ласкаво просимо в PORU4! 🎉</h2>
+                <p class="step-description">
+                    Цей гід допоможе вам створити персональну кімнату для вашої пари. 
+                    Ми пройдемо через всі кроки разом!
+                </p>
+                
+                <div class="feature-highlight">
+                    <div class="feature-icon">💕</div>
+                    <div class="feature-title">Що ви створите</div>
+                    <div class="feature-text">
+                        Персональний челендж з щоденними заставками, сюрпризами та відстеженням прогресу
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-primary" onclick="nextStep()">Почати створення</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Choose Challenge Type -->
+            <div class="step" id="step2" style="display: none;">
+                <div class="step-number">2</div>
+                <h2 class="step-title">Оберіть тип челенджу</h2>
+                <p class="step-description">
+                    Виберіть категорію, яка найкраще підходить для вашої пари
+                </p>
+
+                <div class="step-example">
+                    <div class="example-title">Доступні категорії:</div>
+                    <div class="example-text">
+                        🏃‍♀️ <strong>Здоров'я:</strong> Здорове харчування, спорт, сон<br>
+                        📚 <strong>Навчання:</strong> Читання, вивчення мови, навички<br>
+                        💪 <strong>Звички:</strong> Медитація, ранкові ритуали<br>
+                        🎯 <strong>Цілі:</strong> Кар'єра, особисті досягнення<br>
+                        💕 <strong>Стосунки:</strong> Спільні активності, спілкування
+                    </div>
+                </div>
+
+                <div class="tips">
+                    <div class="tips-title">
+                        💡 Порада
+                    </div>
+                    <ul class="tips-list">
+                        <li>Оберіть те, що справді важливо для вашої пари</li>
+                        <li>Почніть з простого - 7-14 днів</li>
+                        <li>Можете завжди створити новий челендж пізніше</li>
+                    </ul>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Назад</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Продовжити</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Set Challenge Details -->
+            <div class="step" id="step3" style="display: none;">
+                <div class="step-number">3</div>
+                <h2 class="step-title">Налаштуйте деталі челенджу</h2>
+                <p class="step-description">
+                    Дайте назву та встановіть тривалість вашого челенджу
+                </p>
+
+                <div class="step-example">
+                    <div class="example-title">Приклади назв:</div>
+                    <div class="example-text">
+                        • "Місяць без солодкого"<br>
+                        • "21 день ранкового бігу"<br>
+                        • "Тиждень без соціальних мереж"<br>
+                        • "30 днів щоденного читання"<br>
+                        • "Два тижні медитації"
+                    </div>
+                </div>
+
+                <div class="tips">
+                    <div class="tips-title">
+                        ⏰ Рекомендована тривалість
+                    </div>
+                    <ul class="tips-list">
+                        <li><strong>7 днів</strong> - для початківців</li>
+                        <li><strong>14 днів</strong> - для середнього рівня</li>
+                        <li><strong>21 день</strong> - для формування звички</li>
+                        <li><strong>30 днів</strong> - для серйозних змін</li>
+                    </ul>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Назад</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Продовжити</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Upload Weekly Photos -->
+            <div class="step" id="step4" style="display: none;">
+                <div class="step-number">4</div>
+                <h2 class="step-title">Завантажте щоденні заставки</h2>
+                <p class="step-description">
+                    Завантажте 7 фото + напишіть тексти для кожного дня тижня. 
+                    Ці заставки будуть показуватися партнеру щодня!
+                </p>
+
+                <div class="step-example">
+                    <div class="example-title">Приклад заставки:</div>
+                    <div class="example-text">
+                        <strong>Фото:</strong> Ваше фото з посмішкою<br>
+                        <strong>Текст:</strong> "Доброго ранку, кохана! Сьогодні чудовий день! 💕"
+                    </div>
+                </div>
+
+                <div class="tips">
+                    <div class="tips-title">
+                        📸 Поради для фото
+                    </div>
+                    <ul class="tips-list">
+                        <li>Використовуйте якісні фото з хорошим освітленням</li>
+                        <li>Додавайте особисті моменти та спогади</li>
+                        <li>Різноманітність - ключ до успіху</li>
+                        <li>Можете використовувати старі фото з приємними спогадами</li>
+                    </ul>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Назад</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Продовжити</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Configure First Day -->
+            <div class="step" id="step5" style="display: none;">
+                <div class="step-number">5</div>
+                <h2 class="step-title">Налаштуйте перший день</h2>
+                <p class="step-description">
+                    Налаштуйте деталі першого дня челенджу. Це найважливіший крок!
+                </p>
+
+                <div class="step-example">
+                    <div class="example-title">Що потрібно налаштувати:</div>
+                    <div class="example-text">
+                        📷 <strong>Фото дня</strong> - спеціальне фото для цього дня<br>
+                        💬 <strong>Повідомлення</strong> - мотивуючий текст<br>
+                        ⏰ <strong>Час доставки</strong> - коли партнер отримає (наприклад, 09:00)<br>
+                        ❓ <strong>Питання челенджу</strong> - що потрібно робити<br>
+                        🎥 <strong>Відео реакції</strong> - для успіху та невдачі
+                    </div>
+                </div>
+
+                <div class="tips">
+                    <div class="tips-title">
+                        🎯 Поради для першого дня
+                    </div>
+                    <ul class="tips-list">
+                        <li>Зробіть перший день особливим та мотивуючим</li>
+                        <li>Запишіть відео з поясненням правил челенджу</li>
+                        <li>Підготуйте підтримуючі відео для різних результатів</li>
+                        <li>Встановіть зручний час доставки</li>
+                    </ul>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Назад</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Продовжити</button>
+                </div>
+            </div>
+
+            <!-- Step 6: Get Share Code -->
+            <div class="step" id="step6" style="display: none;">
+                <div class="step-number">6</div>
+                <h2 class="step-title">Отримайте код для поділитися</h2>
+                <p class="step-description">
+                    Вітаємо! Ваша кімната створена. Ось код для поділитися з партнером:
+                </p>
+
+                <div class="code-display" id="shareCode">
+                    ABC123
+                </div>
+
+                <div class="step-example">
+                    <div class="example-title">Як поділитися:</div>
+                    <div class="example-text">
+                        1. Скопіюйте код вище<br>
+                        2. Відправте партнеру в Telegram, SMS або будь-яким зручним способом<br>
+                        3. Партнер вводить код в застосунку<br>
+                        4. Він одразу може почати челендж!
+                    </div>
+                </div>
+
+                <div class="tips">
+                    <div class="tips-title">
+                        🔄 Гнучкість налаштувань
+                    </div>
+                    <ul class="tips-list">
+                        <li>Можете налаштовувати наступні дні поступово</li>
+                        <li>Редагувати майбутні дні в будь-який час</li>
+                        <li>Додавати сюрпризи та додаткові повідомлення</li>
+                        <li>Відстежувати прогрес партнера в реальному часі</li>
+                    </ul>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Назад</button>
+                    <button class="btn btn-success" onclick="openApp()">Відкрити застосунок</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 6;
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showStep(stepNumber) {
+            // Hide all steps
+            for (let i = 1; i <= totalSteps; i++) {
+                document.getElementById(`step${i}`).style.display = 'none';
+            }
+            
+            // Show current step
+            document.getElementById(`step${stepNumber}`).style.display = 'block';
+            currentStep = stepNumber;
+            updateProgress();
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                showStep(currentStep + 1);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                showStep(currentStep - 1);
+            }
+        }
+
+        function openApp() {
+            window.location.href = 'poru4-complete-mvp.html';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            
+            // Add some interactive elements
+            const steps = document.querySelectorAll('.step');
+            steps.forEach(step => {
+                step.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                
+                step.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
