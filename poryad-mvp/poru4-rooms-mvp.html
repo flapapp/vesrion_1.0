@@ -1364,22 +1364,28 @@
         }
 
         function showCreateRoom() {
+            console.log('showCreateRoom called');
             hideAllScreens();
             document.getElementById('createRoomScreen').style.display = 'block';
+            console.log('Create room screen should be visible');
         }
 
         function showJoinRoom() {
+            console.log('showJoinRoom called');
             hideAllScreens();
             document.getElementById('joinRoomScreen').style.display = 'block';
+            console.log('Join room screen should be visible');
         }
 
         function showRooms() {
+            console.log('showRooms called');
             hideAllScreens();
             document.getElementById('roomsScreen').style.display = 'block';
+            console.log('Rooms screen should be visible');
         }
 
         function hideAllScreens() {
-            const screens = ['createRoomScreen', 'joinRoomScreen', 'roomsScreen', 'constructorScreen', 'partnerRoomScreen'];
+            const screens = ['mainMenu', 'createRoomScreen', 'joinRoomScreen', 'roomsScreen', 'constructorScreen', 'partnerRoomScreen'];
             screens.forEach(screen => {
                 document.getElementById(screen).style.display = 'none';
             });
