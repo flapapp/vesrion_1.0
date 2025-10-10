@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORU4 - Кімнати для двох</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .app-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .app-subtitle {
+            font-size: 16px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        /* Main Menu */
+        .main-menu {
+            padding: 30px 20px;
+            text-align: center;
+            display: block;
+        }
+
+        .menu-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .menu-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .menu-option {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+        }
+
+        .menu-option:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .option-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .option-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .option-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Rooms List */
+        .rooms-screen {
+            padding: 20px;
+            display: none;
+        }
+
+        .rooms-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .rooms-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #ff5252, #ff7979);
+            transform: translateX(-3px);
+        }
+
+        .rooms-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 5px;
+            margin-bottom: 25px;
+        }
+
+        .rooms-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .rooms-tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .room-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .room-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .room-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .room-status {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .room-progress {
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .room-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Create Room */
+        .create-room-screen {
+            padding: 20px;
+            display: none;
+        }
+
+        .create-form {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .create-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Join Room */
+        .join-room-screen {
+            padding: 20px;
+            display: none;
+        }
+
+        .join-form {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .join-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 20px;
+            border: 3px solid #e9ecef;
+            border-radius: 15px;
+            font-size: 24px;
+            text-align: center;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 5px rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* Room Constructor */
+        .constructor-screen {
+            padding: 20px;
+            display: none;
+        }
+
+        .constructor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .constructor-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .calendar-view {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .calendar-day.available {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .calendar-day.configured {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .calendar-day.other-month {
+            background: #f0f0f0;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Day Editor */
+        .day-editor {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .editor-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .editor-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 20px;
+            border: 3px dashed #e9ecef;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .file-upload-label:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: scale(1.02);
+        }
+
+        .question-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .remove-question {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .option-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .option-input input[type="radio"] {
+            margin: 0;
+        }
+
+        .add-option {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .add-question {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .time-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-input input {
+            flex: 1;
+        }
+
+        /* Partner Room */
+        .partner-room-screen {
+            padding: 0;
+            display: none;
+        }
+
+        .room-wallpaper {
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px 20px;
+            transition: all 0.5s ease;
+        }
+
+        .room-wallpaper.started {
+            opacity: 0.3;
+        }
+
+        .wallpaper-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+        }
+
+        .room-wallpaper.started .wallpaper-overlay {
+            background: rgba(0,0,0,0.7);
+        }
+
+        .room-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+
+        .room-phrase {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            line-height: 1.4;
+        }
+
+        .start-day-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .start-day-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .day-content {
+            background: white;
+            border-radius: 25px 25px 0 0;
+            padding: 30px 20px;
+            margin-top: -20px;
+            position: relative;
+            z-index: 2;
+            min-height: 60vh;
+        }
+
+        .day-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .day-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .day-date {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .answer-option {
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .answer-option:hover {
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .answer-option.selected {
+            border-color: #4CAF50;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .submit-answer {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .surprise-card {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .surprise-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: surpriseFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes surpriseFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .surprise-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .surprise-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .surprise-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .surprise-time {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .surprise-waiting {
+            background: #f8f9fa;
+            color: #666;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .waiting-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .waiting-text {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #FF9800, #FFC107);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e9ecef;
+        }
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.4s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            0% { transform: translateY(-50px) scale(0.9); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ff6b6b;
+            transform: scale(1.1);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            z-index: 1001;
+            font-weight: 600;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+        }
+
+        /* Celebration */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .celebration-content {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 350px;
+            margin: 20px;
+            animation: celebrationPop 0.6s ease-out;
+        }
+
+        @keyframes celebrationPop {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .celebration-icon {
+            font-size: 80px;
+            margin-bottom: 25px;
+            animation: bounce 1.5s infinite;
+        }
+
+        .celebration-message {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .celebration-text {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .room-actions {
+                flex-direction: column;
+            }
+
+            .answer-options {
+                gap: 10px;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            0% {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .help-text {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header" id="mainHeader">
+            <div class="logo">
+                <img src="logo.png" alt="PORU4 Logo">
+            </div>
+            <h1 class="app-title">PORU4</h1>
+            <p class="app-subtitle">Кімнати для двох</p>
+        </div>
+
+        <!-- Main Menu -->
+        <div class="main-menu" id="mainMenu">
+            <h2 class="menu-title">Оберіть дію</h2>
+            <div class="menu-options">
+                <div class="menu-option" onclick="showCreateRoom()">
+                    <div class="option-icon">🏠</div>
+                    <div class="option-title">Створити</div>
+                    <div class="option-description">Створити нову кімнату</div>
+                </div>
+                <div class="menu-option" onclick="showJoinRoom()">
+                    <div class="option-icon">🔑</div>
+                    <div class="option-title">Приєднатися</div>
+                    <div class="option-description">Приєднатися за кодом</div>
+                </div>
+                <div class="menu-option" onclick="showRooms()">
+                    <div class="option-icon">📋</div>
+                    <div class="option-title">Кімнати</div>
+                    <div class="option-description">Мої створені та приєднані кімнати</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rooms List -->
+        <div class="rooms-screen" id="roomsScreen">
+            <div class="rooms-header">
+                <h2 class="rooms-title">Кімнати</h2>
+                <button class="back-btn" onclick="showMainMenu()">← Назад</button>
+            </div>
+
+            <div class="rooms-tabs">
+                <button class="rooms-tab active" onclick="switchRoomsTab('created')">Створені</button>
+                <button class="rooms-tab" onclick="switchRoomsTab('my')">Мої</button>
+            </div>
+
+            <div id="createdRooms">
+                <div class="room-card" onclick="openConstructor('room1')">
+                    <div class="room-name">Наша кімната кохання</div>
+                    <div class="room-status">Активна • 15 днів налаштовано</div>
+                    <div class="room-progress">
+                        <div class="progress-bar" style="width: 50%"></div>
+                    </div>
+                    <div class="room-actions">
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); shareRoom('room1')">Поділитися</button>
+                        <button class="btn btn-secondary" onclick="event.stopPropagation(); editRoom('room1')">Редагувати</button>
+                    </div>
+                </div>
+
+                <div class="room-card" onclick="openConstructor('room2')">
+                    <div class="room-name">Тиждень спорту</div>
+                    <div class="room-status">Завершена • 7 днів</div>
+                    <div class="room-progress">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                    <div class="room-actions">
+                        <button class="btn btn-success" onclick="event.stopPropagation(); viewResults('room2')">Результати</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="myRooms" style="display: none;">
+                <div class="room-card" onclick="openPartnerRoom('room3')">
+                    <div class="room-name">Кімната від Олексія</div>
+                    <div class="room-status">Активна • День 5 з 30</div>
+                    <div class="room-progress">
+                        <div class="progress-bar" style="width: 17%"></div>
+                    </div>
+                    <div class="room-actions">
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); openPartnerRoom('room3')">Відкрити</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Room -->
+        <div class="create-room-screen" id="createRoomScreen">
+            <div class="create-form">
+                <h2 class="create-title">Створити кімнату</h2>
+                <div class="form-group">
+                    <label class="form-label">Назва кімнати</label>
+                    <input type="text" class="form-input" placeholder="Наприклад: Наша кімната кохання" id="roomName">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Опис (необов'язково)</label>
+                    <textarea class="form-input" rows="3" placeholder="Опишіть вашу кімнату..."></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="createRoom()" style="width: 100%; padding: 15px;">
+                    Створити кімнату
+                </button>
+            </div>
+        </div>
+
+        <!-- Join Room -->
+        <div class="join-room-screen" id="joinRoomScreen">
+            <div class="join-form">
+                <h2 class="join-title">Приєднатися до кімнати</h2>
+                <input type="text" class="code-input" placeholder="Введіть код" maxlength="6" id="joinCode">
+                <button class="btn btn-primary" onclick="joinRoom()" style="width: 100%; padding: 20px; font-size: 18px;">
+                    Приєднатися
+                </button>
+            </div>
+        </div>
+
+        <!-- Room Constructor -->
+        <div class="constructor-screen" id="constructorScreen">
+            <div class="constructor-header">
+                <h2 class="constructor-title">Конструктор кімнати</h2>
+                <button class="back-btn" onclick="showRooms()">← Назад</button>
+            </div>
+
+            <div class="calendar-view">
+                <div class="calendar-header">
+                    <h3 class="calendar-title">Календар на січень 2024</h3>
+                    <button class="btn btn-secondary">Налаштувати</button>
+                </div>
+                <div class="calendar-grid" id="constructorCalendar">
+                    <!-- Calendar will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="day-editor" id="dayEditor">
+                <div class="editor-header">
+                    <h3 class="editor-title">Редактор дня</h3>
+                    <button class="close-btn" onclick="closeDayEditor()">&times;</button>
+                </div>
+
+                <div class="editor-section">
+                    <div class="section-title">
+                        📷 Фото дня
+                    </div>
+                    <div class="file-upload">
+                        <input type="file" id="dayPhoto" accept="image/*">
+                        <label for="dayPhoto" class="file-upload-label">
+                            📸 Завантажити фото для заставки<br>
+                            <small style="color: #666; font-size: 12px;">Це фото буде відображатися як заставка у партнера</small>
+                        </label>
+                    </div>
+                    <div class="help-text">
+                        <strong>Приклад:</strong> Романтичне фото, пейзаж, або фото з вашими спогадами
+                    </div>
+                </div>
+
+                <div class="editor-section">
+                    <div class="section-title">
+                        💬 Фраза дня
+                    </div>
+                    <textarea class="form-input" rows="3" placeholder="Напишіть мотиваційну фразу або привітання..."></textarea>
+                    <div class="help-text">
+                        <strong>Приклад:</strong> "Доброго ранку, кохана! Сьогодні чудовий день! 💕"<br>
+                        <strong>Де відображається:</strong> Під фото на заставці у партнера
+                    </div>
+                </div>
+
+                <div class="editor-section">
+                    <div class="section-title">
+                        ❓ Питання дня
+                    </div>
+                    <div id="questionsList">
+                        <!-- Questions will be added here -->
+                    </div>
+                    <button class="add-question" onclick="addQuestion()">+ Додати питання</button>
+                </div>
+
+                <div class="editor-section">
+                    <div class="section-title">
+                        🎁 Приємність
+                    </div>
+                    <div class="file-upload">
+                        <input type="file" id="surpriseFile" accept="audio/*,video/*">
+                        <label for="surpriseFile" class="file-upload-label">
+                            🎵 Завантажити аудіо/відео (до 2хв)<br>
+                            <small style="color: #666; font-size: 12px;">Або напишіть текст нижче</small>
+                        </label>
+                    </div>
+                    <textarea class="form-input" rows="2" placeholder="Або напишіть текст приємності..." style="margin-top: 15px;"></textarea>
+                    <div class="time-input" style="margin-top: 15px;">
+                        <label>Час доставки:</label>
+                        <input type="time" class="form-input" value="14:00">
+                    </div>
+                    <div class="help-text">
+                        <strong>Приклад аудіо:</strong> Голосове повідомлення "Я тебе люблю"<br>
+                        <strong>Приклад відео:</strong> Коротке відео з привітанням<br>
+                        <strong>Приклад тексту:</strong> "Ти молодець! Я пишаюсь тобою! 💕"<br>
+                        <strong>Коли доставляється:</strong> Партнер отримає нотифікацію в зазначений час
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveDay()" style="width: 100%; padding: 15px; margin-top: 20px;">
+                    Зберегти день
+                </button>
+            </div>
+        </div>
+
+        <!-- Partner Room -->
+        <div class="partner-room-screen" id="partnerRoomScreen">
+            <div class="room-wallpaper" id="roomWallpaper" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop');">
+                <div class="wallpaper-overlay"></div>
+                <div class="room-content">
+                    <div class="room-phrase" id="roomPhrase">Доброго ранку, кохана! Сьогодні чудовий день! 💕</div>
+                    <button class="start-day-btn" onclick="startDay()">Почати день</button>
+                </div>
+            </div>
+
+            <div class="day-content" id="dayContent" style="display: none;">
+                <div class="day-header">
+                    <div class="day-title">Сьогоднішній день</div>
+                    <div class="day-date">15 січня 2024</div>
+                </div>
+
+                <div class="surprise-card" id="surpriseCard">
+                    <div class="surprise-content">
+                        <div class="surprise-icon">🎁</div>
+                        <div class="surprise-title">Сюрприз від Олексія!</div>
+                        <div class="surprise-time">Очікуйте о 14:00</div>
+                        <div style="margin-top: 10px; font-size: 12px; opacity: 0.8;">
+                            💌 Голосове повідомлення "Я тебе люблю"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-text">Скільки солодкого з'їла сьогодні?</div>
+                    <div class="answer-options">
+                        <div class="answer-option" onclick="selectAnswer(this)">0 - не з'їла</div>
+                        <div class="answer-option" onclick="selectAnswer(this)">1-2 шматочки</div>
+                        <div class="answer-option" onclick="selectAnswer(this)">3-5 шматочків</div>
+                        <div class="answer-option" onclick="selectAnswer(this)">Більше 5</div>
+                    </div>
+                    <button class="submit-answer" onclick="submitAnswer()">Відправити відповідь</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Modal -->
+    <div class="celebration" id="celebrationModal">
+        <div class="celebration-content">
+            <div class="celebration-icon">🎉</div>
+            <div class="celebration-message">Правильно!</div>
+            <div class="celebration-text">Ти молодець! Ось твій сюрприз! 💕</div>
+            <button class="btn btn-primary" onclick="closeCelebration()" style="padding: 15px 30px; font-size: 18px;">
+                Продовжити
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div id="notificationText">Повідомлення</div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let currentRoom = null;
+        let currentDay = null;
+        let questions = [];
+
+        // Demo data
+        const demoData = {
+            users: {
+                'user1': {
+                    id: 'user1',
+                    name: 'Олексій',
+                    email: 'alex@example.com'
+                },
+                'user2': {
+                    id: 'user2',
+                    name: 'Анна',
+                    email: 'anna@example.com'
+                }
+            },
+            rooms: {
+                'room1': {
+                    id: 'room1',
+                    name: 'Наша кімната кохання',
+                    creator: 'user1',
+                    participants: ['user1', 'user2'],
+                    code: 'ABC123',
+                    days: {
+                        '2024-01-15': {
+                            photo: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
+                            phrase: 'Доброго ранку, кохана! Сьогодні чудовий день! 💕',
+                            questions: [
+                                {
+                                    id: 1,
+                                    text: 'Скільки солодкого з'їла сьогодні?',
+                                    options: ['0 - не з'їла', '1-2 шматочки', '3-5 шматочків', 'Більше 5'],
+                                    correct: 0
+                                }
+                            ],
+                            surprise: {
+                                type: 'text',
+                                content: 'Ти молодець! Я пишаюсь тобою! 💕',
+                                time: '14:00'
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('PORU4 Rooms MVP initialized');
+            generateCalendar();
+            // Auto-login user
+            currentUser = demoData.users.user1;
+            console.log('Main menu should be visible now');
+        });
+
+        // Navigation functions
+        function showMainMenu() {
+            console.log('showMainMenu called');
+            hideAllScreens();
+            document.getElementById('mainMenu').style.display = 'block';
+        }
+
+        function showCreateRoom() {
+            console.log('showCreateRoom called');
+            hideAllScreens();
+            document.getElementById('createRoomScreen').style.display = 'block';
+        }
+
+        function showJoinRoom() {
+            console.log('showJoinRoom called');
+            hideAllScreens();
+            document.getElementById('joinRoomScreen').style.display = 'block';
+        }
+
+        function showRooms() {
+            console.log('showRooms called');
+            hideAllScreens();
+            document.getElementById('roomsScreen').style.display = 'block';
+        }
+
+        function hideAllScreens() {
+            const screens = ['mainMenu', 'createRoomScreen', 'joinRoomScreen', 'roomsScreen', 'constructorScreen', 'partnerRoomScreen'];
+            screens.forEach(screen => {
+                document.getElementById(screen).style.display = 'none';
+            });
+        }
+
+        // Room management
+        function createRoom() {
+            const roomName = document.getElementById('roomName').value;
+            
+            if (!roomName) {
+                showNotification('Будь ласка, введіть назву кімнати', 'error');
+                return;
+            }
+            
+            currentRoom = {
+                id: 'room_' + Date.now(),
+                name: roomName,
+                creator: currentUser.id,
+                participants: [currentUser.id],
+                code: generateRoomCode()
+            };
+            
+            showRooms(); // Переходимо до списку створених кімнат
+            showNotification('Кімната створена! Код: ' + currentRoom.code, 'success');
+        }
+
+        function generateRoomCode() {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+
+        function joinRoom() {
+            const code = document.getElementById('joinCode').value.toUpperCase();
+            
+            if (code === 'ABC123') {
+                currentRoom = demoData.rooms.room1;
+                openPartnerRoom('room1');
+                showNotification('Успішно приєдналися!', 'success');
+            } else {
+                showNotification('Невірний код. Спробуйте ABC123', 'error');
+            }
+        }
+
+        function openConstructor(roomId) {
+            hideAllScreens();
+            document.getElementById('constructorScreen').style.display = 'block';
+            currentRoom = { id: roomId };
+        }
+
+        function openPartnerRoom(roomId) {
+            hideAllScreens();
+            document.getElementById('partnerRoomScreen').style.display = 'block';
+            currentRoom = demoData.rooms[roomId];
+            loadPartnerRoom();
+        }
+
+        // Calendar functions
+        function generateCalendar() {
+            const container = document.getElementById('constructorCalendar');
+            const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
+            
+            container.innerHTML = '';
+            
+            // Add day headers
+            days.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.textContent = day;
+                dayHeader.style.fontWeight = '700';
+                dayHeader.style.color = '#666';
+                dayHeader.style.textAlign = 'center';
+                dayHeader.style.padding = '8px 0';
+                container.appendChild(dayHeader);
+            });
+
+            // Add calendar days
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay() + 1);
+
+            for (let i = 0; i < 42; i++) {
+                const dayElement = document.createElement('div');
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = currentDate.getDate();
+                
+                if (currentDate.getMonth() !== today.getMonth()) {
+                    dayElement.classList.add('other-month');
+                } else if (currentDate.getDate() === today.getDate()) {
+                    dayElement.classList.add('today');
+                } else if (Math.random() > 0.7) {
+                    dayElement.classList.add('configured');
+                } else {
+                    dayElement.classList.add('available');
+                }
+
+                if (!dayElement.classList.contains('other-month')) {
+                    dayElement.style.cursor = 'pointer';
+                    dayElement.onclick = () => openDayEditor(currentDate);
+                }
+
+                container.appendChild(dayElement);
+            }
+        }
+
+        function openDayEditor(date) {
+            currentDay = date;
+            document.getElementById('dayEditor').style.display = 'block';
+            document.getElementById('dayEditor').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeDayEditor() {
+            document.getElementById('dayEditor').style.display = 'none';
+        }
+
+        // Question management
+        function addQuestion() {
+            const questionId = questions.length + 1;
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-item';
+            questionDiv.innerHTML = `
+                <div class="question-header">
+                    <span class="question-number">Питання ${questionId}</span>
+                    <button class="remove-question" onclick="removeQuestion(${questionId})">×</button>
+                </div>
+                <input type="text" class="form-input" placeholder="Введіть питання..." style="margin-bottom: 15px;">
+                <div class="answer-options" id="options_${questionId}">
+                    <div class="option-input">
+                        <input type="radio" name="correct_${questionId}" value="0">
+                        <input type="text" placeholder="Варіант відповіді 1" class="form-input">
+                    </div>
+                    <div class="option-input">
+                        <input type="radio" name="correct_${questionId}" value="1">
+                        <input type="text" placeholder="Варіант відповіді 2" class="form-input">
+                    </div>
+                </div>
+                <button class="add-option" onclick="addOption(${questionId})">+ Додати варіант</button>
+            `;
+            
+            document.getElementById('questionsList').appendChild(questionDiv);
+            questions.push({ id: questionId, element: questionDiv });
+        }
+
+        function removeQuestion(questionId) {
+            const question = questions.find(q => q.id === questionId);
+            if (question) {
+                question.element.remove();
+                questions = questions.filter(q => q.id !== questionId);
+            }
+        }
+
+        function addOption(questionId) {
+            const optionsContainer = document.getElementById(`options_${questionId}`);
+            const optionCount = optionsContainer.children.length;
+            
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option-input';
+            optionDiv.innerHTML = `
+                <input type="radio" name="correct_${questionId}" value="${optionCount}">
+                <input type="text" placeholder="Варіант відповіді ${optionCount + 1}" class="form-input">
+            `;
+            
+            optionsContainer.appendChild(optionDiv);
+        }
+
+        function saveDay() {
+            showNotification('День збережено!', 'success');
+            closeDayEditor();
+        }
+
+        // Partner room functions
+        function loadPartnerRoom() {
+            const room = currentRoom;
+            if (room && room.days) {
+                const today = new Date().toISOString().split('T')[0];
+                const dayData = room.days[today];
+                
+                if (dayData) {
+                    document.getElementById('roomWallpaper').style.backgroundImage = `url('${dayData.photo}')`;
+                    document.getElementById('roomPhrase').textContent = dayData.phrase;
+                }
+            }
+        }
+
+        function startDay() {
+            // Робимо заставку прозорою
+            document.getElementById('roomWallpaper').classList.add('started');
+            document.getElementById('dayContent').style.display = 'block';
+            document.getElementById('dayContent').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectAnswer(element) {
+            const options = element.parentElement.querySelectorAll('.answer-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function submitAnswer() {
+            const selectedOption = document.querySelector('.answer-option.selected');
+            if (!selectedOption) {
+                showNotification('Будь ласка, оберіть відповідь', 'error');
+                return;
+            }
+            
+            // Simulate correct answer
+            const isCorrect = Math.random() > 0.5;
+            if (isCorrect) {
+                showCelebration();
+            } else {
+                showNotification('Спробуй ще раз! 💪', 'error');
+            }
+        }
+
+        function showCelebration() {
+            document.getElementById('celebrationModal').style.display = 'flex';
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebrationModal').style.display = 'none';
+        }
+
+        // Utility functions
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.className = `notification ${type}`;
+            document.getElementById('notificationText').textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        function switchRoomsTab(tab) {
+            const createdRooms = document.getElementById('createdRooms');
+            const myRooms = document.getElementById('myRooms');
+            const tabs = document.querySelectorAll('.rooms-tab');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'created') {
+                createdRooms.style.display = 'block';
+                myRooms.style.display = 'none';
+            } else {
+                createdRooms.style.display = 'none';
+                myRooms.style.display = 'block';
+            }
+        }
+
+        function shareRoom(roomId) {
+            const room = currentRoom || demoData.rooms[roomId];
+            const code = room.code || 'ABC123';
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Приєднуйся до моєї кімнати!',
+                    text: `Використай код ${code} щоб приєднатися до кімнати в PORU4`,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(code).then(() => {
+                    showNotification(`Код скопійовано: ${code}`, 'success');
+                });
+            }
+        }
+
+        function editRoom(roomId) {
+            openConstructor(roomId);
+        }
+
+        function viewResults(roomId) {
+            showNotification('Результати будуть доступні найближчим часом!', 'success');
+        }
+
+        // File upload handling
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'file') {
+                const label = e.target.nextElementSibling;
+                if (e.target.files.length > 0) {
+                    label.textContent = `📁 ${e.target.files[0].name}`;
+                    label.style.borderColor = '#4CAF50';
+                    label.style.backgroundColor = '#f0f8f0';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
