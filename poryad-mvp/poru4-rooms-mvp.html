@@ -99,30 +99,6 @@
         }
 
         /* Login Screen */
-        .login-screen {
-            padding: 40px 20px;
-            text-align: center;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .login-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: #333;
-        }
-
-        .login-form {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-
         .form-group {
             margin-bottom: 20px;
             text-align: left;
@@ -148,33 +124,6 @@
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .login-tabs {
-            display: flex;
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 5px;
-            margin-bottom: 25px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: transparent;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            color: #666;
-        }
-
-        .tab-btn.active {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         /* Main Menu */
@@ -1084,48 +1033,6 @@
             <p class="app-subtitle">Кімнати для двох</p>
         </div>
 
-        <!-- Login Screen -->
-        <div class="login-screen" id="loginScreen">
-            <h2 class="login-title">Ласкаво просимо!</h2>
-            <div class="login-form">
-                <div class="login-tabs">
-                    <button class="tab-btn active" onclick="switchLoginTab('login')">Увійти</button>
-                    <button class="tab-btn" onclick="switchLoginTab('register')">Реєстрація</button>
-                </div>
-                
-                <div id="loginForm">
-                    <div class="form-group">
-                        <label class="form-label">Email або телефон</label>
-                        <input type="text" class="form-input" placeholder="your@email.com" id="loginEmail">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Пароль</label>
-                        <input type="password" class="form-input" placeholder="••••••••" id="loginPassword">
-                    </div>
-                    <button class="btn btn-primary" onclick="login()" style="width: 100%; padding: 15px;">
-                        Увійти
-                    </button>
-                </div>
-
-                <div id="registerForm" style="display: none;">
-                    <div class="form-group">
-                        <label class="form-label">Ім'я</label>
-                        <input type="text" class="form-input" placeholder="Ваше ім'я" id="registerName">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Email або телефон</label>
-                        <input type="text" class="form-input" placeholder="your@email.com" id="registerEmail">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Пароль</label>
-                        <input type="password" class="form-input" placeholder="••••••••" id="registerPassword">
-                    </div>
-                    <button class="btn btn-primary" onclick="register()" style="width: 100%; padding: 15px;">
-                        Зареєструватися
-                    </button>
-                </div>
-            </div>
-        </div>
 
         <!-- Main Menu -->
         <div class="main-menu" id="mainMenu">
@@ -1408,54 +1315,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('PORU4 Rooms MVP initialized');
             generateCalendar();
-        });
-
-        // Login functions
-        function switchLoginTab(tab) {
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
-            const tabs = document.querySelectorAll('.tab-btn');
-            
-            tabs.forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            if (tab === 'login') {
-                loginForm.style.display = 'block';
-                registerForm.style.display = 'none';
-            } else {
-                loginForm.style.display = 'none';
-                registerForm.style.display = 'block';
-            }
-        }
-
-        function login() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            if (!email || !password) {
-                showNotification('Будь ласка, заповніть всі поля', 'error');
-                return;
-            }
-            
+            // Auto-login user
             currentUser = demoData.users.user1;
             showMainMenu();
-            showNotification('Успішно увійшли!', 'success');
-        }
+        });
 
-        function register() {
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            
-            if (!name || !email || !password) {
-                showNotification('Будь ласка, заповніть всі поля', 'error');
-                return;
-            }
-            
-            currentUser = { id: 'new_user', name, email };
-            showMainMenu();
-            showNotification('Успішно зареєструвалися!', 'success');
-        }
 
         // Navigation functions
         function showMainMenu() {
@@ -1479,7 +1343,7 @@
         }
 
         function hideAllScreens() {
-            const screens = ['loginScreen', 'mainMenu', 'createRoomScreen', 'joinRoomScreen', 'roomsScreen', 'constructorScreen', 'partnerRoomScreen'];
+            const screens = ['mainMenu', 'createRoomScreen', 'joinRoomScreen', 'roomsScreen', 'constructorScreen', 'partnerRoomScreen'];
             screens.forEach(screen => {
                 document.getElementById(screen).style.display = 'none';
             });
