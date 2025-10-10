@@ -607,6 +607,11 @@
             flex-direction: column;
             justify-content: flex-end;
             padding: 30px 20px;
+            transition: all 0.5s ease;
+        }
+
+        .room-wallpaper.started {
+            opacity: 0.3;
         }
 
         .wallpaper-overlay {
@@ -616,6 +621,11 @@
             right: 0;
             bottom: 0;
             background: rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+        }
+
+        .room-wallpaper.started .wallpaper-overlay {
+            background: rgba(0,0,0,0.7);
         }
 
         .room-content {
@@ -1060,16 +1070,16 @@
         <!-- Rooms List -->
         <div class="rooms-screen" id="roomsScreen">
             <div class="rooms-header">
-                <h2 class="rooms-title">Мої кімнати</h2>
+                <h2 class="rooms-title">Кімнати</h2>
                 <button class="back-btn" onclick="showMainMenu()">← Назад</button>
             </div>
 
             <div class="rooms-tabs">
-                <button class="rooms-tab active" onclick="switchRoomsTab('my')">Мої кімнати</button>
-                <button class="rooms-tab" onclick="switchRoomsTab('joined')">Приєднався</button>
+                <button class="rooms-tab active" onclick="switchRoomsTab('created')">Створені</button>
+                <button class="rooms-tab" onclick="switchRoomsTab('my')">Мої</button>
             </div>
 
-            <div id="myRooms">
+            <div id="createdRooms">
                 <div class="room-card" onclick="openConstructor('room1')">
                     <div class="room-name">Наша кімната кохання</div>
                     <div class="room-status">Активна • 15 днів налаштовано</div>
@@ -1094,7 +1104,7 @@
                 </div>
             </div>
 
-            <div id="joinedRooms" style="display: none;">
+            <div id="myRooms" style="display: none;">
                 <div class="room-card" onclick="openPartnerRoom('room3')">
                     <div class="room-name">Кімната від Олексія</div>
                     <div class="room-status">Активна • День 5 з 30</div>
@@ -1167,8 +1177,12 @@
                     <div class="file-upload">
                         <input type="file" id="dayPhoto" accept="image/*">
                         <label for="dayPhoto" class="file-upload-label">
-                            Завантажити фото для заставки
+                            📸 Завантажити фото для заставки<br>
+                            <small style="color: #666; font-size: 12px;">Це фото буде відображатися як заставка у партнера</small>
                         </label>
+                    </div>
+                    <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px; font-size: 12px; color: #666;">
+                        <strong>Приклад:</strong> Романтичне фото, пейзаж, або фото з вашими спогадами
                     </div>
                 </div>
 
@@ -1177,6 +1191,10 @@
                         💬 Фраза дня
                     </div>
                     <textarea class="form-input" rows="3" placeholder="Напишіть мотиваційну фразу або привітання..."></textarea>
+                    <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px; font-size: 12px; color: #666;">
+                        <strong>Приклад:</strong> "Доброго ранку, кохана! Сьогодні чудовий день! 💕"<br>
+                        <strong>Де відображається:</strong> Під фото на заставці у партнера
+                    </div>
                 </div>
 
                 <div class="editor-section">
@@ -1196,13 +1214,20 @@
                     <div class="file-upload">
                         <input type="file" id="surpriseFile" accept="audio/*,video/*">
                         <label for="surpriseFile" class="file-upload-label">
-                            Завантажити аудіо/відео (до 2хв)
+                            🎵 Завантажити аудіо/відео (до 2хв)<br>
+                            <small style="color: #666; font-size: 12px;">Або напишіть текст нижче</small>
                         </label>
                     </div>
                     <textarea class="form-input" rows="2" placeholder="Або напишіть текст приємності..." style="margin-top: 15px;"></textarea>
                     <div class="time-input" style="margin-top: 15px;">
                         <label>Час доставки:</label>
                         <input type="time" class="form-input" value="14:00">
+                    </div>
+                    <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px; font-size: 12px; color: #666;">
+                        <strong>Приклад аудіо:</strong> Голосове повідомлення "Я тебе люблю"<br>
+                        <strong>Приклад відео:</strong> Коротке відео з привітанням<br>
+                        <strong>Приклад тексту:</strong> "Ти молодець! Я пишаюсь тобою! 💕"<br>
+                        <strong>Коли доставляється:</strong> Партнер отримає нотифікацію в зазначений час
                     </div>
                 </div>
 
@@ -1233,6 +1258,9 @@
                         <div class="surprise-icon">🎁</div>
                         <div class="surprise-title">Сюрприз від Олексія!</div>
                         <div class="surprise-time">Очікуйте о 14:00</div>
+                        <div style="margin-top: 10px; font-size: 12px; opacity: 0.8;">
+                            💌 Голосове повідомлення "Я тебе люблю"
+                        </div>
                     </div>
                 </div>
 
@@ -1370,11 +1398,16 @@
                 id: 'room_' + Date.now(),
                 name: roomName,
                 creator: currentUser.id,
-                participants: [currentUser.id]
+                participants: [currentUser.id],
+                code: generateRoomCode()
             };
             
-            openConstructor(currentRoom.id);
-            showNotification('Кімната створена!', 'success');
+            showRooms(); // Переходимо до списку створених кімнат
+            showNotification('Кімната створена! Код: ' + currentRoom.code, 'success');
+        }
+
+        function generateRoomCode() {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
         }
 
         function joinRoom() {
@@ -1534,6 +1567,8 @@
         }
 
         function startDay() {
+            // Робимо заставку прозорою
+            document.getElementById('roomWallpaper').classList.add('started');
             document.getElementById('dayContent').style.display = 'block';
             document.getElementById('dayContent').scrollIntoView({ behavior: 'smooth' });
         }
@@ -1581,24 +1616,25 @@
         }
 
         function switchRoomsTab(tab) {
-            const myCreatedRooms = document.getElementById('myCreatedRooms');
-            const myJoinedRooms = document.getElementById('myJoinedRooms');
+            const createdRooms = document.getElementById('createdRooms');
+            const myRooms = document.getElementById('myRooms');
             const tabs = document.querySelectorAll('.rooms-tab');
             
             tabs.forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
             
-            if (tab === 'my') {
-                myCreatedRooms.style.display = 'block';
-                myJoinedRooms.style.display = 'none';
+            if (tab === 'created') {
+                createdRooms.style.display = 'block';
+                myRooms.style.display = 'none';
             } else {
-                myCreatedRooms.style.display = 'none';
-                myJoinedRooms.style.display = 'block';
+                createdRooms.style.display = 'none';
+                myRooms.style.display = 'block';
             }
         }
 
         function shareRoom(roomId) {
-            const code = 'ABC123';
+            const room = currentRoom || demoData.rooms[roomId];
+            const code = room.code || 'ABC123';
             if (navigator.share) {
                 navigator.share({
                     title: 'Приєднуйся до моєї кімнати!',
