@@ -1037,51 +1037,17 @@
 
         <!-- Main Menu -->
         <div class="main-menu" id="mainMenu">
-            <div class="rooms-header">
-                <h2 class="rooms-title">Мої кімнати</h2>
-                <button class="btn btn-primary" onclick="showCreateRoom()" style="padding: 10px 15px; font-size: 14px;">+ Створити</button>
-            </div>
-            
-            <div class="rooms-tabs">
-                <button class="rooms-tab active" onclick="switchRoomsTab('my')">Створені кімнати</button>
-                <button class="rooms-tab" onclick="switchRoomsTab('joined')">Мої кімнати</button>
-            </div>
-
-            <div id="myCreatedRooms">
-                <div class="room-card" onclick="openConstructor('room1')">
-                    <div class="room-name">Наша кімната кохання</div>
-                    <div class="room-status">Активна • 15 днів налаштовано</div>
-                    <div class="room-progress">
-                        <div class="progress-bar" style="width: 50%"></div>
-                    </div>
-                    <div class="room-actions">
-                        <button class="btn btn-primary" onclick="event.stopPropagation(); shareRoom('room1')">Поділитися</button>
-                        <button class="btn btn-secondary" onclick="event.stopPropagation(); editRoom('room1')">Редагувати</button>
-                    </div>
+            <h2 class="menu-title">Оберіть дію</h2>
+            <div class="menu-options">
+                <div class="menu-option" onclick="showCreateRoom()">
+                    <div class="option-icon">🏠</div>
+                    <div class="option-title">Створити кімнату</div>
+                    <div class="option-description">Створити персональну кімнату для вашої пари</div>
                 </div>
-
-                <div class="room-card" onclick="openConstructor('room2')">
-                    <div class="room-name">Тиждень спорту</div>
-                    <div class="room-status">Завершена • 7 днів</div>
-                    <div class="room-progress">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                    <div class="room-actions">
-                        <button class="btn btn-success" onclick="event.stopPropagation(); viewResults('room2')">Результати</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="myJoinedRooms" style="display: none;">
-                <div class="room-card" onclick="openPartnerRoom('room3')">
-                    <div class="room-name">Кімната від Олексія</div>
-                    <div class="room-status">Активна • День 5 з 30</div>
-                    <div class="room-progress">
-                        <div class="progress-bar" style="width: 17%"></div>
-                    </div>
-                    <div class="room-actions">
-                        <button class="btn btn-primary" onclick="event.stopPropagation(); openPartnerRoom('room3')">Відкрити</button>
-                    </div>
+                <div class="menu-option" onclick="showJoinRoom()">
+                    <div class="option-icon">🔑</div>
+                    <div class="option-title">Приєднатися</div>
+                    <div class="option-description">Приєднатися до кімнати за кодом</div>
                 </div>
             </div>
         </div>
