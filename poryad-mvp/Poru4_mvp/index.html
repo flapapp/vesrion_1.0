@@ -1062,11 +1062,394 @@
         .mb-20 { margin-bottom: 20px; }
         .mt-20 { margin-top: 20px; }
         .pulse { animation: pulse 2s infinite; }
+
+        /* New styles for updated UI */
+        .welcome-section {
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            margin-right: 15px;
+        }
+
+        .avatar-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .user-details h2 {
+            margin: 0 0 5px 0;
+            color: white;
+            font-size: 24px;
+        }
+
+        .user-details p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .profile-btn {
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .card.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .tabs-container {
+            margin-top: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Memories screen styles */
+        .memories-stats {
+            margin-bottom: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .activity-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .activity-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .activity-value {
+            color: white;
+            font-weight: 500;
+        }
+
+        .memories-gallery {
+            margin-top: 30px;
+        }
+
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .gallery-header h3 {
+            color: white;
+            margin: 0;
+        }
+
+        .gallery-filters {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .memories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .memory-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .memory-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .memory-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .memory-content {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .memory-time {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        /* Auth screens styles */
+        .auth-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .photo-upload {
+            text-align: center;
+            cursor: pointer;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .photo-upload:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .photo-upload img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .auth-switch a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Challenge cards styles */
+        .challenge-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .challenge-card:last-child {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .challenge-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .challenge-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .challenge-title {
+            flex: 1;
+            color: white;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .challenge-progress {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .challenge-status {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .challenge-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Room cards enhanced styles */
+        .room-partner {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .partner-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .partner-name {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .progress-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+        }
+
+        .progress-percent {
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .room-stats {
+            margin-top: 10px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-icon {
+            font-size: 14px;
+        }
+
+        .stat-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
     <!-- Screen 1: Authentication -->
-    <div class="screen active" id="auth-screen">
+    <div class="screen" id="auth-screen">
         <div class="container">
             <div class="header">
                 <img src="../logo.png" alt="PORU4" class="logo-img">
@@ -1103,7 +1486,7 @@
     </div>
 
     <!-- Screen 2: Home -->
-    <div class="screen" id="home-screen">
+    <div class="screen active" id="home-screen">
         <div class="container">
             <div class="header">
                 <img src="../logo.png" alt="PORU4" class="logo-img">
@@ -1111,21 +1494,42 @@
                 <div class="subtitle">Привіт, <span id="user-name">Користувач</span>! 👋</div>
             </div>
             <div class="content">
+                <div class="welcome-section">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=faces" alt="Аватарка" class="avatar-img">
+                        </div>
+                        <div class="user-details">
+                            <h2>Привіт, Анна! 👋</h2>
+                            <p>Готові до нового дня разом?</p>
+                        </div>
+                        <div class="profile-btn" onclick="showProfile()">
+                            <span>⚙️</span>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="home-cards">
+                    <div class="card primary" onclick="showScreen('rooms-list-screen')">
+                        <div class="card-icon">📋</div>
+                        <div class="card-title">Мої кімнати</div>
+                        <div class="card-description">Список всіх кімнат (створених та приєднаних)</div>
+                        <div class="card-badge">3 активні</div>
+                    </div>
                     <div class="card" onclick="showScreen('create-room-screen')">
                         <div class="card-icon">🏠</div>
                         <div class="card-title">Створити кімнату</div>
-                        <div class="card-description">Створіть нову спільну кімнату з вашим партнером та почніть заповнювати календар спільними моментами</div>
+                        <div class="card-description">Створити нову спільну кімнату</div>
                     </div>
                     <div class="card" onclick="showScreen('join-room-screen')">
                         <div class="card-icon">🔑</div>
                         <div class="card-title">Приєднатися</div>
-                        <div class="card-description">Введіть код від партнера, щоб приєднатися до існуючої кімнати та почати спільний досвід</div>
+                        <div class="card-description">Ввести код від партнера</div>
                     </div>
-                    <div class="card" onclick="showScreen('rooms-list-screen')">
-                        <div class="card-icon">📋</div>
-                        <div class="card-title">Мої кімнати</div>
-                        <div class="card-description">Переглядайте всі кімнати, які ви створили або до яких приєдналися, та відстежуйте прогрес</div>
+                    <div class="card" onclick="showScreen('memories-screen')">
+                        <div class="card-icon">⭐</div>
+                        <div class="card-title">Спогади</div>
+                        <div class="card-description">Галерея спільних моментів та статистика</div>
                     </div>
                 </div>
             </div>
@@ -1188,14 +1592,181 @@
                 <div class="subtitle">Всі ваші спільні простори</div>
             </div>
             <div class="content">
-                <div id="rooms-list">
-                    <!-- Rooms will be populated here -->
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchRoomsTab('regular')">Звичайні кімнати</div>
+                        <div class="tab" onclick="switchRoomsTab('challenges')">Активні челендж</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="regular-rooms-tab">
+                        <div id="rooms-list">
+                            <!-- Regular rooms will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="challenges-tab">
+                        <div id="challenges-list">
+                            <!-- Challenges will be populated here -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Screen 6: Calendar -->
+    <!-- Screen 6: Memories -->
+    <div class="screen" id="memories-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('home-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Спогади</div>
+                <div class="subtitle">Галерея спільних моментів</div>
+            </div>
+            <div class="content">
+                <div class="memories-stats">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">❤️</div>
+                            <div class="stat-number">127</div>
+                            <div class="stat-label">днів разом</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📷</div>
+                            <div class="stat-number">45</div>
+                            <div class="stat-label">фото обміняно</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">❓</div>
+                            <div class="stat-number">89</div>
+                            <div class="stat-label">питань відповіли</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎁</div>
+                            <div class="stat-number">156</div>
+                            <div class="stat-label">приємностей</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-info">
+                        <div class="activity-item">
+                            <span class="activity-label">Найактивніший день:</span>
+                            <span class="activity-value">❤️ Понеділок (67 дій)</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="activity-label">Улюблений контент:</span>
+                            <span class="activity-value">🎁 Приємності (38%)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="memories-gallery">
+                    <div class="gallery-header">
+                        <h3>Спогади за сьогодні</h3>
+                        <div class="gallery-filters">
+                            <button class="filter-btn active">Всі</button>
+                            <button class="filter-btn">Фото</button>
+                            <button class="filter-btn">Питання</button>
+                            <button class="filter-btn">Приємності</button>
+                        </div>
+                    </div>
+                    
+                    <div class="memories-grid">
+                        <div class="memory-item">
+                            <div class="memory-icon">📷</div>
+                            <div class="memory-content">Фото дня від партнера</div>
+                            <div class="memory-time">09:00</div>
+                        </div>
+                        <div class="memory-item">
+                            <div class="memory-icon">❓</div>
+                            <div class="memory-content">Питання "Як ти мене кохаєш?"</div>
+                            <div class="memory-time">12:00</div>
+                        </div>
+                        <div class="memory-item">
+                            <div class="memory-icon">🎁</div>
+                            <div class="memory-content">Приємність "Голос партнера"</div>
+                            <div class="memory-time">14:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 7: Registration -->
+    <div class="screen" id="registration-screen">
+        <div class="container">
+            <div class="header">
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Реєстрація</div>
+                <div class="subtitle">Створіть свій профіль</div>
+            </div>
+            <div class="content">
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Ім'я користувача</label>
+                        <input type="text" class="form-input" placeholder="Введіть ваше ім'я" id="reg-name-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email або телефон</label>
+                        <input type="text" class="form-input" placeholder="example@email.com" id="reg-email-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Пароль</label>
+                        <input type="password" class="form-input" placeholder="Мінімум 6 символів" id="reg-password-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Фото профілю</label>
+                        <div class="photo-upload" onclick="document.getElementById('avatar-input').click()">
+                            <img id="avatar-preview" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=faces" alt="Аватарка">
+                            <div class="upload-text">Натисніть для зміни</div>
+                            <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="previewAvatar(this)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="dark-theme-checkbox"> Темна тема
+                        </label>
+                    </div>
+                    <button class="btn btn-primary btn-large" onclick="register()">Зареєструватися</button>
+                    <div class="auth-switch">
+                        <span>Вже маєте акаунт?</span>
+                        <a href="#" onclick="showScreen('login-screen')">Увійти</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 8: Login -->
+    <div class="screen" id="login-screen">
+        <div class="container">
+            <div class="header">
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Вхід</div>
+                <div class="subtitle">Увійдіть в свій акаунт</div>
+            </div>
+            <div class="content">
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Email або телефон</label>
+                        <input type="text" class="form-input" placeholder="example@email.com" id="login-email-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Пароль</label>
+                        <input type="password" class="form-input" placeholder="Введіть пароль" id="login-password-input">
+                    </div>
+                    <button class="btn btn-primary btn-large" onclick="login()">Увійти</button>
+                    <div class="auth-switch">
+                        <span>Немає акаунту?</span>
+                        <a href="#" onclick="showScreen('registration-screen')">Зареєструватися</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 9: Calendar -->
     <div class="screen" id="calendar-screen">
         <div class="container">
             <div class="header">
@@ -1718,18 +2289,33 @@
             container.innerHTML = '';
 
             sampleRooms.forEach(room => {
+                const progress = Math.floor(Math.random() * 100);
+                const daysTogether = Math.floor(Math.random() * 365) + 1;
+                const partnerAvatar = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=faces";
+                
                 const roomElement = document.createElement('div');
                 roomElement.className = 'card';
                 roomElement.innerHTML = `
                     <div class="card-title">${room.name}</div>
                     <div class="card-description">
+                        <div class="room-partner">
+                            <img src="${partnerAvatar}" alt="Партнер" class="partner-avatar">
+                            <span class="partner-name">Максим</span>
+                        </div>
                         <div>Код: ${room.code}</div>
                         <div>Створено: ${room.createdBy === 'me' ? 'Вами' : 'Партнером'}</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${room.progress}%;"></div>
+                        <div class="progress-info">
+                            <span class="progress-text">${progress} з 31 днів заповнено</span>
+                            <span class="progress-percent">${progress}%</span>
                         </div>
-                        <div style="text-align: center; margin-top: 10px; color: #666;">
-                            ${room.progress}% днів заповнено
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%;"></div>
+                        </div>
+                        <div class="room-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">❤️</span>
+                                <span class="stat-text">${daysTogether} днів разом</span>
+                            </div>
                         </div>
                     </div>
                     <div style="display: flex; gap: 10px; margin-top: 15px;">
@@ -2665,6 +3251,116 @@
         }
 
         // This function is no longer needed - using direct function calls
+
+        // New functions for updated UI
+        function showProfile() {
+            showNotification('Профіль', 'Налаштування профілю, темна тема та інші опції будуть доступні в наступних версіях');
+        }
+
+        function switchRoomsTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick="switchRoomsTab('${tabName}')"]`).classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabName}-rooms-tab`).classList.add('active');
+            
+            if (tabName === 'challenges') {
+                loadChallenges();
+            } else {
+                loadRoomsList();
+            }
+        }
+
+        function loadChallenges() {
+            const container = document.getElementById('challenges-list');
+            container.innerHTML = `
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <div class="challenge-icon">🏆</div>
+                        <div class="challenge-title">"7 днів для нас"</div>
+                        <div class="challenge-progress">День 3 з 7 ✅</div>
+                    </div>
+                    <div class="challenge-status">Ви обидва виконали сьогодні</div>
+                    <div class="challenge-actions">
+                        <button class="btn btn-primary" onclick="continueChallenge(1)">Продовжити</button>
+                    </div>
+                </div>
+                
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <div class="challenge-icon">🏆</div>
+                        <div class="challenge-title">"30 днів щастя"</div>
+                        <div class="challenge-progress">День 15 з 30 ⏳</div>
+                    </div>
+                    <div class="challenge-status">Очікуємо партнера</div>
+                    <div class="challenge-actions">
+                        <button class="btn btn-primary" onclick="continueChallenge(2)">Продовжити</button>
+                    </div>
+                </div>
+                
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <div class="challenge-icon">➕</div>
+                        <div class="challenge-title">Створити новий челендж</div>
+                    </div>
+                    <div class="challenge-actions">
+                        <button class="btn btn-secondary" onclick="createChallenge()">Створити</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function continueChallenge(challengeId) {
+            showNotification('Челендж', `Переходимо до челенджу #${challengeId}. Детальна реалізація буде в наступних версіях`);
+        }
+
+        function createChallenge() {
+            showNotification('Створення челенджу', 'Функція створення челенджів буде реалізована в наступних версіях');
+        }
+
+        function previewAvatar(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatar-preview').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function register() {
+            const name = document.getElementById('reg-name-input').value;
+            const email = document.getElementById('reg-email-input').value;
+            const password = document.getElementById('reg-password-input').value;
+            const darkTheme = document.getElementById('dark-theme-checkbox').checked;
+            
+            if (!name || !email || !password) {
+                showNotification('Помилка', 'Будь ласка, заповніть всі поля');
+                return;
+            }
+            
+            showNotification('Реєстрація', `Акаунт створено для ${name}! ${darkTheme ? 'Темна тема увімкнена.' : ''} Переходимо до головного меню.`);
+            setTimeout(() => {
+                showScreen('home-screen');
+            }, 2000);
+        }
+
+        function login() {
+            const email = document.getElementById('login-email-input').value;
+            const password = document.getElementById('login-password-input').value;
+            
+            if (!email || !password) {
+                showNotification('Помилка', 'Будь ласка, введіть email та пароль');
+                return;
+            }
+            
+            showNotification('Вхід', 'Успішно увійшли в акаунт! Переходимо до головного меню.');
+            setTimeout(() => {
+                showScreen('home-screen');
+            }, 2000);
+        }
 
         // Old functions removed - using new modal-based functions
 
