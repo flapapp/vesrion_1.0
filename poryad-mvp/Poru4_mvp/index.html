@@ -1460,6 +1460,105 @@
             margin-top: 5px;
         }
 
+        /* Challenge creation styles */
+        .challenge-creation {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .creation-step {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .creation-step.active {
+            display: block;
+        }
+
+        .creation-step h3 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .duration-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .duration-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .duration-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            font-weight: bold;
+        }
+
+        .duration-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tasks-list {
+            margin-bottom: 20px;
+        }
+
+        .task-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .task-day {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .task-content {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .step-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
         /* Room cards enhanced styles */
         .room-partner {
             display: flex;
@@ -1875,7 +1974,76 @@
         </div>
     </div>
 
-    <!-- Screen 9: Calendar -->
+    <!-- Screen 9: Create Challenge -->
+    <div class="screen" id="create-challenge-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('rooms-list-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Створити челендж</div>
+                <div class="subtitle">Спільні завдання для вас двох</div>
+            </div>
+            <div class="content">
+                <div class="challenge-creation">
+                    <div class="creation-step active" id="step1">
+                        <h3>Крок 1: Базові налаштування</h3>
+                        <div class="form-group">
+                            <label class="form-label">Назва челенджу</label>
+                            <input type="text" class="form-input" placeholder="7 днів для нас" id="challenge-name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Тривалість</label>
+                            <div class="duration-buttons">
+                                <button class="duration-btn active" onclick="selectDuration(7)">7 днів</button>
+                                <button class="duration-btn" onclick="selectDuration(14)">14 днів</button>
+                                <button class="duration-btn" onclick="selectDuration(30)">30 днів</button>
+                                <button class="duration-btn" onclick="selectDuration(60)">60 днів</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Опис челенджу</label>
+                            <textarea class="form-input" placeholder="Спільна задача кожен день для нас двох" id="challenge-description" rows="3"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="nextStep()">Далі</button>
+                    </div>
+
+                    <div class="creation-step" id="step2">
+                        <h3>Крок 2: Завдання для кожного дня</h3>
+                        <div class="tasks-list" id="tasks-list">
+                            <div class="task-item">
+                                <div class="task-header">
+                                    <span class="task-day">День 1</span>
+                                    <button class="btn btn-small" onclick="editTask(1)">Редагувати</button>
+                                </div>
+                                <div class="task-content">Надішліть селфі разом</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-header">
+                                    <span class="task-day">День 2</span>
+                                    <button class="btn btn-small" onclick="editTask(2)">Редагувати</button>
+                                </div>
+                                <div class="task-content">Напишіть один одному 5 речей, за які ви вдячні</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-header">
+                                    <span class="task-day">День 3</span>
+                                    <button class="btn btn-small" onclick="editTask(3)">Редагувати</button>
+                                </div>
+                                <div class="task-content">Надішліть одне одному улюблену пісню</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" onclick="addTask()">+ Додати завдання</button>
+                        <div class="step-actions">
+                            <button class="btn btn-secondary" onclick="prevStep()">Назад</button>
+                            <button class="btn btn-primary" onclick="startChallenge()">Почати челендж</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 10: Calendar -->
     <div class="screen" id="calendar-screen">
         <div class="container">
             <div class="header">
@@ -3382,6 +3550,13 @@
             }
         }
 
+        // Load challenges when page loads
+        function initChallenges() {
+            if (document.getElementById('challenges-list')) {
+                loadChallenges();
+            }
+        }
+
         function loadChallenges() {
             const container = document.getElementById('challenges-list');
             container.innerHTML = `
@@ -3457,7 +3632,64 @@
         }
 
         function createChallenge() {
-            showNotification('Створення челенджу', 'Функція створення челенджів буде реалізована в наступних версіях');
+            showScreen('create-challenge-screen');
+        }
+
+        function selectDuration(days) {
+            document.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function nextStep() {
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+        }
+
+        function prevStep() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+        }
+
+        function editTask(dayNumber) {
+            const newTask = prompt(`Редагувати завдання для дня ${dayNumber}:`, `Завдання для дня ${dayNumber}`);
+            if (newTask) {
+                const taskItem = event.target.closest('.task-item');
+                taskItem.querySelector('.task-content').textContent = newTask;
+                showNotification('Завдання оновлено', `Завдання для дня ${dayNumber} змінено`);
+            }
+        }
+
+        function addTask() {
+            const tasksList = document.getElementById('tasks-list');
+            const currentTasks = tasksList.querySelectorAll('.task-item').length;
+            const newDayNumber = currentTasks + 1;
+            
+            const newTask = prompt(`Додати завдання для дня ${newDayNumber}:`, `Нове завдання для дня ${newDayNumber}`);
+            if (newTask) {
+                const taskElement = document.createElement('div');
+                taskElement.className = 'task-item';
+                taskElement.innerHTML = `
+                    <div class="task-header">
+                        <span class="task-day">День ${newDayNumber}</span>
+                        <button class="btn btn-small" onclick="editTask(${newDayNumber})">Редагувати</button>
+                    </div>
+                    <div class="task-content">${newTask}</div>
+                `;
+                tasksList.appendChild(taskElement);
+                showNotification('Завдання додано', `Завдання для дня ${newDayNumber} створено`);
+            }
+        }
+
+        function startChallenge() {
+            const challengeName = document.getElementById('challenge-name').value || 'Новий челендж';
+            const challengeDescription = document.getElementById('challenge-description').value || 'Спільний челендж';
+            
+            showNotification('Челендж створено!', `"${challengeName}" успішно створено! Тепер ви можете почати виконувати завдання разом з партнером.`);
+            
+            setTimeout(() => {
+                showScreen('rooms-list-screen');
+                switchRoomsTab('challenges');
+            }, 2000);
         }
 
         function viewChallengeDetails(challengeId) {
@@ -3958,6 +4190,7 @@
 
         // Start the app
         initApp();
+        initChallenges();
     </script>
 </body>
 </html>
