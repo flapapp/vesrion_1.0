@@ -1805,6 +1805,220 @@
             if (!partnerContent || Object.keys(partnerContent).length === 0) {
                 html = '<div style="text-align: center; padding: 40px; color: #666;">Партнер ще нічого не додав на цей день</div>';
             } else {
+                // Add surprises
+                if (partnerContent.surprises && partnerContent.surprises.length > 0) {
+                    partnerContent.surprises.forEach(surprise => {
+                        const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                        html += `
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <span class="item-icon">${surprise.icon}</span>
+                                    <span class="item-title">Приємність</span>
+                                    <span class="item-time">о ${surprise.deliveryTime}</span>
+                                </div>
+                                <div class="item-status ${isReady ? 'status-ready' : 'status-waiting'}">
+                                    ${isReady ? '✓ Готово' : '⏰ Очікуйте'}
+                                </div>
+                                <div class="item-actions">
+                                    ${isReady ? 
+                                        `<button class="action-btn btn-open" onclick="openSurprise(${surprise.id})">Відкрити</button>` :
+                                        `<span style="color: #666;">Очікуйте о ${surprise.deliveryTime}</span>`
+                                    }
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Add questions
+                if (partnerContent.questions && partnerContent.questions.length > 0) {
+                    partnerContent.questions.forEach(question => {
+                        const status = question.answered ? 
+                            (question.correctAnswer === question.correct ? 'Відповів правильно ✅' : 'Відповів неправильно ❌') : 
+                            'Не відповів';
+                        const statusClass = question.answered ? 'status-answered' : 'status-not-answered';
+                        
+                        html += `
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <span class="item-icon">❓</span>
+                                    <span class="item-title">Питання</span>
+                                </div>
+                                <div style="margin: 10px 0; font-weight: 500;">"${question.text}"</div>
+                                <div class="item-status ${statusClass}">Статус: ${status}</div>
+                                <div class="item-actions">
+                                    ${!question.answered ? 
+                                        `<button class="action-btn btn-answer" onclick="answerQuestion(${question.id})">Відповісти</button>` :
+                                        `<button class="action-btn btn-show" onclick="showReaction(${question.id})">Показати реакцію</button>`
+                                    }
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Add photo and phrase
+                if (partnerContent.photo || partnerContent.phrase) {
+                    html += `
+                        <div class="content-item">
+                            <div class="item-header">
+                                <span class="item-icon">📸</span>
+                                <span class="item-title">Фото та фраза дня</span>
+                            </div>
+                            ${partnerContent.photo ? `<img src="${partnerContent.photo}" style="width: 100%; border-radius: 8px; margin: 10px 0;">` : ''}
+                            ${partnerContent.phrase ? `<div style="margin: 10px 0; font-style: italic;">"${partnerContent.phrase}"</div>` : ''}
+                        </div>
+                    `;
+                }
+            }
+
+            container.innerHTML = html;
+        }
+
+        function loadForPartnerContent(myContent) {
+            const container = document.getElementById('for-partner-content');
+            let html = '';
+
+            if (!myContent || Object.keys(myContent).length === 0) {
+                html = '<div style="text-align: center; padding: 40px; color: #666;">Ви ще нічого не додали на цей день</div>';
+            } else {
+                // Add my surprises
+                if (myContent.surprises && myContent.surprises.length > 0) {
+                    myContent.surprises.forEach(surprise => {
+                        const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                        html += `
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <span class="item-icon">${surprise.icon}</span>
+                                    <span class="item-title">Приємність</span>
+                                    <span class="item-time">о ${surprise.deliveryTime}</span>
+                                </div>
+                                <div class="item-status ${isReady ? 'status-ready' : 'status-waiting'}">
+                                    ${isReady ? '✓ Готово' : '⏰ Заплановано'}
+                                </div>
+                                <div style="margin: 5px 0; font-size: 12px; color: #666;">
+                                    ${surprise.type === 'photo' ? 'Фото' : 
+                                      surprise.type === 'audio' ? 'Голосове' : 
+                                      surprise.type === 'video' ? 'Відео' : 'Текст'}
+                                </div>
+                                <div class="item-actions">
+                                    <button class="action-btn btn-edit" onclick="editSurprise(${surprise.id})">Редагувати</button>
+                                    <button class="action-btn btn-delete" onclick="deleteSurprise(${surprise.id})">Видалити</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Add my questions
+                if (myContent.questions && myContent.questions.length > 0) {
+                    myContent.questions.forEach(question => {
+                        html += `
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <span class="item-icon">❓</span>
+                                    <span class="item-title">Питання</span>
+                                </div>
+                                <div style="margin: 10px 0; font-weight: 500;">"${question.text}"</div>
+                                <div style="margin: 5px 0;">
+                                    ${question.options.map((option, index) => 
+                                        `<div style="margin: 2px 0;">• ${option} ${index === question.correct ? '✓' : ''}</div>`
+                                    ).join('')}
+                                </div>
+                                <div class="item-actions">
+                                    <button class="action-btn btn-edit" onclick="editQuestion(${question.id})">Редагувати</button>
+                                    <button class="action-btn btn-delete" onclick="deleteQuestion(${question.id})">Видалити</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Add photo and phrase
+                if (myContent.photo || myContent.phrase) {
+                    html += `
+                        <div class="content-item">
+                            <div class="item-header">
+                                <span class="item-icon">📸</span>
+                                <span class="item-title">Фото та фраза дня</span>
+                            </div>
+                            ${myContent.photo ? `<img src="${myContent.photo}" style="width: 100%; border-radius: 8px; margin: 10px 0;">` : ''}
+                            ${myContent.phrase ? `<div style="margin: 10px 0; font-style: italic;">"${myContent.phrase}"</div>` : ''}
+                            <div class="item-actions">
+                                <button class="action-btn btn-edit" onclick="editPhotoPhrase()">Редагувати</button>
+                                <button class="action-btn btn-delete" onclick="deletePhotoPhrase()">Видалити</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Add new content functions
+        function addNewQuestion() {
+            showNotification('Інформація', 'Функція додавання питання буде реалізована');
+        }
+
+        function addNewPhrase() {
+            showNotification('Інформація', 'Функція додавання фрази буде реалізована');
+        }
+
+        function addNewPhoto() {
+            showNotification('Інформація', 'Функція додавання фото буде реалізована');
+        }
+
+        function addNewSurprise() {
+            showNotification('Інформація', 'Функція додавання приємності буде реалізована');
+        }
+
+        // Action functions
+        function openSurprise(surpriseId) {
+            showNotification('Подарунок', 'Ви відкрили подарунок! 🎁');
+            createFireworksAnimation();
+        }
+
+        function answerQuestion(questionId) {
+            showNotification('Відповідь', 'Ваша відповідь збережена!');
+            createHeartAnimation();
+        }
+
+        function showReaction(questionId) {
+            showNotification('Реакція', 'Показуємо реакцію партнера!');
+        }
+
+        function editSurprise(surpriseId) {
+            showNotification('Редагування', 'Редагування приємності');
+        }
+
+        function deleteSurprise(surpriseId) {
+            showNotification('Видалення', 'Приємність видалена');
+        }
+
+        function editQuestion(questionId) {
+            showNotification('Редагування', 'Редагування питання');
+        }
+
+        function deleteQuestion(questionId) {
+            showNotification('Видалення', 'Питання видалено');
+        }
+
+        function editPhotoPhrase() {
+            showNotification('Редагування', 'Редагування фото та фрази');
+        }
+
+        function deletePhotoPhrase() {
+            showNotification('Видалення', 'Фото та фраза видалені');
+        }
+
+        function loadForMeContent(partnerContent) {
+            const container = document.getElementById('for-me-content');
+            let html = '';
+
+            if (!partnerContent || Object.keys(partnerContent).length === 0) {
+                html = '<div style="text-align: center; padding: 40px; color: #666;">Партнер ще нічого не додав на цей день</div>';
+            } else {
                 // Load partner's content in chronological order
                 const items = [];
 
