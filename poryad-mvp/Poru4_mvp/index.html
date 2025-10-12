@@ -1552,20 +1552,52 @@
                         {
                             id: 1,
                             type: "text",
-                            content: "Ти найкраща! 💕",
+                            content: "Ти найкраща! 💕 Не забувай про це!",
                             icon: "💕",
                             deliveryTime: "09:00",
                             delivered: true,
-                            opened: false
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1524504388940-b1c172c3db96?w=300&h=200&fit=crop&crop=faces"
                         },
                         {
                             id: 2,
                             type: "video",
-                            content: "Відео з привітом",
+                            content: "Відео з танцем для тебе",
                             icon: "✨",
                             deliveryTime: "14:00",
+                            delivered: true,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=300&h=200&fit=crop"
+                        },
+                        {
+                            id: 3,
+                            type: "audio",
+                            content: "Голосове повідомлення з піснею",
+                            icon: "🎵",
+                            deliveryTime: "16:00",
+                            delivered: true,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=200&fit=crop"
+                        },
+                        {
+                            id: 4,
+                            type: "photo",
+                            content: "Фото з нашим улюбленим місцем",
+                            icon: "🌹",
+                            deliveryTime: "19:00",
                             delivered: false,
-                            opened: false
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300&h=200&fit=crop&crop=faces"
+                        },
+                        {
+                            id: 5,
+                            type: "text",
+                            content: "Добраніч, кохана! Сни про мене! 😘",
+                            icon: "🌙",
+                            deliveryTime: "23:00",
+                            delivered: false,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1524504388940-b1c172c3db96?w=300&h=200&fit=crop&crop=faces"
                         }
                     ]
                 }
@@ -2048,50 +2080,271 @@
 
         // Add new content functions
         function addNewQuestion() {
-            const questionText = prompt('Введіть питання для партнера:');
-            if (questionText) {
-                const options = [];
-                for (let i = 1; i <= 4; i++) {
-                    const option = prompt(`Варіант відповіді ${i} (залиште порожнім, щоб завершити):`);
-                    if (option) options.push(option);
-                    else break;
-                }
-                if (options.length >= 2) {
-                    const correct = prompt(`Який варіант правильний? (1-${options.length}):`);
-                    if (correct) {
-                        showNotification('✅ Питання додано!', `Питання "${questionText}" з ${options.length} варіантами відповідей додано для партнера`);
-                    }
-                }
+            // Show demo of how question creation works
+            const demoModal = document.createElement('div');
+            demoModal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                align-items: center; justify-content: center; flex-direction: column;
+            `;
+            demoModal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 30px; max-width: 600px; text-align: center; margin: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">❓</div>
+                    <h3 style="margin-bottom: 20px; color: #333;">Створення питання для партнера</h3>
+                    <div style="text-align: left; margin-bottom: 20px;">
+                        <p><strong>1. Введіть текст питання:</strong></p>
+                        <input type="text" id="question-text" placeholder="Наприклад: Який твій улюблений колір?" 
+                               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0;">
+                        
+                        <p><strong>2. Додайте варіанти відповідей (2-4 варіанти):</strong></p>
+                        <input type="text" id="option1" placeholder="Варіант 1" 
+                               style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0;">
+                        <input type="text" id="option2" placeholder="Варіант 2" 
+                               style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0;">
+                        <input type="text" id="option3" placeholder="Варіант 3 (необов'язково)" 
+                               style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0;">
+                        <input type="text" id="option4" placeholder="Варіант 4 (необов'язково)" 
+                               style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0;">
+                        
+                        <p><strong>3. Оберіть правильну відповідь:</strong></p>
+                        <select id="correct-answer" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0;">
+                            <option value="1">Варіант 1</option>
+                            <option value="2">Варіант 2</option>
+                            <option value="3">Варіант 3</option>
+                            <option value="4">Варіант 4</option>
+                        </select>
+                        
+                        <p><strong>4. Додайте реакції:</strong></p>
+                        <p style="font-size: 14px; color: #666;">• На правильну відповідь: аудіо/відео/текст/фото</p>
+                        <p style="font-size: 14px; color: #666;">• На неправильну відповідь: аудіо/відео/текст/фото</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button onclick="createQuestion(); this.parentElement.parentElement.parentElement.remove();" 
+                                style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            ✅ Створити питання
+                        </button>
+                        <button onclick="this.parentElement.parentElement.remove();" 
+                                style="background: #f8f9fa; color: #666; border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            Скасувати
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(demoModal);
+        }
+
+        function createQuestion() {
+            const questionText = document.getElementById('question-text').value;
+            const option1 = document.getElementById('option1').value;
+            const option2 = document.getElementById('option2').value;
+            const option3 = document.getElementById('option3').value;
+            const option4 = document.getElementById('option4').value;
+            const correct = document.getElementById('correct-answer').value;
+            
+            if (questionText && option1 && option2) {
+                const options = [option1, option2];
+                if (option3) options.push(option3);
+                if (option4) options.push(option4);
+                
+                showNotification('✅ Питання створено!', `Питання "${questionText}" з ${options.length} варіантами відповідей створено для партнера. Партнер зможе відповісти на нього, а ви отримаєте реакцію!`);
             }
         }
 
         function addNewPhrase() {
-            const phrase = prompt('Введіть фразу дня для партнера:');
+            const demoModal = document.createElement('div');
+            demoModal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                align-items: center; justify-content: center; flex-direction: column;
+            `;
+            demoModal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; text-align: center; margin: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">💬</div>
+                    <h3 style="margin-bottom: 20px; color: #333;">Додавання фрази дня</h3>
+                    <div style="text-align: left; margin-bottom: 20px;">
+                        <p><strong>Фраза дня - це повідомлення, яке побачить партнер під вашим фото дня.</strong></p>
+                        <p style="font-size: 14px; color: #666; margin: 10px 0;">Наприклад: "Доброго ранку, кохана! 💕" або "Сьогодні буде чудовий день! ☀️"</p>
+                        <textarea id="phrase-text" placeholder="Введіть вашу фразу дня для партнера..." 
+                                  style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0; height: 80px; resize: vertical;"></textarea>
+                        <p style="font-size: 12px; color: #888;">Ця фраза з'явиться під вашим фото дня, коли партнер відкриє застосунок</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button onclick="createPhrase(); this.parentElement.parentElement.parentElement.remove();" 
+                                style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            ✅ Додати фразу
+                        </button>
+                        <button onclick="this.parentElement.parentElement.remove();" 
+                                style="background: #f8f9fa; color: #666; border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            Скасувати
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(demoModal);
+        }
+
+        function createPhrase() {
+            const phrase = document.getElementById('phrase-text').value;
             if (phrase) {
                 showNotification('✅ Фраза додана!', `Фраза "${phrase}" додана для партнера. Вона з'явиться під вашим фото дня`);
             }
         }
 
         function addNewPhoto() {
-            const photoUrl = prompt('Введіть URL фото або завантажте файл:');
-            if (photoUrl) {
+            const demoModal = document.createElement('div');
+            demoModal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                align-items: center; justify-content: center; flex-direction: column;
+            `;
+            demoModal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; text-align: center; margin: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">📷</div>
+                    <h3 style="margin-bottom: 20px; color: #333;">Додавання фото дня</h3>
+                    <div style="text-align: left; margin-bottom: 20px;">
+                        <p><strong>Фото дня - це зображення, яке побачить партнер як заставку при відкритті застосунку.</strong></p>
+                        <p style="font-size: 14px; color: #666; margin: 10px 0;">Це може бути ваше фото, фото вас двох, або будь-яке зображення, яке ви хочете поділитися</p>
+                        
+                        <div style="border: 2px dashed #667eea; border-radius: 12px; padding: 30px; text-align: center; margin: 20px 0; cursor: pointer;" 
+                             onclick="document.getElementById('photo-input').click()">
+                            <div style="font-size: 24px; margin-bottom: 10px;">📷</div>
+                            <div>Натисніть для завантаження фото</div>
+                            <div style="font-size: 12px; color: #666; margin-top: 5px;">або перетягніть файл сюди</div>
+                            <input type="file" id="photo-input" accept="image/*" style="display: none;" onchange="previewPhoto(this)">
+                        </div>
+                        
+                        <div id="photo-preview-container" style="display: none; margin: 20px 0;">
+                            <img id="photo-preview" style="width: 100%; max-width: 300px; border-radius: 8px; margin: 10px 0;">
+                        </div>
+                        
+                        <p style="font-size: 12px; color: #888;">Це фото буде показане партнеру як заставка дня</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button onclick="createPhoto(); this.parentElement.parentElement.parentElement.remove();" 
+                                style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            ✅ Додати фото
+                        </button>
+                        <button onclick="this.parentElement.parentElement.remove();" 
+                                style="background: #f8f9fa; color: #666; border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            Скасувати
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(demoModal);
+        }
+
+        function previewPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('photo-preview');
+                    const container = document.getElementById('photo-preview-container');
+                    preview.src = e.target.result;
+                    container.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function createPhoto() {
+            const fileInput = document.getElementById('photo-input');
+            if (fileInput.files && fileInput.files[0]) {
                 showNotification('✅ Фото додано!', `Фото додано для партнера. Воно буде показане як заставка дня`);
+            } else {
+                showNotification('⚠️ Увага', 'Будь ласка, виберіть фото для завантаження');
             }
         }
 
         function addNewSurprise() {
-            const type = prompt('Оберіть тип приємності:\n1. Текст\n2. Фото\n3. Аудіо\n4. Відео\n\nВведіть номер (1-4):');
-            const types = ['text', 'photo', 'audio', 'video'];
-            const typeNames = ['Текст', 'Фото', 'Аудіо', 'Відео'];
+            const demoModal = document.createElement('div');
+            demoModal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                align-items: center; justify-content: center; flex-direction: column;
+            `;
+            demoModal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 30px; max-width: 600px; text-align: center; margin: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">🎁</div>
+                    <h3 style="margin-bottom: 20px; color: #333;">Створення приємності для партнера</h3>
+                    <div style="text-align: left; margin-bottom: 20px;">
+                        <p><strong>Приємність - це сюрприз, який партнер отримає в зазначений час.</strong></p>
+                        
+                        <p><strong>1. Оберіть тип приємності:</strong></p>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 10px 0;">
+                            <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
+                                <input type="radio" name="surprise-type" value="text" style="margin-right: 8px;">
+                                📝 Текст
+                            </label>
+                            <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
+                                <input type="radio" name="surprise-type" value="photo" style="margin-right: 8px;">
+                                📷 Фото
+                            </label>
+                            <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
+                                <input type="radio" name="surprise-type" value="audio" style="margin-right: 8px;">
+                                🎵 Аудіо
+                            </label>
+                            <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
+                                <input type="radio" name="surprise-type" value="video" style="margin-right: 8px;">
+                                🎬 Відео
+                            </label>
+                        </div>
+                        
+                        <p><strong>2. Введіть контент приємності:</strong></p>
+                        <textarea id="surprise-content" placeholder="Опишіть вашу приємність..." 
+                                  style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0; height: 80px; resize: vertical;"></textarea>
+                        
+                        <p><strong>3. Оберіть час доставки:</strong></p>
+                        <input type="time" id="surprise-time" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0;">
+                        
+                        <p><strong>4. Оберіть іконку:</strong></p>
+                        <div style="display: flex; gap: 10px; margin: 10px 0;">
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '🎁')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">🎁</span>
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '💕')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">💕</span>
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '✨')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">✨</span>
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '🌹')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">🌹</span>
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '🎉')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">🎉</span>
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '💌')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">💌</span>
+                        </div>
+                        <input type="hidden" id="selected-icon" value="🎁">
+                        
+                        <p style="font-size: 12px; color: #888;">Приємність буде доставлена партнеру в зазначений час</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button onclick="createSurprise(); this.parentElement.parentElement.parentElement.remove();" 
+                                style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            ✅ Створити приємність
+                        </button>
+                        <button onclick="this.parentElement.parentElement.remove();" 
+                                style="background: #f8f9fa; color: #666; border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            Скасувати
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(demoModal);
+        }
+
+        function selectIcon(element, icon) {
+            document.querySelectorAll('.surprise-icon-option').forEach(el => {
+                el.style.background = 'transparent';
+            });
+            element.style.background = '#667eea';
+            element.style.color = 'white';
+            document.getElementById('selected-icon').value = icon;
+        }
+
+        function createSurprise() {
+            const type = document.querySelector('input[name="surprise-type"]:checked')?.value;
+            const content = document.getElementById('surprise-content').value;
+            const time = document.getElementById('surprise-time').value;
+            const icon = document.getElementById('selected-icon').value;
             
-            if (type && types[parseInt(type) - 1]) {
-                const content = prompt(`Введіть ${typeNames[parseInt(type) - 1].toLowerCase()} для приємності:`);
-                const time = prompt('Введіть час доставки (наприклад, 14:00):');
-                const icon = prompt('Введіть емодзі іконку (наприклад, 🎁):');
-                
-                if (content && time && icon) {
-                    showNotification('✅ Приємність додана!', `${typeNames[parseInt(type) - 1]} приємність "${content}" буде доставлена о ${time}`);
-                }
+            if (type && content && time && icon) {
+                const typeNames = { text: 'Текст', photo: 'Фото', audio: 'Аудіо', video: 'Відео' };
+                showNotification('✅ Приємність створена!', `${typeNames[type]} приємність "${content}" буде доставлена о ${time}`);
+            } else {
+                showNotification('⚠️ Увага', 'Будь ласка, заповніть всі поля');
             }
         }
 
