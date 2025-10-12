@@ -341,6 +341,40 @@
             gap: 20px;
         }
 
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         .editor-section {
             background: #f8f9fa;
             border-radius: 12px;
@@ -457,6 +491,276 @@
             color: white;
             border-radius: 50%;
             padding: 5px;
+        }
+
+        /* Content Items */
+        .content-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #e1e5e9;
+            transition: all 0.3s ease;
+        }
+
+        .content-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .item-icon {
+            font-size: 20px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-time {
+            font-size: 12px;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .item-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+
+        .status-ready {
+            color: #2ed573;
+        }
+
+        .status-waiting {
+            color: #ffa502;
+        }
+
+        .status-answered {
+            color: #2ed573;
+        }
+
+        .status-not-answered {
+            color: #ff4757;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-open {
+            background: #2ed573;
+            color: white;
+        }
+
+        .btn-answer {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #ffa502;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-show {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .add-new-section {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .add-new-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .add-btn {
+            padding: 12px;
+            border: 1px solid #667eea;
+            border-radius: 8px;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .add-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Content Items */
+        .content-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #e1e5e9;
+            transition: all 0.3s ease;
+        }
+
+        .content-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .item-icon {
+            font-size: 20px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-time {
+            font-size: 12px;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .item-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+
+        .status-ready {
+            color: #2ed573;
+        }
+
+        .status-waiting {
+            color: #ffa502;
+        }
+
+        .status-answered {
+            color: #2ed573;
+        }
+
+        .status-not-answered {
+            color: #ff4757;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-open {
+            background: #2ed573;
+            color: white;
+        }
+
+        .btn-answer {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #ffa502;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-show {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .add-new-section {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .add-new-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .add-btn {
+            padding: 12px;
+            border: 1px solid #667eea;
+            border-radius: 8px;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .add-btn:hover {
+            background: #667eea;
+            color: white;
         }
 
         /* Daily Experience */
@@ -928,106 +1232,64 @@
                 <button class="back-btn" onclick="showScreen('calendar-screen')">←</button>
                 <img src="../logo.png" alt="PORU4" class="logo-img">
                 <div class="logo" id="editor-date">Редактор дня</div>
-                <div class="subtitle">Додайте контент для партнера</div>
+                <div class="subtitle">Управління контентом дня</div>
             </div>
             <div class="content">
                 <div class="day-editor">
-                    <!-- My Content for Partner -->
-                    <div class="editor-section">
-                        <div class="section-title">
-                            <span class="section-icon">🔵</span>
-                            МОЄ ДЛЯ ПАРТНЕРА
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab('for-me')">
+                            📥 МЕНІ
                         </div>
-                        
-                        <!-- Photo of the Day -->
-                        <div class="form-group">
-                            <label class="form-label">📷 Фото дня</label>
-                            <div class="photo-upload" onclick="document.getElementById('my-photo-input').click()">
-                                <div>📷</div>
-                                <div>Завантажити фото</div>
-                                <div style="font-size: 12px; color: #666; margin-top: 5px;">Це фото побачить партнер як заставку</div>
-                                <input type="file" id="my-photo-input" accept="image/*" style="display: none;" onchange="previewPhoto(this, 'my-photo-preview')">
+                        <div class="tab" onclick="switchTab('for-partner')">
+                            📤 ПАРТНЕРУ
+                        </div>
+                    </div>
+
+                    <!-- Tab: For Me -->
+                    <div class="tab-content active" id="for-me-tab">
+                        <div class="editor-section">
+                            <div class="section-title">
+                                <span class="section-icon">📥</span>
+                                ЩО МЕНІ ВІДПРАВИЛИ
                             </div>
-                            <img id="my-photo-preview" class="photo-preview hidden">
-                        </div>
-
-                        <!-- Phrase of the Day -->
-                        <div class="form-group">
-                            <label class="form-label">💬 Фраза дня</label>
-                            <textarea class="form-input" placeholder="Доброго ранку, кохана! 💕" id="my-phrase-input" rows="3"></textarea>
-                            <div style="font-size: 12px; color: #666;">Цей напис побачить партнер під фото дня</div>
-                        </div>
-
-                        <!-- Questions -->
-                        <div class="form-group">
-                            <label class="form-label">❓ Питання для партнера</label>
-                            <button class="btn btn-secondary" onclick="addQuestion()">+ Додати питання</button>
-                            <div id="questions-container">
-                                <!-- Questions will be added here -->
-                            </div>
-                        </div>
-
-                        <!-- Surprises -->
-                        <div class="form-group">
-                            <label class="form-label">🎁 Приємність для партнера</label>
-                            <button class="btn btn-secondary" onclick="addSurprise()">+ Надіслати приємність</button>
-                            <div id="surprises-container">
-                                <!-- Surprises will be added here -->
+                            <div id="for-me-content">
+                                <!-- Content from partner will be loaded here -->
                             </div>
                         </div>
                     </div>
 
-                    <!-- Partner's Content for Me -->
-                    <div class="editor-section">
-                        <div class="section-title">
-                            <span class="section-icon">🔴</span>
-                            ВІД ПАРТНЕРА ДЛЯ МЕНЕ
-                        </div>
-                        
-                        <!-- Partner's Photo -->
-                        <div class="form-group">
-                            <label class="form-label">📷 Фото дня від партнера</label>
-                            <div id="partner-photo-container">
-                                <div style="text-align: center; padding: 20px; color: #666;">
-                                    Партнер ще не додав фото на цей день
-                                </div>
+                    <!-- Tab: For Partner -->
+                    <div class="tab-content" id="for-partner-tab">
+                        <div class="editor-section">
+                            <div class="section-title">
+                                <span class="section-icon">📤</span>
+                                ЩО Я ВІДПРАВИВ ПАРТНЕРУ
                             </div>
-                        </div>
-
-                        <!-- Partner's Phrase -->
-                        <div class="form-group">
-                            <label class="form-label">💬 Фраза дня від партнера</label>
-                            <div id="partner-phrase-container">
-                                <div style="padding: 15px; background: #f8f9fa; border-radius: 8px; color: #666;">
-                                    Партнер ще не додав фразу на цей день
-                                </div>
+                            <div id="for-partner-content">
+                                <!-- My content for partner will be loaded here -->
                             </div>
-                        </div>
-
-                        <!-- Partner's Questions -->
-                        <div class="form-group">
-                            <label class="form-label">❓ Питання від партнера</label>
-                            <div id="partner-questions-container">
-                                <div style="text-align: center; padding: 20px; color: #666;">
-                                    Партнер ще не додав питання на цей день
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Partner's Surprises -->
-                        <div class="form-group">
-                            <label class="form-label">🎁 Приємності від партнера</label>
-                            <div id="partner-surprises-container">
-                                <div style="text-align: center; padding: 20px; color: #666;">
-                                    Партнер ще не надіслав приємностей на цей день
+                            
+                            <!-- Add New Section -->
+                            <div class="add-new-section">
+                                <div style="font-weight: bold; margin-bottom: 10px;">+ ДОДАТИ НОВИЙ ЕЛЕМЕНТ</div>
+                                <div class="add-new-buttons">
+                                    <div class="add-btn" onclick="addNewItem('question')">
+                                        ❓ Додати питання
+                                    </div>
+                                    <div class="add-btn" onclick="addNewItem('phrase')">
+                                        💬 Додати фразу дня
+                                    </div>
+                                    <div class="add-btn" onclick="addNewItem('photo')">
+                                        📷 Додати фото дня
+                                    </div>
+                                    <div class="add-btn" onclick="addNewItem('surprise')">
+                                        🎁 Додати приємність
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="text-center mt-20">
-                    <button class="btn btn-primary btn-large" onclick="saveDayContent()">Зберегти контент</button>
                 </div>
             </div>
         </div>
@@ -1190,10 +1452,38 @@
         const sampleCalendarData = {
             "2024-10-10": {
                 myContent: {
-                    photo: null,
+                    photo: "https://via.placeholder.com/300x200/667eea/ffffff?text=My+Photo",
                     phrase: "Доброго ранку, кохана! 💕",
-                    questions: [],
-                    surprises: []
+                    questions: [
+                        {
+                            id: 1,
+                            text: "Як ти мене кохаєш?",
+                            options: ["Безмежно", "Дуже сильно", "Трохи", "Не знаю"],
+                            correct: 0,
+                            answered: false,
+                            correctAnswer: null
+                        }
+                    ],
+                    surprises: [
+                        {
+                            id: 1,
+                            type: "text",
+                            content: "Ти найкраща! 💕",
+                            icon: "🌹",
+                            deliveryTime: "08:00",
+                            delivered: true,
+                            opened: false
+                        },
+                        {
+                            id: 2,
+                            type: "audio",
+                            content: "Голосове повідомлення",
+                            icon: "💕",
+                            deliveryTime: "20:00",
+                            delivered: false,
+                            opened: false
+                        }
+                    ]
                 },
                 partnerContent: {
                     photo: "https://via.placeholder.com/300x200/ff6b9d/ffffff?text=Photo+from+Partner",
@@ -1204,6 +1494,14 @@
                             text: "Який твій улюблений колір?",
                             options: ["Синій", "Рожевий", "Зелений", "Фіолетовий"],
                             correct: 1,
+                            answered: true,
+                            correctAnswer: 1
+                        },
+                        {
+                            id: 2,
+                            text: "Що ти їв на сніданок?",
+                            options: ["Каша", "Яєчня", "Тост", "Нічого"],
+                            correct: 0,
                             answered: false,
                             correctAnswer: null
                         }
@@ -1214,8 +1512,17 @@
                             type: "text",
                             content: "Ти найкраща! 💕",
                             icon: "💕",
-                            deliveryTime: "14:00",
+                            deliveryTime: "09:00",
                             delivered: true,
+                            opened: false
+                        },
+                        {
+                            id: 2,
+                            type: "video",
+                            content: "Відео з привітом",
+                            icon: "✨",
+                            deliveryTime: "14:00",
+                            delivered: false,
                             opened: false
                         }
                     ]
@@ -1476,15 +1783,280 @@
         function loadDayEditor(dayKey) {
             const dayData = sampleCalendarData[dayKey] || { myContent: {}, partnerContent: {} };
             
-            // Load my content
-            if (dayData.myContent.photo) {
-                document.getElementById('my-photo-preview').src = dayData.myContent.photo;
-                document.getElementById('my-photo-preview').classList.remove('hidden');
-            }
-            document.getElementById('my-phrase-input').value = dayData.myContent.phrase || '';
+            // Load content for both tabs
+            loadForMeContent(dayData.partnerContent);
+            loadForPartnerContent(dayData.myContent);
+        }
+
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
             
-            // Load partner content
-            loadPartnerContent(dayData.partnerContent);
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        function loadForMeContent(partnerContent) {
+            const container = document.getElementById('for-me-content');
+            let html = '';
+
+            if (!partnerContent || Object.keys(partnerContent).length === 0) {
+                html = '<div style="text-align: center; padding: 40px; color: #666;">Партнер ще нічого не додав на цей день</div>';
+            } else {
+                // Load partner's content in chronological order
+                const items = [];
+
+                // Add photo if exists
+                if (partnerContent.photo) {
+                    items.push({
+                        type: 'photo',
+                        icon: '📷',
+                        title: 'Фото дня',
+                        time: '00:00',
+                        status: 'ready',
+                        content: partnerContent.photo
+                    });
+                }
+
+                // Add phrase if exists
+                if (partnerContent.phrase) {
+                    items.push({
+                        type: 'phrase',
+                        icon: '💬',
+                        title: 'Фраза дня',
+                        time: '00:00',
+                        status: 'ready',
+                        content: partnerContent.phrase
+                    });
+                }
+
+                // Add questions
+                if (partnerContent.questions) {
+                    partnerContent.questions.forEach((question, index) => {
+                        items.push({
+                            type: 'question',
+                            icon: '❓',
+                            title: `Питання ${index + 1}`,
+                            time: '09:00',
+                            status: question.answered ? 'answered' : 'not-answered',
+                            content: question.text,
+                            question: question
+                        });
+                    });
+                }
+
+                // Add surprises
+                if (partnerContent.surprises) {
+                    partnerContent.surprises.forEach((surprise, index) => {
+                        const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                        items.push({
+                            type: 'surprise',
+                            icon: surprise.icon,
+                            title: `Приємність ${index + 1}`,
+                            time: surprise.deliveryTime,
+                            status: isReady ? 'ready' : 'waiting',
+                            content: surprise.content,
+                            surprise: surprise
+                        });
+                    });
+                }
+
+                // Sort by time
+                items.sort((a, b) => a.time.localeCompare(b.time));
+
+                // Generate HTML
+                items.forEach(item => {
+                    html += generateContentItemHtml(item, 'for-me');
+                });
+            }
+
+            container.innerHTML = html;
+        }
+
+        function loadForPartnerContent(myContent) {
+            const container = document.getElementById('for-partner-content');
+            let html = '';
+
+            if (!myContent || Object.keys(myContent).length === 0) {
+                html = '<div style="text-align: center; padding: 40px; color: #666;">Ви ще нічого не додали на цей день</div>';
+            } else {
+                // Load my content in chronological order
+                const items = [];
+
+                // Add photo if exists
+                if (myContent.photo) {
+                    items.push({
+                        type: 'photo',
+                        icon: '📷',
+                        title: 'Фото дня',
+                        time: '00:00',
+                        status: 'ready',
+                        content: myContent.photo
+                    });
+                }
+
+                // Add phrase if exists
+                if (myContent.phrase) {
+                    items.push({
+                        type: 'phrase',
+                        icon: '💬',
+                        title: 'Фраза дня',
+                        time: '00:00',
+                        status: 'ready',
+                        content: myContent.phrase
+                    });
+                }
+
+                // Add questions
+                if (myContent.questions) {
+                    myContent.questions.forEach((question, index) => {
+                        items.push({
+                            type: 'question',
+                            icon: '❓',
+                            title: `Питання ${index + 1}`,
+                            time: '09:00',
+                            status: 'ready',
+                            content: question.text,
+                            question: question
+                        });
+                    });
+                }
+
+                // Add surprises
+                if (myContent.surprises) {
+                    myContent.surprises.forEach((surprise, index) => {
+                        const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                        items.push({
+                            type: 'surprise',
+                            icon: surprise.icon,
+                            title: `Приємність ${index + 1}`,
+                            time: surprise.deliveryTime,
+                            status: isReady ? 'ready' : 'waiting',
+                            content: surprise.content,
+                            surprise: surprise
+                        });
+                    });
+                }
+
+                // Sort by time
+                items.sort((a, b) => a.time.localeCompare(b.time));
+
+                // Generate HTML
+                items.forEach(item => {
+                    html += generateContentItemHtml(item, 'for-partner');
+                });
+            }
+
+            container.innerHTML = html;
+        }
+
+        function generateContentItemHtml(item, context) {
+            let statusHtml = '';
+            let actionsHtml = '';
+
+            if (context === 'for-me') {
+                // For me tab - show what partner sent
+                switch (item.status) {
+                    case 'ready':
+                        statusHtml = '<div class="item-status status-ready">✓ Готово</div>';
+                        break;
+                    case 'waiting':
+                        statusHtml = '<div class="item-status status-waiting">⏰ Очікуйте</div>';
+                        break;
+                    case 'answered':
+                        statusHtml = '<div class="item-status status-answered">Відповів правильно ✅</div>';
+                        break;
+                    case 'not-answered':
+                        statusHtml = '<div class="item-status status-not-answered">Не відповів</div>';
+                        break;
+                }
+
+                switch (item.type) {
+                    case 'surprise':
+                        if (item.status === 'ready') {
+                            actionsHtml = '<button class="action-btn btn-open" onclick="openSurprise(' + item.surprise.id + ')">Відкрити</button>';
+                        }
+                        break;
+                    case 'question':
+                        if (item.status === 'not-answered') {
+                            actionsHtml = '<button class="action-btn btn-answer" onclick="answerQuestion(' + item.question.id + ')">Відповісти</button>';
+                        } else if (item.status === 'answered') {
+                            actionsHtml = '<button class="action-btn btn-show" onclick="showReaction(' + item.question.id + ')">Показати реакцію</button>';
+                        }
+                        break;
+                }
+            } else {
+                // For partner tab - show what I sent
+                switch (item.status) {
+                    case 'ready':
+                        statusHtml = '<div class="item-status status-ready">✓ Готово</div>';
+                        break;
+                    case 'waiting':
+                        statusHtml = '<div class="item-status status-waiting">⏰ Заплановано</div>';
+                        break;
+                }
+
+                actionsHtml = `
+                    <button class="action-btn btn-edit" onclick="editItem('${item.type}', ${item.id || 0})">Редагувати</button>
+                    <button class="action-btn btn-delete" onclick="deleteItem('${item.type}', ${item.id || 0})">Видалити</button>
+                `;
+            }
+
+            return `
+                <div class="content-item">
+                    <div class="item-header">
+                        <span class="item-icon">${item.icon}</span>
+                        <span class="item-title">${item.title}</span>
+                        <span class="item-time">о ${item.time}</span>
+                    </div>
+                    <div style="margin: 10px 0; color: #666;">
+                        ${item.content}
+                    </div>
+                    ${statusHtml}
+                    <div class="item-actions">
+                        ${actionsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function addNewItem(type) {
+            switch (type) {
+                case 'question':
+                    addQuestion();
+                    break;
+                case 'surprise':
+                    addSurprise();
+                    break;
+                case 'photo':
+                    addPhoto();
+                    break;
+                case 'phrase':
+                    addPhrase();
+                    break;
+            }
+        }
+
+        function addPhoto() {
+            showNotification('Фото', 'Функція додавання фото буде реалізована');
+        }
+
+        function addPhrase() {
+            showNotification('Фраза', 'Функція додавання фрази буде реалізована');
+        }
+
+        function editItem(type, id) {
+            showNotification('Редагування', `Редагування ${type} буде реалізовано`);
+        }
+
+        function deleteItem(type, id) {
+            showNotification('Видалення', `Видалення ${type} буде реалізовано`);
+        }
+
+        function showReaction(questionId) {
+            showNotification('Реакція', 'Показ реакції буде реалізовано');
         }
 
         function loadPartnerContent(partnerContent) {
