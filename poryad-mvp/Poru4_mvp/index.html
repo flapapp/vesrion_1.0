@@ -1456,7 +1456,7 @@
         const sampleCalendarData = {
             [todayKey]: {
                 myContent: {
-                    photo: "https://via.placeholder.com/400x300/667eea/ffffff?text=My+Photo+of+Us",
+                    photo: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=300&fit=crop&crop=faces",
                     phrase: "Доброго ранку, кохана! 💕 Сьогодні буде чудовий день!",
                     questions: [
                         {
@@ -1484,7 +1484,8 @@
                             icon: "🌹",
                             deliveryTime: "08:00",
                             delivered: true,
-                            opened: false
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300&h=200&fit=crop&crop=faces"
                         },
                         {
                             id: 2,
@@ -1493,7 +1494,8 @@
                             icon: "💕",
                             deliveryTime: "12:00",
                             delivered: true,
-                            opened: false
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=200&fit=crop"
                         },
                         {
                             id: 3,
@@ -1502,7 +1504,8 @@
                             icon: "✨",
                             deliveryTime: "18:00",
                             delivered: false,
-                            opened: false
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=300&h=200&fit=crop"
                         },
                         {
                             id: 4,
@@ -1511,12 +1514,13 @@
                             icon: "💌",
                             deliveryTime: "22:00",
                             delivered: false,
-                            opened: false
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1524504388940-b1c172c3db96?w=300&h=200&fit=crop&crop=faces"
                         }
                     ]
                 },
                 partnerContent: {
-                    photo: "https://via.placeholder.com/400x300/ff6b9d/ffffff?text=Partner+Photo+of+Us",
+                    photo: "https://images.unsplash.com/photo-1524504388940-b1c172c3db96?w=400&h=300&fit=crop&crop=faces",
                     phrase: "Сьогодні буде чудовий день! ☀️ Я так тебе люблю!",
                     questions: [
                         {
@@ -1709,8 +1713,8 @@
             const room = sampleRooms.find(r => r.id === roomId);
             if (room) {
                 currentRoom = room;
-                showScreen('calendar-screen');
-                loadCalendar();
+                // Show daily splash first
+                showDailySplash();
             }
         }
 
@@ -1893,6 +1897,7 @@
                                       surprise.type === 'audio' ? '🎵 Аудіо' : 
                                       surprise.type === 'video' ? '🎬 Відео' : '📝 Текст'}: ${surprise.content}
                                 </div>
+                                ${surprise.image ? `<img src="${surprise.image}" style="width: 100%; max-width: 200px; border-radius: 8px; margin: 10px 0;" alt="Превью приємності">` : ''}
                                 <div class="item-status ${isReadyForDemo ? 'status-ready' : 'status-waiting'}">
                                     ${isReadyForDemo ? '✓ Готово (час настав)' : `⏰ Очікуйте о ${surprise.deliveryTime}`}
                                 </div>
@@ -2043,30 +2048,115 @@
 
         // Add new content functions
         function addNewQuestion() {
-            showNotification('❓ Додавання питання', 'Тут ви можете створити питання для партнера з варіантами відповідей та реакціями на правильну/неправильну відповідь');
+            const questionText = prompt('Введіть питання для партнера:');
+            if (questionText) {
+                const options = [];
+                for (let i = 1; i <= 4; i++) {
+                    const option = prompt(`Варіант відповіді ${i} (залиште порожнім, щоб завершити):`);
+                    if (option) options.push(option);
+                    else break;
+                }
+                if (options.length >= 2) {
+                    const correct = prompt(`Який варіант правильний? (1-${options.length}):`);
+                    if (correct) {
+                        showNotification('✅ Питання додано!', `Питання "${questionText}" з ${options.length} варіантами відповідей додано для партнера`);
+                    }
+                }
+            }
         }
 
         function addNewPhrase() {
-            showNotification('💬 Додавання фрази дня', 'Тут ви можете додати фразу дня, яку побачить партнер під вашим фото');
+            const phrase = prompt('Введіть фразу дня для партнера:');
+            if (phrase) {
+                showNotification('✅ Фраза додана!', `Фраза "${phrase}" додана для партнера. Вона з'явиться під вашим фото дня`);
+            }
         }
 
         function addNewPhoto() {
-            showNotification('📷 Додавання фото дня', 'Тут ви можете завантажити фото дня, яке побачить партнер як заставку');
+            const photoUrl = prompt('Введіть URL фото або завантажте файл:');
+            if (photoUrl) {
+                showNotification('✅ Фото додано!', `Фото додано для партнера. Воно буде показане як заставка дня`);
+            }
         }
 
         function addNewSurprise() {
-            showNotification('🎁 Додавання приємності', 'Тут ви можете створити приємність для партнера: аудіо, відео, текст або фото з часом доставки');
+            const type = prompt('Оберіть тип приємності:\n1. Текст\n2. Фото\n3. Аудіо\n4. Відео\n\nВведіть номер (1-4):');
+            const types = ['text', 'photo', 'audio', 'video'];
+            const typeNames = ['Текст', 'Фото', 'Аудіо', 'Відео'];
+            
+            if (type && types[parseInt(type) - 1]) {
+                const content = prompt(`Введіть ${typeNames[parseInt(type) - 1].toLowerCase()} для приємності:`);
+                const time = prompt('Введіть час доставки (наприклад, 14:00):');
+                const icon = prompt('Введіть емодзі іконку (наприклад, 🎁):');
+                
+                if (content && time && icon) {
+                    showNotification('✅ Приємність додана!', `${typeNames[parseInt(type) - 1]} приємність "${content}" буде доставлена о ${time}`);
+                }
+            }
         }
 
         // Action functions
         function openSurprise(surpriseId) {
-            showNotification('🎁 Подарунок відкрито!', 'Ви успішно відкрили подарунок від партнера! Тепер можете побачити контент та відповісти емодзі реакцією');
-            createFireworksAnimation();
+            const surprise = sampleCalendarData[formatDate(new Date())].partnerContent.surprises.find(s => s.id === surpriseId);
+            if (surprise) {
+                const imageUrl = surprise.image || "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=300&fit=crop&crop=faces";
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                    background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                    align-items: center; justify-content: center; flex-direction: column;
+                `;
+                modal.innerHTML = `
+                    <div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; text-align: center; margin: 20px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">${surprise.icon}</div>
+                        <h3 style="margin-bottom: 20px; color: #333;">Подарунок від партнера!</h3>
+                        <img src="${imageUrl}" style="width: 100%; max-width: 400px; border-radius: 12px; margin-bottom: 20px;" alt="Подарунок">
+                        <p style="margin-bottom: 20px; color: #666; font-style: italic;">"${surprise.content}"</p>
+                        <div style="margin-bottom: 20px;">
+                            <button onclick="this.parentElement.parentElement.parentElement.remove(); createFireworksAnimation();" 
+                                    style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                                ❤️ Відповісти коханням
+                            </button>
+                            <button onclick="this.parentElement.parentElement.parentElement.remove(); createFireworksAnimation();" 
+                                    style="background: #ff6b9d; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                                😍 Відповісти захопленням
+                            </button>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove();" 
+                                style="background: #f8f9fa; color: #666; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+                            Закрити
+                        </button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                createFireworksAnimation();
+            }
         }
 
         function answerQuestion(questionId) {
-            showNotification('✅ Відповідь збережена!', 'Ваша відповідь на питання партнера збережена! Партнер отримає повідомлення про вашу відповідь');
-            createHeartAnimation();
+            const question = sampleCalendarData[formatDate(new Date())].partnerContent.questions.find(q => q.id === questionId);
+            if (question) {
+                const answer = prompt(`Питання: "${question.text}"\n\nВаріанти:\n${question.options.map((opt, i) => `${i + 1}. ${opt}`).join('\n')}\n\nВведіть номер відповіді (1-${question.options.length}):`);
+                if (answer) {
+                    const answerIndex = parseInt(answer) - 1;
+                    const isCorrect = answerIndex === question.correct;
+                    
+                    if (isCorrect) {
+                        showNotification('🎉 Правильна відповідь!', 'Відмінно! Ви відповіли правильно! Партнер отримає вашу реакцію');
+                        createHeartAnimation();
+                        // Show correct reaction
+                        setTimeout(() => {
+                            showNotification('💕 Реакція партнера', 'Партнер радіє вашій правильній відповіді! ❤️✨');
+                        }, 1000);
+                    } else {
+                        showNotification('😔 Неправильна відповідь', 'На жаль, це неправильна відповідь. Спробуйте ще раз завтра!');
+                        // Show incorrect reaction
+                        setTimeout(() => {
+                            showNotification('💕 Реакція партнера', 'Партнер підтримує вас! Правильна відповідь: ' + question.options[question.correct]);
+                        }, 1000);
+                    }
+                }
+            }
         }
 
         function showReaction(questionId) {
@@ -2579,10 +2669,16 @@
             if (dayData && dayData.partnerContent) {
                 if (dayData.partnerContent.photo) {
                     photo.src = dayData.partnerContent.photo;
+                    photo.alt = "Фото дня від партнера";
                 }
                 if (dayData.partnerContent.phrase) {
                     phrase.textContent = dayData.partnerContent.phrase;
                 }
+            } else {
+                // Default content if no partner content
+                photo.src = "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&h=600&fit=crop&crop=faces";
+                photo.alt = "Фото дня";
+                phrase.textContent = "Доброго ранку! Сьогодні буде чудовий день! ☀️";
             }
             
             splash.classList.remove('hidden');
@@ -2590,8 +2686,8 @@
 
         function startDay() {
             document.getElementById('daily-splash').classList.add('hidden');
-            showScreen('daily-experience-screen');
-            loadDailyExperience();
+            showScreen('calendar-screen');
+            loadCalendar();
         }
 
         function loadDailyExperience() {
