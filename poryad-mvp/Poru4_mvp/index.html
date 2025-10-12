@@ -1700,6 +1700,11 @@
                         <div class="card-title">Спогади</div>
                         <div class="card-description">Галерея спільних моментів та статистика</div>
                     </div>
+                    <div class="card" onclick="showScreen('create-challenge-screen')">
+                        <div class="card-icon">🏆</div>
+                        <div class="card-title">Створити челендж</div>
+                        <div class="card-description">Спільні завдання для вас двох</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -3552,13 +3557,33 @@
 
         // Load challenges when page loads
         function initChallenges() {
+            // Load challenges when rooms list screen is shown
             if (document.getElementById('challenges-list')) {
                 loadChallenges();
             }
         }
 
+        // Override showScreen to load challenges when needed
+        const originalShowScreen = showScreen;
+        showScreen = function(screenId) {
+            originalShowScreen(screenId);
+            if (screenId === 'rooms-list-screen') {
+                // Load challenges when rooms list is shown
+                setTimeout(() => {
+                    if (document.getElementById('challenges-list')) {
+                        loadChallenges();
+                    }
+                }, 100);
+            }
+        };
+
         function loadChallenges() {
             const container = document.getElementById('challenges-list');
+            if (!container) {
+                console.log('Challenges container not found');
+                return;
+            }
+            
             container.innerHTML = `
                 <div class="challenge-card">
                     <div class="challenge-header">
