@@ -1449,17 +1449,29 @@
             }
         ];
 
+        // Get today's date for demo
+        const today = new Date();
+        const todayKey = formatDate(today);
+
         const sampleCalendarData = {
-            "2024-10-10": {
+            [todayKey]: {
                 myContent: {
-                    photo: "https://via.placeholder.com/300x200/667eea/ffffff?text=My+Photo",
-                    phrase: "Доброго ранку, кохана! 💕",
+                    photo: "https://via.placeholder.com/400x300/667eea/ffffff?text=My+Photo+of+Us",
+                    phrase: "Доброго ранку, кохана! 💕 Сьогодні буде чудовий день!",
                     questions: [
                         {
                             id: 1,
                             text: "Як ти мене кохаєш?",
-                            options: ["Безмежно", "Дуже сильно", "Трохи", "Не знаю"],
-                            correct: 0,
+                            options: ["Багато", "Дуже багато", "Безмежно", "Більше за все на світі"],
+                            correct: 3,
+                            answered: false,
+                            correctAnswer: null
+                        },
+                        {
+                            id: 2,
+                            text: "Що ти хочеш зробити сьогодні?",
+                            options: ["Погуляти", "Подивитися фільм", "Приготувати щось", "Просто бути разом"],
+                            correct: 3,
                             answered: false,
                             correctAnswer: null
                         }
@@ -1467,8 +1479,8 @@
                     surprises: [
                         {
                             id: 1,
-                            type: "text",
-                            content: "Ти найкраща! 💕",
+                            type: "photo",
+                            content: "Фото з нашим першим побаченням",
                             icon: "🌹",
                             deliveryTime: "08:00",
                             delivered: true,
@@ -1477,20 +1489,46 @@
                         {
                             id: 2,
                             type: "audio",
-                            content: "Голосове повідомлення",
+                            content: "Голосове повідомлення з піснею",
                             icon: "💕",
-                            deliveryTime: "20:00",
+                            deliveryTime: "12:00",
+                            delivered: true,
+                            opened: false
+                        },
+                        {
+                            id: 3,
+                            type: "video",
+                            content: "Відео з танцем для тебе",
+                            icon: "✨",
+                            deliveryTime: "18:00",
+                            delivered: false,
+                            opened: false
+                        },
+                        {
+                            id: 4,
+                            type: "text",
+                            content: "Ти найкраща дівчина на світі! 💖",
+                            icon: "💌",
+                            deliveryTime: "22:00",
                             delivered: false,
                             opened: false
                         }
                     ]
                 },
                 partnerContent: {
-                    photo: "https://via.placeholder.com/300x200/ff6b9d/ffffff?text=Photo+from+Partner",
-                    phrase: "Сьогодні буде чудовий день! ☀️",
+                    photo: "https://via.placeholder.com/400x300/ff6b9d/ffffff?text=Partner+Photo+of+Us",
+                    phrase: "Сьогодні буде чудовий день! ☀️ Я так тебе люблю!",
                     questions: [
                         {
                             id: 1,
+                            text: "Що ти їв на сніданок?",
+                            options: ["Каша з ягодами", "Яєчня з беконом", "Тост з авокадо", "Нічого не їв"],
+                            correct: 1,
+                            answered: false,
+                            correctAnswer: null
+                        },
+                        {
+                            id: 2,
                             text: "Який твій улюблений колір?",
                             options: ["Синій", "Рожевий", "Зелений", "Фіолетовий"],
                             correct: 1,
@@ -1498,10 +1536,10 @@
                             correctAnswer: 1
                         },
                         {
-                            id: 2,
-                            text: "Що ти їв на сніданок?",
-                            options: ["Каша", "Яєчня", "Тост", "Нічого"],
-                            correct: 0,
+                            id: 3,
+                            text: "Що тебе найбільше радує?",
+                            options: ["Моя посмішка", "Спільні моменти", "Мої дотики", "Все вище"],
+                            correct: 3,
                             answered: false,
                             correctAnswer: null
                         }
@@ -1771,6 +1809,7 @@
         function goToToday() {
             currentDate = new Date();
             loadCalendar();
+            showNotification('Навігація', 'Перехід до сьогоднішнього дня');
         }
 
         function openDayEditor(date) {
@@ -1805,23 +1844,61 @@
             if (!partnerContent || Object.keys(partnerContent).length === 0) {
                 html = '<div style="text-align: center; padding: 40px; color: #666;">Партнер ще нічого не додав на цей день</div>';
             } else {
+                // Add header with current time info
+                const currentHour = new Date().getHours();
+                html += `
+                    <div style="background: #e3f2fd; border-radius: 8px; padding: 15px; margin-bottom: 20px; text-align: center;">
+                        <div style="font-weight: bold; color: #1976d2; margin-bottom: 5px;">📅 Сьогодні, ${formatDateDisplay(new Date())}</div>
+                        <div style="font-size: 14px; color: #666;">Поточний час: ${currentHour}:00 | Зараз 16:00 (для MVP)</div>
+                        <div style="font-size: 12px; color: #888; margin-top: 5px; font-style: italic;">
+                            Це контент, який партнер додав для вас на сьогодні
+                        </div>
+                    </div>
+                `;
+
+                // Add photo and phrase first
+                if (partnerContent.photo || partnerContent.phrase) {
+                    html += `
+                        <div class="content-item">
+                            <div class="item-header">
+                                <span class="item-icon">📸</span>
+                                <span class="item-title">Фото та фраза дня від партнера</span>
+                                <span class="item-time">00:00</span>
+                            </div>
+                            <div style="margin: 10px 0; font-size: 12px; color: #666; font-style: italic;">
+                                Це фото дня та фраза дня, які партнер додав для вас
+                            </div>
+                            ${partnerContent.photo ? `<img src="${partnerContent.photo}" style="width: 100%; border-radius: 8px; margin: 10px 0;">` : ''}
+                            ${partnerContent.phrase ? `<div style="margin: 10px 0; font-style: italic; padding: 10px; background: #f8f9fa; border-radius: 8px;">"${partnerContent.phrase}"</div>` : ''}
+                        </div>
+                    `;
+                }
+
                 // Add surprises
                 if (partnerContent.surprises && partnerContent.surprises.length > 0) {
                     partnerContent.surprises.forEach(surprise => {
                         const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                        const currentHour = 16; // For MVP demo
+                        const isReadyForDemo = parseInt(surprise.deliveryTime.split(':')[0]) <= currentHour;
+                        
                         html += `
                             <div class="content-item">
                                 <div class="item-header">
                                     <span class="item-icon">${surprise.icon}</span>
-                                    <span class="item-title">Приємність</span>
+                                    <span class="item-title">Приємність від партнера</span>
                                     <span class="item-time">о ${surprise.deliveryTime}</span>
                                 </div>
-                                <div class="item-status ${isReady ? 'status-ready' : 'status-waiting'}">
-                                    ${isReady ? '✓ Готово' : '⏰ Очікуйте'}
+                                <div style="margin: 10px 0; font-size: 12px; color: #666; font-style: italic;">
+                                    ${surprise.type === 'photo' ? '📷 Фото' : 
+                                      surprise.type === 'audio' ? '🎵 Аудіо' : 
+                                      surprise.type === 'video' ? '🎬 Відео' : '📝 Текст'}: ${surprise.content}
+                                </div>
+                                <div class="item-status ${isReadyForDemo ? 'status-ready' : 'status-waiting'}">
+                                    ${isReadyForDemo ? '✓ Готово (час настав)' : `⏰ Очікуйте о ${surprise.deliveryTime}`}
                                 </div>
                                 <div class="item-actions">
-                                    ${isReady ? 
-                                        `<button class="action-btn btn-open" onclick="openSurprise(${surprise.id})">Відкрити</button>` :
+                                    ${isReadyForDemo ? 
+                                        `<button class="action-btn btn-open" onclick="openSurprise(${surprise.id})">Відкрити подарунок</button>` :
                                         `<span style="color: #666;">Очікуйте о ${surprise.deliveryTime}</span>`
                                     }
                                 </div>
@@ -1842,14 +1919,22 @@
                             <div class="content-item">
                                 <div class="item-header">
                                     <span class="item-icon">❓</span>
-                                    <span class="item-title">Питання</span>
+                                    <span class="item-title">Питання від партнера</span>
                                 </div>
-                                <div style="margin: 10px 0; font-weight: 500;">"${question.text}"</div>
+                                <div style="margin: 10px 0; font-weight: 500; font-size: 14px;">"${question.text}"</div>
+                                <div style="margin: 10px 0; font-size: 12px; color: #666; font-style: italic;">
+                                    Партнер задав це питання для вас. Варіанти відповідей:
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    ${question.options.map((option, index) => 
+                                        `<div style="margin: 5px 0; padding: 5px; background: #f8f9fa; border-radius: 4px;">${index + 1}. ${option}</div>`
+                                    ).join('')}
+                                </div>
                                 <div class="item-status ${statusClass}">Статус: ${status}</div>
                                 <div class="item-actions">
                                     ${!question.answered ? 
-                                        `<button class="action-btn btn-answer" onclick="answerQuestion(${question.id})">Відповісти</button>` :
-                                        `<button class="action-btn btn-show" onclick="showReaction(${question.id})">Показати реакцію</button>`
+                                        `<button class="action-btn btn-answer" onclick="answerQuestion(${question.id})">Відповісти на питання</button>` :
+                                        `<button class="action-btn btn-show" onclick="showReaction(${question.id})">Показати реакцію партнера</button>`
                                     }
                                 </div>
                             </div>
@@ -1958,58 +2043,58 @@
 
         // Add new content functions
         function addNewQuestion() {
-            showNotification('Інформація', 'Функція додавання питання буде реалізована');
+            showNotification('❓ Додавання питання', 'Тут ви можете створити питання для партнера з варіантами відповідей та реакціями на правильну/неправильну відповідь');
         }
 
         function addNewPhrase() {
-            showNotification('Інформація', 'Функція додавання фрази буде реалізована');
+            showNotification('💬 Додавання фрази дня', 'Тут ви можете додати фразу дня, яку побачить партнер під вашим фото');
         }
 
         function addNewPhoto() {
-            showNotification('Інформація', 'Функція додавання фото буде реалізована');
+            showNotification('📷 Додавання фото дня', 'Тут ви можете завантажити фото дня, яке побачить партнер як заставку');
         }
 
         function addNewSurprise() {
-            showNotification('Інформація', 'Функція додавання приємності буде реалізована');
+            showNotification('🎁 Додавання приємності', 'Тут ви можете створити приємність для партнера: аудіо, відео, текст або фото з часом доставки');
         }
 
         // Action functions
         function openSurprise(surpriseId) {
-            showNotification('Подарунок', 'Ви відкрили подарунок! 🎁');
+            showNotification('🎁 Подарунок відкрито!', 'Ви успішно відкрили подарунок від партнера! Тепер можете побачити контент та відповісти емодзі реакцією');
             createFireworksAnimation();
         }
 
         function answerQuestion(questionId) {
-            showNotification('Відповідь', 'Ваша відповідь збережена!');
+            showNotification('✅ Відповідь збережена!', 'Ваша відповідь на питання партнера збережена! Партнер отримає повідомлення про вашу відповідь');
             createHeartAnimation();
         }
 
         function showReaction(questionId) {
-            showNotification('Реакція', 'Показуємо реакцію партнера!');
+            showNotification('💕 Реакція партнера', 'Показуємо реакцію партнера на вашу відповідь: аудіо, відео, текст або фото');
         }
 
         function editSurprise(surpriseId) {
-            showNotification('Редагування', 'Редагування приємності');
+            showNotification('✏️ Редагування приємності', 'Відкриваємо редактор для зміни приємності: контент, час доставки, іконка');
         }
 
         function deleteSurprise(surpriseId) {
-            showNotification('Видалення', 'Приємність видалена');
+            showNotification('🗑️ Приємність видалена', 'Приємність успішно видалена з вашого контенту для партнера');
         }
 
         function editQuestion(questionId) {
-            showNotification('Редагування', 'Редагування питання');
+            showNotification('✏️ Редагування питання', 'Відкриваємо редактор для зміни питання: текст, варіанти відповідей, правильну відповідь');
         }
 
         function deleteQuestion(questionId) {
-            showNotification('Видалення', 'Питання видалено');
+            showNotification('🗑️ Питання видалено', 'Питання успішно видалено з вашого контенту для партнера');
         }
 
         function editPhotoPhrase() {
-            showNotification('Редагування', 'Редагування фото та фрази');
+            showNotification('✏️ Редагування фото та фрази', 'Відкриваємо редактор для зміни фото дня та фрази дня для партнера');
         }
 
         function deletePhotoPhrase() {
-            showNotification('Видалення', 'Фото та фраза видалені');
+            showNotification('🗑️ Фото та фраза видалені', 'Фото дня та фраза дня успішно видалені з вашого контенту для партнера');
         }
 
         function loadForMeContent(partnerContent) {
