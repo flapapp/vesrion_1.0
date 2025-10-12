@@ -1274,16 +1274,16 @@
                             <div class="add-new-section">
                                 <div style="font-weight: bold; margin-bottom: 10px;">+ ДОДАТИ НОВИЙ ЕЛЕМЕНТ</div>
                                 <div class="add-new-buttons">
-                                    <div class="add-btn" onclick="addNewItem('question')">
+                                    <div class="add-btn" onclick="addNewQuestion()">
                                         ❓ Додати питання
                                     </div>
-                                    <div class="add-btn" onclick="addNewItem('phrase')">
+                                    <div class="add-btn" onclick="addNewPhrase()">
                                         💬 Додати фразу дня
                                     </div>
-                                    <div class="add-btn" onclick="addNewItem('photo')">
+                                    <div class="add-btn" onclick="addNewPhoto()">
                                         📷 Додати фото дня
                                     </div>
-                                    <div class="add-btn" onclick="addNewItem('surprise')">
+                                    <div class="add-btn" onclick="addNewSurprise()">
                                         🎁 Додати приємність
                                     </div>
                                 </div>
@@ -2664,30 +2664,9 @@
             `;
         }
 
-        function addNewItem(type) {
-            switch (type) {
-                case 'question':
-                    addQuestion();
-                    break;
-                case 'surprise':
-                    addSurprise();
-                    break;
-                case 'photo':
-                    addPhoto();
-                    break;
-                case 'phrase':
-                    addPhrase();
-                    break;
-            }
-        }
+        // This function is no longer needed - using direct function calls
 
-        function addPhoto() {
-            showNotification('Фото', 'Функція додавання фото буде реалізована');
-        }
-
-        function addPhrase() {
-            showNotification('Фраза', 'Функція додавання фрази буде реалізована');
-        }
+        // Old functions removed - using new modal-based functions
 
         function editItem(type, id) {
             showNotification('Редагування', `Редагування ${type} буде реалізовано`);
