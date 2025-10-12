@@ -1151,8 +1151,9 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 500;
+            color: #ffffff;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .tab.active {
@@ -1393,25 +1394,70 @@
 
         .challenge-title {
             flex: 1;
-            color: white;
-            font-weight: 500;
+            color: #ffffff;
+            font-weight: bold;
             font-size: 16px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
         }
 
         .challenge-progress {
-            color: rgba(255, 255, 255, 0.8);
+            color: #ffffff;
             font-size: 14px;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .challenge-status {
-            color: rgba(255, 255, 255, 0.7);
+            color: #ffffff;
             font-size: 14px;
+            font-weight: 500;
             margin-bottom: 15px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .challenge-actions {
             display: flex;
             gap: 10px;
+        }
+
+        .challenge-description {
+            color: #ffffff;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .challenge-stats {
+            margin-bottom: 15px;
+        }
+
+        .challenge-card.create-challenge {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .challenge-card.create-challenge .challenge-title {
+            color: #000000;
+            text-shadow: none;
+        }
+
+        .challenge-card.create-challenge .challenge-description {
+            color: #000000;
+            text-shadow: none;
+        }
+
+        .memory-preview {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .memory-status {
+            color: #10b981;
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 5px;
         }
 
         /* Room cards enhanced styles */
@@ -1696,20 +1742,59 @@
                     </div>
                     
                     <div class="memories-grid">
-                        <div class="memory-item">
+                        <div class="memory-item" onclick="viewMemory('photo')">
                             <div class="memory-icon">📷</div>
-                            <div class="memory-content">Фото дня від партнера</div>
+                            <div class="memory-content">
+                                <strong>Фото дня від партнера</strong>
+                                <div class="memory-preview">Красиве фото з прогулянки</div>
+                            </div>
                             <div class="memory-time">09:00</div>
+                            <div class="memory-status">✅ Переглянуто</div>
                         </div>
-                        <div class="memory-item">
+                        <div class="memory-item" onclick="viewMemory('question')">
                             <div class="memory-icon">❓</div>
-                            <div class="memory-content">Питання "Як ти мене кохаєш?"</div>
+                            <div class="memory-content">
+                                <strong>Питання "Як ти мене кохаєш?"</strong>
+                                <div class="memory-preview">Відповідь: "Варіант 2" ✅</div>
+                            </div>
                             <div class="memory-time">12:00</div>
+                            <div class="memory-status">✅ Відповіли</div>
                         </div>
-                        <div class="memory-item">
+                        <div class="memory-item" onclick="viewMemory('surprise')">
                             <div class="memory-icon">🎁</div>
-                            <div class="memory-content">Приємність "Голос партнера"</div>
+                            <div class="memory-content">
+                                <strong>Приємність "Голос партнера"</strong>
+                                <div class="memory-preview">Голосове повідомлення 2:30</div>
+                            </div>
                             <div class="memory-time">14:00</div>
+                            <div class="memory-status">✅ Відкрито</div>
+                        </div>
+                        <div class="memory-item" onclick="viewMemory('photo2')">
+                            <div class="memory-icon">📷</div>
+                            <div class="memory-content">
+                                <strong>Моє фото дня</strong>
+                                <div class="memory-preview">Селфі з партнером</div>
+                            </div>
+                            <div class="memory-time">16:00</div>
+                            <div class="memory-status">✅ Відправлено</div>
+                        </div>
+                        <div class="memory-item" onclick="viewMemory('question2')">
+                            <div class="memory-icon">❓</div>
+                            <div class="memory-content">
+                                <strong>Питання "Що ти їв на сніданок?"</strong>
+                                <div class="memory-preview">Відповідь: "Яйця" ✅</div>
+                            </div>
+                            <div class="memory-time">18:00</div>
+                            <div class="memory-status">✅ Відповіли</div>
+                        </div>
+                        <div class="memory-item" onclick="viewMemory('surprise2')">
+                            <div class="memory-icon">🎁</div>
+                            <div class="memory-content">
+                                <strong>Приємність "Відео танцю"</strong>
+                                <div class="memory-preview">Відео 1:45</div>
+                            </div>
+                            <div class="memory-time">20:00</div>
+                            <div class="memory-status">✅ Відкрито</div>
                         </div>
                     </div>
                 </div>
@@ -3306,9 +3391,23 @@
                         <div class="challenge-title">"7 днів для нас"</div>
                         <div class="challenge-progress">День 3 з 7 ✅</div>
                     </div>
+                    <div class="challenge-description">
+                        <strong>Завдання сьогодні:</strong> Надішліть одне одному улюблену пісню
+                    </div>
                     <div class="challenge-status">Ви обидва виконали сьогодні</div>
+                    <div class="challenge-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-text">Ти виконав: "Imagine" - Lennon</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-text">Партнер виконав: "Song for you"</span>
+                        </div>
+                    </div>
                     <div class="challenge-actions">
                         <button class="btn btn-primary" onclick="continueChallenge(1)">Продовжити</button>
+                        <button class="btn btn-secondary" onclick="viewChallengeDetails(1)">Деталі</button>
                     </div>
                 </div>
                 
@@ -3318,16 +3417,33 @@
                         <div class="challenge-title">"30 днів щастя"</div>
                         <div class="challenge-progress">День 15 з 30 ⏳</div>
                     </div>
+                    <div class="challenge-description">
+                        <strong>Завдання сьогодні:</strong> Напишіть 5 речей, за які ви вдячні один одному
+                    </div>
                     <div class="challenge-status">Очікуємо партнера</div>
+                    <div class="challenge-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-text">Ти виконав: Список готовий</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">⏳</span>
+                            <span class="stat-text">Партнер: Очікуємо виконання</span>
+                        </div>
+                    </div>
                     <div class="challenge-actions">
                         <button class="btn btn-primary" onclick="continueChallenge(2)">Продовжити</button>
+                        <button class="btn btn-secondary" onclick="viewChallengeDetails(2)">Деталі</button>
                     </div>
                 </div>
                 
-                <div class="challenge-card">
+                <div class="challenge-card create-challenge">
                     <div class="challenge-header">
                         <div class="challenge-icon">➕</div>
                         <div class="challenge-title">Створити новий челендж</div>
+                    </div>
+                    <div class="challenge-description">
+                        Створіть власний челендж для вас двох
                     </div>
                     <div class="challenge-actions">
                         <button class="btn btn-secondary" onclick="createChallenge()">Створити</button>
@@ -3342,6 +3458,46 @@
 
         function createChallenge() {
             showNotification('Створення челенджу', 'Функція створення челенджів буде реалізована в наступних версіях');
+        }
+
+        function viewChallengeDetails(challengeId) {
+            showNotification('Деталі челенджу', `Детальна інформація про челендж #${challengeId} буде доступна в наступних версіях`);
+        }
+
+        function viewMemory(memoryId) {
+            const memoryDetails = {
+                'photo': {
+                    title: 'Фото дня від партнера',
+                    content: 'Красиве фото з прогулянки по парку',
+                    time: '09:00',
+                    type: 'Фото',
+                    status: 'Переглянуто'
+                },
+                'question': {
+                    title: 'Питання "Як ти мене кохаєш?"',
+                    content: 'Варіанти: 1) Багато 2) Дуже багато 3) Безмежно. Ваша відповідь: "Варіант 2" ✅',
+                    time: '12:00',
+                    type: 'Питання',
+                    status: 'Відповіли правильно'
+                },
+                'surprise': {
+                    title: 'Приємність "Голос партнера"',
+                    content: 'Голосове повідомлення: "Доброго ранку, кохана! Сьогодні буде чудовий день!" (2:30)',
+                    time: '14:00',
+                    type: 'Приємність',
+                    status: 'Відкрито'
+                }
+            };
+
+            const memory = memoryDetails[memoryId] || {
+                title: 'Спогад',
+                content: 'Детальна інформація про цей спогад',
+                time: '00:00',
+                type: 'Контент',
+                status: 'Активний'
+            };
+
+            showNotification(`Спогад: ${memory.title}`, `${memory.content}\n\nЧас: ${memory.time}\nТип: ${memory.type}\nСтатус: ${memory.status}`);
         }
 
         function previewAvatar(input) {
