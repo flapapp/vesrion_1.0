@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORU4 - Кімната партнера</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .app-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .app-subtitle {
+            font-size: 16px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        /* Partner Room */
+        .partner-room-screen {
+            padding: 0;
+        }
+
+        .room-wallpaper {
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px 20px;
+            transition: all 0.5s ease;
+        }
+
+        .room-wallpaper.started {
+            opacity: 0.3;
+        }
+
+        .wallpaper-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+        }
+
+        .room-wallpaper.started .wallpaper-overlay {
+            background: rgba(0,0,0,0.7);
+        }
+
+        .room-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+
+        .room-phrase {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            line-height: 1.4;
+        }
+
+        .start-day-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .start-day-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .day-content {
+            background: white;
+            border-radius: 25px 25px 0 0;
+            padding: 30px 20px;
+            margin-top: -20px;
+            position: relative;
+            z-index: 2;
+            min-height: 60vh;
+        }
+
+        .day-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .day-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .day-date {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .answer-option {
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .answer-option:hover {
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .answer-option.selected {
+            border-color: #4CAF50;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .submit-answer {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .surprise-card {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .surprise-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: surpriseFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes surpriseFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .surprise-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .surprise-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .surprise-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .surprise-time {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-btn:hover {
+            background: white;
+            transform: translateX(-3px);
+        }
+
+        /* Celebration */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .celebration-content {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 350px;
+            margin: 20px;
+            animation: celebrationPop 0.6s ease-out;
+        }
+
+        @keyframes celebrationPop {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .celebration-icon {
+            font-size: 80px;
+            margin-bottom: 25px;
+            animation: bounce 1.5s infinite;
+        }
+
+        .celebration-message {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .celebration-text {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            z-index: 1001;
+            font-weight: 600;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .answer-options {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <img src="logo.png" alt="PORU4 Logo">
+            </div>
+            <h1 class="app-title">PORU4</h1>
+            <p class="app-subtitle">Кімнати для двох</p>
+        </div>
+
+        <!-- Partner Room -->
+        <div class="partner-room-screen">
+            <button class="back-btn" onclick="window.location.href='01-main-screen.html'">← Назад</button>
+            
+            <div class="room-wallpaper" id="roomWallpaper" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop');">
+                <div class="wallpaper-overlay"></div>
+                <div class="room-content">
+                    <div class="room-phrase" id="roomPhrase">Доброго ранку, кохана! Сьогодні чудовий день! 💕</div>
+                    <button class="start-day-btn" onclick="startDay()">Почати день</button>
+                </div>
+            </div>
+
+            <div class="day-content" id="dayContent" style="display: none;">
+                <div class="day-header">
+                    <div class="day-title">Сьогоднішній день</div>
+                    <div class="day-date">15 січня 2024</div>
+                </div>
+
+                <div class="surprise-card" id="surpriseCard">
+                    <div class="surprise-content">
+                        <div class="surprise-icon">🎁</div>
+                        <div class="surprise-title">Сюрприз від Олексія!</div>
+                        <div class="surprise-time">Очікуйте о 14:00</div>
+                        <div style="margin-top: 10px; font-size: 12px; opacity: 0.8;">
+                            💌 Голосове повідомлення "Я тебе люблю"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-text">Скільки солодкого з'їла сьогодні?</div>
+                    <div class="answer-options">
+                        <div class="answer-option" onclick="selectAnswer(this)">0 - не з'їла</div>
+                        <div class="answer-option" onclick="selectAnswer(this)">1-2 шматочки</div>
+                        <div class="answer-option" onclick="selectAnswer(this)">3-5 шматочків</div>
+                        <div class="answer-option" onclick="selectAnswer(this)">Більше 5</div>
+                    </div>
+                    <button class="submit-answer" onclick="submitAnswer()">Відправити відповідь</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Modal -->
+    <div class="celebration" id="celebrationModal">
+        <div class="celebration-content">
+            <div class="celebration-icon">🎉</div>
+            <div class="celebration-message">Правильно!</div>
+            <div class="celebration-text">Ти молодець! Ось твій сюрприз! 💕</div>
+            <button class="btn btn-primary" onclick="closeCelebration()" style="padding: 15px 30px; font-size: 18px;">
+                Продовжити
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div id="notificationText">Повідомлення</div>
+    </div>
+
+    <script>
+        function startDay() {
+            // Робимо заставку прозорою
+            document.getElementById('roomWallpaper').classList.add('started');
+            document.getElementById('dayContent').style.display = 'block';
+            document.getElementById('dayContent').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectAnswer(element) {
+            const options = element.parentElement.querySelectorAll('.answer-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function submitAnswer() {
+            const selectedOption = document.querySelector('.answer-option.selected');
+            if (!selectedOption) {
+                showNotification('Будь ласка, оберіть відповідь', 'error');
+                return;
+            }
+            
+            // Simulate correct answer
+            const isCorrect = Math.random() > 0.5;
+            if (isCorrect) {
+                showCelebration();
+            } else {
+                showNotification('Спробуй ще раз! 💪', 'error');
+            }
+        }
+
+        function showCelebration() {
+            document.getElementById('celebrationModal').style.display = 'flex';
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebrationModal').style.display = 'none';
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.className = `notification ${type}`;
+            document.getElementById('notificationText').textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORU4 - Демо версія з даними</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .app-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-screen {
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .welcome-subtitle {
+            font-size: 18px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .welcome-features {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-icon {
+            font-size: 24px;
+        }
+
+        .feature-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .start-btn {
+            background: white;
+            color: #ff6b6b;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+        }
+
+        .role-selection {
+            padding: 30px 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .role-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .role-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .role-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .role-card:hover::before {
+            left: 100%;
+        }
+
+        .role-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .role-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .role-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .role-description {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .creator-interface, .partner-interface {
+            display: none;
+            padding: 20px;
+        }
+
+        .interface-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding: 15px 0;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .back-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #ff5252;
+            transform: translateX(-2px);
+        }
+
+        .interface-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .tab-navigation {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 5px;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .challenge-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .challenge-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .challenge-duration {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .challenge-progress {
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .challenge-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 1px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #FF9800, #FFC107);
+            color: white;
+        }
+
+        .calendar-view {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .calendar-day.available {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .calendar-day.completed {
+            background: #2196F3;
+            color: white;
+        }
+
+        .calendar-day.pending {
+            background: #FFC107;
+            color: white;
+        }
+
+        .calendar-day.locked {
+            background: #f0f0f0;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.today {
+            background: #ff6b6b;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .daily-challenge {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .daily-photo {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .daily-message {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .challenge-question {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .response-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .response-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .response-btn.selected {
+            border-color: #4CAF50;
+            background: #4CAF50;
+            color: white;
+        }
+
+        .response-btn:hover {
+            border-color: #667eea;
+        }
+
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .celebration-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 300px;
+            margin: 20px;
+            animation: celebrationPop 0.5s ease-out;
+        }
+
+        @keyframes celebrationPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .celebration-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .celebration-message {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .celebration-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 350px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 15px;
+            border: 2px dashed #e9ecef;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .empty-text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .streak-counter {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .streak-number {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .streak-text {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .mini-game {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .game-question {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .game-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .game-option {
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-option:hover {
+            border-color: #667eea;
+        }
+
+        .game-option.selected {
+            border-color: #4CAF50;
+            background: #4CAF50;
+            color: white;
+        }
+
+        .hug-button {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .hug-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .countdown-timer {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .timer-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .timer-display {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .timer-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .code-input {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .code-input-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .code-input-field {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .code-input-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        @keyframes slideInUp {
+            0% {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .role-cards {
+                gap: 15px;
+            }
+            
+            .role-card {
+                padding: 20px;
+            }
+            
+            .response-buttons {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="logo">
+                <img src="logo.png" alt="PORU4 Logo">
+            </div>
+            <h1 class="welcome-title">Ласкаво просимо в PORU4!</h1>
+            <p class="welcome-subtitle">З'єднуємо серця через особливі челенджі</p>
+            
+            <div class="welcome-features">
+                <div class="feature-item">
+                    <span class="feature-icon">💕</span>
+                    <span class="feature-text">Щоденні заставки та сюрпризи</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📅</span>
+                    <span class="feature-text">Персональні челенджі</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🎯</span>
+                    <span class="feature-text">Відстеження прогресу</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🎮</span>
+                    <span class="feature-text">Міні-ігри та розваги</span>
+                </div>
+            </div>
+            
+            <button class="start-btn" onclick="showRoleSelection()">Почати</button>
+        </div>
+
+        <!-- Header -->
+        <div class="header" id="mainHeader" style="display: none;">
+            <div class="logo">
+                <img src="logo.png" alt="PORU4 Logo">
+            </div>
+            <h1 class="app-title">PORU4</h1>
+            <p class="app-subtitle">З'єднуємо серця через челенджі</p>
+        </div>
+
+        <!-- Role Selection -->
+        <div class="role-selection" id="roleSelection">
+            <h2 class="role-title">Оберіть свою роль</h2>
+            <div class="role-cards">
+                <div class="role-card" onclick="showCreatorInterface()">
+                    <span class="role-icon">👨</span>
+                    <div class="role-name">СТВОРЮВАЧ</div>
+                    <div class="role-description">Створюй челенджі, налаштовуй дні, відправляй сюрпризи своїй коханій</div>
+                </div>
+                <div class="role-card" onclick="showPartnerInterface()">
+                    <span class="role-icon">👩</span>
+                    <div class="role-name">ПАРТНЕР</div>
+                    <div class="role-description">Приєднуйся до челенджу, отримуй щоденні заставки та сюрпризи</div>
+                </div>
+            </div>
+
+            <!-- Code Input for Partner -->
+            <div class="code-input" id="codeInput" style="display: none;">
+                <h3 class="code-input-title">Введіть код челенджу</h3>
+                <input type="text" class="code-input-field" placeholder="ABC123" maxlength="6" id="challengeCode">
+                <button class="btn btn-primary" onclick="joinChallenge()" style="width: 100%; padding: 15px;">
+                    Приєднатися
+                </button>
+            </div>
+        </div>
+
+        <!-- Creator Interface -->
+        <div class="creator-interface" id="creatorInterface">
+            <div class="interface-header">
+                <button class="back-btn" onclick="showRoleSelection()">← Назад</button>
+                <h2 class="interface-title">Створювач</h2>
+                <div></div>
+            </div>
+
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="switchTab('creator', 'challenges')">Челенджі</button>
+                <button class="tab-btn" onclick="switchTab('creator', 'calendar')">Календар</button>
+                <button class="tab-btn" onclick="switchTab('creator', 'analytics')">Аналітика</button>
+            </div>
+
+            <div class="tab-content active" id="creator-challenges">
+                <div id="challengesList">
+                    <!-- Challenges will be loaded here -->
+                </div>
+
+                <button class="btn btn-primary" onclick="createNewChallenge()" style="width: 100%; padding: 15px;">
+                    + Створити новий челендж
+                </button>
+            </div>
+
+            <div class="tab-content" id="creator-calendar">
+                <div class="calendar-view">
+                    <div class="calendar-header">
+                        <h3 class="calendar-title">Календар челенджу</h3>
+                        <button class="btn btn-secondary">Налаштувати</button>
+                    </div>
+                    <div class="calendar-grid" id="creatorCalendar">
+                        <!-- Calendar days will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="creator-analytics">
+                <div class="stats-grid" id="analyticsGrid">
+                    <!-- Analytics will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Partner Interface -->
+        <div class="partner-interface" id="partnerInterface">
+            <div class="interface-header">
+                <button class="back-btn" onclick="showRoleSelection()">← Назад</button>
+                <h2 class="interface-title">Партнер</h2>
+                <div></div>
+            </div>
+
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="switchTab('partner', 'today')">Сьогодні</button>
+                <button class="tab-btn" onclick="switchTab('partner', 'calendar')">Календар</button>
+                <button class="tab-btn" onclick="switchTab('partner', 'games')">Ігри</button>
+            </div>
+
+            <div class="tab-content active" id="partner-today">
+                <div class="streak-counter" id="streakCounter">
+                    <!-- Streak will be loaded here -->
+                </div>
+
+                <div class="daily-challenge" id="dailyChallenge">
+                    <!-- Daily challenge will be loaded here -->
+                </div>
+
+                <div class="hug-button" onclick="sendHug()">
+                    🤗 Надіслати обійми
+                </div>
+            </div>
+
+            <div class="tab-content" id="partner-calendar">
+                <div class="calendar-view">
+                    <div class="calendar-header">
+                        <h3 class="calendar-title">Прогрес челенджу</h3>
+                        <div class="challenge-duration" id="calendarProgress">День 5 з 30</div>
+                    </div>
+                    <div class="calendar-grid" id="partnerCalendar">
+                        <!-- Calendar days will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="countdown-timer" id="countdownTimer">
+                    <!-- Countdown will be loaded here -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="partner-games">
+                <div id="miniGamesList">
+                    <!-- Mini games will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Modal -->
+    <div class="celebration" id="celebrationModal">
+        <div class="celebration-content">
+            <div class="celebration-icon">🎉</div>
+            <div class="celebration-message">Молодець!</div>
+            <div class="celebration-text" id="celebrationText">Ти виконала челендж сьогодні! Я пишаюсь тобою! 💕</div>
+            <button class="btn btn-primary" onclick="closeCelebration()">Продовжити</button>
+        </div>
+    </div>
+
+    <!-- Challenge Setup Modal -->
+    <div class="modal" id="challengeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Налаштування дня</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Фото дня</label>
+                <div class="file-upload">
+                    <input type="file" id="dayPhoto" accept="image/*">
+                    <label for="dayPhoto" class="file-upload-label">
+                        📷 Натисніть для завантаження фото
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Повідомлення дня</label>
+                <textarea class="form-input" rows="3" placeholder="Напишіть повідомлення для цього дня..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Час доставки</label>
+                <input type="time" class="form-input" value="09:00">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Питання челенджу</label>
+                <input type="text" class="form-input" placeholder="Наприклад: Скільки солодкого з'їла сьогодні?">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Тип відповіді</label>
+                <select class="form-input">
+                    <option value="number">Число</option>
+                    <option value="yesno">Так/Ні</option>
+                    <option value="text">Текст</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Відео реакція (виконала)</label>
+                <div class="file-upload">
+                    <input type="file" id="successVideo" accept="video/*">
+                    <label for="successVideo" class="file-upload-label">
+                        🎥 Завантажити відео
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Відео реакція (не виконала)</label>
+                <div class="file-upload">
+                    <input type="file" id="failureVideo" accept="video/*">
+                    <label for="failureVideo" class="file-upload-label">
+                        🎥 Завантажити відео
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="saveDaySettings()" style="width: 100%; padding: 15px;">
+                Зберегти налаштування
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div id="notificationText">Повідомлення</div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div>Завантаження...</div>
+    </div>
+
+    <script>
+        // Demo data (embedded for this version)
+        const demoData = {
+            creator: {
+                challenges: [
+                    {
+                        id: 1,
+                        title: "Місяць без солодкого",
+                        duration: 30,
+                        createdDate: "2024-01-15",
+                        progress: 25,
+                        status: "active",
+                        daysConfigured: 8,
+                        totalDays: 30
+                    },
+                    {
+                        id: 2,
+                        title: "Тиждень спорту",
+                        duration: 7,
+                        createdDate: "2024-01-01",
+                        progress: 100,
+                        status: "completed",
+                        daysConfigured: 7,
+                        totalDays: 7
+                    },
+                    {
+                        id: 3,
+                        title: "21 день читання",
+                        duration: 21,
+                        createdDate: "2024-01-10",
+                        progress: 60,
+                        status: "active",
+                        daysConfigured: 15,
+                        totalDays: 21
+                    }
+                ],
+                analytics: {
+                    activeChallenges: 2,
+                    totalDaysConfigured: 30,
+                    completedDays: 18,
+                    successRate: 78,
+                    totalChallenges: 3,
+                    averageStreak: 5.2
+                }
+            },
+            partner: {
+                currentChallenge: {
+                    id: 1,
+                    title: "Місяць без солодкого",
+                    currentDay: 5,
+                    totalDays: 30,
+                    streak: 7,
+                    todayPhoto: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop",
+                    todayMessage: "Доброго ранку, кохана! Сьогодні чудовий день для нашого челенджу! 💕",
+                    todayQuestion: "Скільки солодкого з'їла сьогодні?",
+                    responseType: "number"
+                },
+                calendar: {
+                    days: [
+                        { day: 1, status: "completed", result: "success" },
+                        { day: 2, status: "completed", result: "success" },
+                        { day: 3, status: "completed", result: "success" },
+                        { day: 4, status: "completed", result: "success" },
+                        { day: 5, status: "today", result: null },
+                        { day: 6, status: "available", result: null },
+                        { day: 7, status: "available", result: null },
+                        { day: 8, status: "available", result: null },
+                        { day: 9, status: "available", result: null },
+                        { day: 10, status: "available", result: null },
+                        { day: 11, status: "locked", result: null },
+                        { day: 12, status: "locked", result: null }
+                    ]
+                },
+                miniGames: [
+                    {
+                        id: 1,
+                        question: "Де ми познайомилися?",
+                        options: ["В університеті", "В кафе", "На прогулянці", "Через друзів"],
+                        correctAnswer: 1,
+                        completed: false
+                    },
+                    {
+                        id: 2,
+                        question: "Який твій улюблений колір?",
+                        options: ["Рожевий", "Синій", "Зелений", "Фіолетовий"],
+                        correctAnswer: 0,
+                        completed: true
+                    }
+                ],
+                countdown: {
+                    targetDate: "2024-02-14T14:00:00",
+                    title: "До нашої зустрічі",
+                    subtitle: "Не можу дочекатися! 💕"
+                }
+            }
+        };
+
+        // Global variables
+        let currentRole = null;
+        let currentTab = {
+            creator: 'challenges',
+            partner: 'today'
+        };
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            generateCalendar('creatorCalendar', 'creator');
+            generateCalendar('partnerCalendar', 'partner');
+            startCountdown();
+            loadCreatorData();
+            loadPartnerData();
+        });
+
+        // Welcome screen functions
+        function showRoleSelection() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('mainHeader').style.display = 'block';
+            document.getElementById('roleSelection').style.display = 'block';
+            document.getElementById('creatorInterface').style.display = 'none';
+            document.getElementById('partnerInterface').style.display = 'none';
+            currentRole = null;
+        }
+
+        // Role selection functions
+        function showCreatorInterface() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('mainHeader').style.display = 'block';
+            document.getElementById('roleSelection').style.display = 'none';
+            document.getElementById('creatorInterface').style.display = 'block';
+            document.getElementById('partnerInterface').style.display = 'none';
+            currentRole = 'creator';
+            loadCreatorData();
+        }
+
+        function showPartnerInterface() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('mainHeader').style.display = 'block';
+            document.getElementById('roleSelection').style.display = 'none';
+            document.getElementById('creatorInterface').style.display = 'none';
+            document.getElementById('partnerInterface').style.display = 'none';
+            currentRole = 'partner';
+            
+            // Show code input for partner
+            document.getElementById('codeInput').style.display = 'block';
+        }
+
+        function joinChallenge() {
+            const code = document.getElementById('challengeCode').value.toUpperCase();
+            if (code === 'ABC123') {
+                document.getElementById('codeInput').style.display = 'none';
+                document.getElementById('partnerInterface').style.display = 'block';
+                loadPartnerData();
+                showNotification('Успішно приєднано до челенджу!');
+            } else {
+                showNotification('Невірний код. Спробуйте ABC123');
+            }
+        }
+
+        // Tab switching
+        function switchTab(role, tab) {
+            // Update active tab button
+            const tabButtons = document.querySelectorAll(`#${role}Interface .tab-btn`);
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update active tab content
+            const tabContents = document.querySelectorAll(`#${role}Interface .tab-content`);
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.getElementById(`${role}-${tab}`).classList.add('active');
+
+            currentTab[role] = tab;
+        }
+
+        // Load creator data
+        function loadCreatorData() {
+            loadChallenges();
+            loadAnalytics();
+        }
+
+        function loadChallenges() {
+            const container = document.getElementById('challengesList');
+            container.innerHTML = '';
+
+            demoData.creator.challenges.forEach(challenge => {
+                const challengeCard = document.createElement('div');
+                challengeCard.className = 'challenge-card';
+                challengeCard.innerHTML = `
+                    <h3 class="challenge-title">${challenge.title}</h3>
+                    <p class="challenge-duration">${challenge.duration} днів • Створено ${challenge.createdDate}</p>
+                    <div class="challenge-progress">
+                        <div class="progress-bar" style="width: ${challenge.progress}%"></div>
+                    </div>
+                    <div class="challenge-actions">
+                        <button class="btn btn-primary" onclick="openChallengeModal()">Налаштувати дні</button>
+                        <button class="btn btn-secondary" onclick="shareChallenge()">Поділитися кодом</button>
+                    </div>
+                `;
+                container.appendChild(challengeCard);
+            });
+        }
+
+        function loadAnalytics() {
+            const container = document.getElementById('analyticsGrid');
+            const analytics = demoData.creator.analytics;
+            
+            container.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${analytics.activeChallenges}</div>
+                    <div class="stat-label">Активних челенджів</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${analytics.totalDaysConfigured}</div>
+                    <div class="stat-label">Днів налаштовано</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${analytics.completedDays}</div>
+                    <div class="stat-label">Днів виконано</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${analytics.successRate}%</div>
+                    <div class="stat-label">Успішність</div>
+                </div>
+            `;
+        }
+
+        // Load partner data
+        function loadPartnerData() {
+            loadStreak();
+            loadDailyChallenge();
+            loadMiniGames();
+        }
+
+        function loadStreak() {
+            const container = document.getElementById('streakCounter');
+            const challenge = demoData.partner.currentChallenge;
+            
+            container.innerHTML = `
+                <div class="streak-number">${challenge.streak}</div>
+                <div class="streak-text">днів поспіль! 🔥</div>
+            `;
+        }
+
+        function loadDailyChallenge() {
+            const container = document.getElementById('dailyChallenge');
+            const challenge = demoData.partner.currentChallenge;
+            
+            container.innerHTML = `
+                <img src="${challenge.todayPhoto}" alt="Денне фото" class="daily-photo">
+                <p class="daily-message">${challenge.todayMessage}</p>
+                <h3 class="challenge-question">${challenge.todayQuestion}</h3>
+                
+                <div class="input-group">
+                    <input type="number" class="form-input" placeholder="Введіть кількість" min="0" id="sweetsInput">
+                </div>
+
+                <div class="response-buttons">
+                    <button class="response-btn" onclick="selectResponse('completed')">Виконала ✅</button>
+                    <button class="response-btn" onclick="selectResponse('not-completed')">Не виконала ❌</button>
+                </div>
+
+                <button class="btn btn-primary" onclick="submitResponse()" style="width: 100%; padding: 15px;">
+                    Відправити відповідь
+                </button>
+            `;
+        }
+
+        function loadMiniGames() {
+            const container = document.getElementById('miniGamesList');
+            container.innerHTML = '';
+
+            demoData.partner.miniGames.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'mini-game';
+                gameCard.innerHTML = `
+                    <h3 class="game-question">${game.question}</h3>
+                    <div class="game-options">
+                        ${game.options.map((option, index) => `
+                            <div class="game-option" onclick="selectGameOption(this, ${game.id})">${option}</div>
+                        `).join('')}
+                    </div>
+                    <button class="btn btn-primary" onclick="checkGameAnswer(${game.id})" style="margin-top: 15px;">
+                        Перевірити відповідь
+                    </button>
+                `;
+                container.appendChild(gameCard);
+            });
+        }
+
+        // Calendar generation
+        function generateCalendar(containerId, type) {
+            const container = document.getElementById(containerId);
+            const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
+            
+            // Clear existing content
+            container.innerHTML = '';
+            
+            // Add day headers
+            days.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.textContent = day;
+                dayHeader.style.fontWeight = '600';
+                dayHeader.style.color = '#666';
+                dayHeader.style.textAlign = 'center';
+                dayHeader.style.padding = '5px 0';
+                container.appendChild(dayHeader);
+            });
+
+            // Add calendar days
+            for (let i = 1; i <= 30; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = i;
+                
+                // Set different states based on day and type
+                if (type === 'creator') {
+                    if (i <= 8) {
+                        dayElement.classList.add('completed');
+                    } else if (i <= 10) {
+                        dayElement.classList.add('available');
+                    } else {
+                        dayElement.classList.add('locked');
+                    }
+                } else {
+                    if (i <= 4) {
+                        dayElement.classList.add('completed');
+                    } else if (i === 5) {
+                        dayElement.classList.add('today');
+                    } else if (i <= 10) {
+                        dayElement.classList.add('available');
+                    } else {
+                        dayElement.classList.add('locked');
+                    }
+                }
+
+                // Add click handler for creator
+                if (type === 'creator' && i <= 10) {
+                    dayElement.style.cursor = 'pointer';
+                    dayElement.onclick = () => openDaySettings(i);
+                }
+
+                container.appendChild(dayElement);
+            }
+        }
+
+        // Challenge management
+        function openChallengeModal() {
+            document.getElementById('challengeModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('challengeModal').style.display = 'none';
+        }
+
+        function openDaySettings(day) {
+            openChallengeModal();
+            // You can pre-fill the form with day-specific data here
+        }
+
+        function saveDaySettings() {
+            showNotification('Налаштування дня збережено!');
+            closeModal();
+        }
+
+        function createNewChallenge() {
+            showNotification('Функція створення нового челенджу буде доступна найближчим часом!');
+        }
+
+        function shareChallenge() {
+            const code = 'ABC123';
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Приєднуйся до мого челенджу!',
+                    text: `Використай код ${code} щоб приєднатися до челенджу в PORU4`,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(code).then(() => {
+                    showNotification(`Код скопійовано: ${code}`);
+                });
+            }
+        }
+
+        // Partner response handling
+        function selectResponse(type) {
+            const buttons = document.querySelectorAll('.response-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+        }
+
+        function submitResponse() {
+            const selectedButton = document.querySelector('.response-btn.selected');
+            if (!selectedButton) {
+                showNotification('Будь ласка, оберіть відповідь');
+                return;
+            }
+
+            const isCompleted = selectedButton.textContent.includes('Виконала');
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            
+            // Simulate API call
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                
+                if (isCompleted) {
+                    showCelebration();
+                } else {
+                    showNotification('Нічого страшного! Завтра обов\'язково вийде! 💕');
+                }
+            }, 2000);
+        }
+
+        function showCelebration() {
+            document.getElementById('celebrationModal').style.display = 'flex';
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebrationModal').style.display = 'none';
+        }
+
+        // Mini-games
+        function selectGameOption(element, gameId) {
+            const gameContainer = element.closest('.mini-game');
+            const options = gameContainer.querySelectorAll('.game-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function checkGameAnswer(gameId) {
+            const gameContainer = document.querySelector(`[onclick*="checkGameAnswer(${gameId})"]`).closest('.mini-game');
+            const selectedOption = gameContainer.querySelector('.game-option.selected');
+            if (!selectedOption) {
+                showNotification('Будь ласка, оберіть відповідь');
+                return;
+            }
+
+            // Simulate correct answer
+            const isCorrect = Math.random() > 0.5;
+            if (isCorrect) {
+                showNotification('Правильно! 🎉 Ось твій сюрприз!');
+            } else {
+                showNotification('Спробуй ще раз! 💪');
+            }
+        }
+
+        // Hug functionality
+        function sendHug() {
+            showNotification('Обійми надіслано! 💕');
+            // Here you would send the hug to the creator
+        }
+
+        // Countdown timer
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdownTimer');
+            if (!countdownElement) return;
+
+            // Set target date (2 days from now)
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 2);
+            targetDate.setHours(14, 32, 15, 0);
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = targetDate.getTime() - now;
+
+                if (distance < 0) {
+                    countdownElement.innerHTML = `
+                        <div class="timer-title">Вже зустрілися!</div>
+                        <div class="timer-display">💕</div>
+                        <div class="timer-subtitle">Насолоджуйтесь моментом!</div>
+                    `;
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                countdownElement.innerHTML = `
+                    <div class="timer-title">До нашої зустрічі</div>
+                    <div class="timer-display">${days} днів ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}</div>
+                    <div class="timer-subtitle">Не можу дочекатися! 💕</div>
+                `;
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        // Utility functions
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            document.getElementById('notificationText').textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // File upload handling
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'file') {
+                const label = e.target.nextElementSibling;
+                if (e.target.files.length > 0) {
+                    label.textContent = `📁 ${e.target.files[0].name}`;
+                    label.style.borderColor = '#4CAF50';
+                    label.style.backgroundColor = '#f0f8f0';
+                }
+            }
+        });
+
+        // Add some sample data and interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('PORU4 Demo Mobile App initialized');
+            
+            // Add some interactive elements
+            const roleCards = document.querySelectorAll('.role-card');
+            roleCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORU4 - Мої кімнати</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .app-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .app-subtitle {
+            font-size: 16px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        /* Rooms List */
+        .rooms-screen {
+            padding: 20px;
+        }
+
+        .rooms-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .rooms-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #ff5252, #ff7979);
+            transform: translateX(-3px);
+        }
+
+        .rooms-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 5px;
+            margin-bottom: 25px;
+        }
+
+        .rooms-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .rooms-tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .room-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .room-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .room-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .room-status {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .room-progress {
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .room-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            z-index: 1001;
+            font-weight: 600;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .room-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <img src="logo.png" alt="PORU4 Logo">
+            </div>
+            <h1 class="app-title">PORU4</h1>
+            <p class="app-subtitle">Кімнати для двох</p>
+        </div>
+
+        <!-- Rooms List -->
+        <div class="rooms-screen">
+            <div class="rooms-header">
+                <h2 class="rooms-title">Кімнати</h2>
+                <button class="back-btn" onclick="window.location.href='01-main-screen.html'">← Назад</button>
+            </div>
+
+            <div class="rooms-tabs">
+                <button class="rooms-tab active" onclick="switchRoomsTab('created')">Створені</button>
+                <button class="rooms-tab" onclick="switchRoomsTab('my')">Мої</button>
+            </div>
+
+            <div id="createdRooms">
+                <div class="room-card" onclick="openConstructor('room1')">
+                    <div class="room-name">Наша кімната кохання</div>
+                    <div class="room-status">Активна • 15 днів налаштовано</div>
+                    <div class="room-progress">
+                        <div class="progress-bar" style="width: 50%"></div>
+                    </div>
+                    <div class="room-actions">
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); shareRoom('room1')">Поділитися</button>
+                        <button class="btn btn-secondary" onclick="event.stopPropagation(); editRoom('room1')">Редагувати</button>
+                    </div>
+                </div>
+
+                <div class="room-card" onclick="openConstructor('room2')">
+                    <div class="room-name">Тиждень спорту</div>
+                    <div class="room-status">Завершена • 7 днів</div>
+                    <div class="room-progress">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                    <div class="room-actions">
+                        <button class="btn btn-success" onclick="event.stopPropagation(); viewResults('room2')">Результати</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="myRooms" style="display: none;">
+                <div class="room-card" onclick="openPartnerRoom('room3')">
+                    <div class="room-name">Кімната від Олексія</div>
+                    <div class="room-status">Активна • День 5 з 30</div>
+                    <div class="room-progress">
+                        <div class="progress-bar" style="width: 17%"></div>
+                    </div>
+                    <div class="room-actions">
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); openPartnerRoom('room3')">Відкрити</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div id="notificationText">Повідомлення</div>
+    </div>
+
+    <script>
+        function switchRoomsTab(tab) {
+            const createdRooms = document.getElementById('createdRooms');
+            const myRooms = document.getElementById('myRooms');
+            const tabs = document.querySelectorAll('.rooms-tab');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'created') {
+                createdRooms.style.display = 'block';
+                myRooms.style.display = 'none';
+            } else {
+                createdRooms.style.display = 'none';
+                myRooms.style.display = 'block';
+            }
+        }
+
+        function openConstructor(roomId) {
+            window.location.href = '05-room-constructor.html?room=' + roomId;
+        }
+
+        function openPartnerRoom(roomId) {
+            window.location.href = '06-partner-room.html?room=' + roomId;
+        }
+
+        function shareRoom(roomId) {
+            const code = 'ABC123';
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Приєднуйся до моєї кімнати!',
+                    text: `Використай код ${code} щоб приєднатися до кімнати в PORU4`,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(code).then(() => {
+                    showNotification(`Код скопійовано: ${code}`, 'success');
+                });
+            }
+        }
+
+        function editRoom(roomId) {
+            openConstructor(roomId);
+        }
+
+        function viewResults(roomId) {
+            showNotification('Результати будуть доступні найближчим часом!', 'success');
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.className = `notification ${type}`;
+            document.getElementById('notificationText').textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

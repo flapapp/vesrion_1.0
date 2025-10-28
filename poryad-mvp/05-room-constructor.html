@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORU4 - Конструктор кімнати</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .app-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .app-subtitle {
+            font-size: 16px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        /* Constructor */
+        .constructor-screen {
+            padding: 20px;
+        }
+
+        .constructor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .constructor-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #ff5252, #ff7979);
+            transform: translateX(-3px);
+        }
+
+        .calendar-view {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .calendar-day.available {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .calendar-day.configured {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .calendar-day.other-month {
+            background: #f0f0f0;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Day Editor */
+        .day-editor {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .editor-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .editor-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 20px;
+            border: 3px dashed #e9ecef;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .file-upload-label:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: scale(1.02);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .question-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .remove-question {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .option-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .option-input input[type="radio"] {
+            margin: 0;
+        }
+
+        .add-option {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .add-question {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .time-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-input input {
+            flex: 1;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .help-text {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            z-index: 1001;
+            font-weight: 600;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <img src="logo.png" alt="PORU4 Logo">
+            </div>
+            <h1 class="app-title">PORU4</h1>
+            <p class="app-subtitle">Кімнати для двох</p>
+        </div>
+
+        <!-- Constructor -->
+        <div class="constructor-screen">
+            <div class="constructor-header">
+                <h2 class="constructor-title">Конструктор кімнати</h2>
+                <button class="back-btn" onclick="window.location.href='04-rooms-list.html'">← Назад</button>
+            </div>
+
+            <div class="calendar-view">
+                <div class="calendar-header">
+                    <h3 class="calendar-title">Календар на січень 2024</h3>
+                    <button class="btn btn-primary" style="padding: 8px 15px; font-size: 14px;">Налаштувати</button>
+                </div>
+                <div class="calendar-grid" id="constructorCalendar">
+                    <!-- Calendar will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="day-editor" id="dayEditor">
+                <div class="editor-header">
+                    <h3 class="editor-title">Редактор дня</h3>
+                    <button class="btn btn-secondary" onclick="closeDayEditor()" style="padding: 8px 15px; font-size: 14px;">Закрити</button>
+                </div>
+
+                <div class="editor-section">
+                    <div class="section-title">
+                        📷 Фото дня
+                    </div>
+                    <div class="file-upload">
+                        <input type="file" id="dayPhoto" accept="image/*">
+                        <label for="dayPhoto" class="file-upload-label">
+                            📸 Завантажити фото для заставки<br>
+                            <small style="color: #666; font-size: 12px;">Це фото буде відображатися як заставка у партнера</small>
+                        </label>
+                    </div>
+                    <div class="help-text">
+                        <strong>Приклад:</strong> Романтичне фото, пейзаж, або фото з вашими спогадами
+                    </div>
+                </div>
+
+                <div class="editor-section">
+                    <div class="section-title">
+                        💬 Фраза дня
+                    </div>
+                    <textarea class="form-input" rows="3" placeholder="Напишіть мотиваційну фразу або привітання..."></textarea>
+                    <div class="help-text">
+                        <strong>Приклад:</strong> "Доброго ранку, кохана! Сьогодні чудовий день! 💕"<br>
+                        <strong>Де відображається:</strong> Під фото на заставці у партнера
+                    </div>
+                </div>
+
+                <div class="editor-section">
+                    <div class="section-title">
+                        ❓ Питання дня
+                    </div>
+                    <div id="questionsList">
+                        <!-- Questions will be added here -->
+                    </div>
+                    <button class="add-question" onclick="addQuestion()">+ Додати питання</button>
+                </div>
+
+                <div class="editor-section">
+                    <div class="section-title">
+                        🎁 Приємність
+                    </div>
+                    <div class="file-upload">
+                        <input type="file" id="surpriseFile" accept="audio/*,video/*">
+                        <label for="surpriseFile" class="file-upload-label">
+                            🎵 Завантажити аудіо/відео (до 2хв)<br>
+                            <small style="color: #666; font-size: 12px;">Або напишіть текст нижче</small>
+                        </label>
+                    </div>
+                    <textarea class="form-input" rows="2" placeholder="Або напишіть текст приємності..." style="margin-top: 15px;"></textarea>
+                    <div class="time-input" style="margin-top: 15px;">
+                        <label>Час доставки:</label>
+                        <input type="time" class="form-input" value="14:00">
+                    </div>
+                    <div class="help-text">
+                        <strong>Приклад аудіо:</strong> Голосове повідомлення "Я тебе люблю"<br>
+                        <strong>Приклад відео:</strong> Коротке відео з привітанням<br>
+                        <strong>Приклад тексту:</strong> "Ти молодець! Я пишаюсь тобою! 💕"<br>
+                        <strong>Коли доставляється:</strong> Партнер отримає нотифікацію в зазначений час
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveDay()" style="width: 100%; padding: 15px; margin-top: 20px;">
+                    Зберегти день
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div id="notificationText">Повідомлення</div>
+    </div>
+
+    <script>
+        let questions = [];
+
+        // Initialize calendar
+        document.addEventListener('DOMContentLoaded', function() {
+            generateCalendar();
+        });
+
+        function generateCalendar() {
+            const container = document.getElementById('constructorCalendar');
+            const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
+            
+            container.innerHTML = '';
+            
+            // Add day headers
+            days.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.textContent = day;
+                dayHeader.style.fontWeight = '700';
+                dayHeader.style.color = '#666';
+                dayHeader.style.textAlign = 'center';
+                dayHeader.style.padding = '8px 0';
+                container.appendChild(dayHeader);
+            });
+
+            // Add calendar days
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay() + 1);
+
+            for (let i = 0; i < 42; i++) {
+                const dayElement = document.createElement('div');
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = currentDate.getDate();
+                
+                if (currentDate.getMonth() !== today.getMonth()) {
+                    dayElement.classList.add('other-month');
+                } else if (currentDate.getDate() === today.getDate()) {
+                    dayElement.classList.add('today');
+                } else if (Math.random() > 0.7) {
+                    dayElement.classList.add('configured');
+                } else {
+                    dayElement.classList.add('available');
+                }
+
+                if (!dayElement.classList.contains('other-month')) {
+                    dayElement.style.cursor = 'pointer';
+                    dayElement.onclick = () => openDayEditor(currentDate);
+                }
+
+                container.appendChild(dayElement);
+            }
+        }
+
+        function openDayEditor(date) {
+            document.getElementById('dayEditor').style.display = 'block';
+            document.getElementById('dayEditor').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeDayEditor() {
+            document.getElementById('dayEditor').style.display = 'none';
+        }
+
+        function addQuestion() {
+            const questionId = questions.length + 1;
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-item';
+            questionDiv.innerHTML = `
+                <div class="question-header">
+                    <span class="question-number">Питання ${questionId}</span>
+                    <button class="remove-question" onclick="removeQuestion(${questionId})">×</button>
+                </div>
+                <input type="text" class="form-input" placeholder="Введіть питання..." style="margin-bottom: 15px;">
+                <div class="answer-options" id="options_${questionId}">
+                    <div class="option-input">
+                        <input type="radio" name="correct_${questionId}" value="0">
+                        <input type="text" placeholder="Варіант відповіді 1" class="form-input">
+                    </div>
+                    <div class="option-input">
+                        <input type="radio" name="correct_${questionId}" value="1">
+                        <input type="text" placeholder="Варіант відповіді 2" class="form-input">
+                    </div>
+                </div>
+                <button class="add-option" onclick="addOption(${questionId})">+ Додати варіант</button>
+            `;
+            
+            document.getElementById('questionsList').appendChild(questionDiv);
+            questions.push({ id: questionId, element: questionDiv });
+        }
+
+        function removeQuestion(questionId) {
+            const question = questions.find(q => q.id === questionId);
+            if (question) {
+                question.element.remove();
+                questions = questions.filter(q => q.id !== questionId);
+            }
+        }
+
+        function addOption(questionId) {
+            const optionsContainer = document.getElementById(`options_${questionId}`);
+            const optionCount = optionsContainer.children.length;
+            
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option-input';
+            optionDiv.innerHTML = `
+                <input type="radio" name="correct_${questionId}" value="${optionCount}">
+                <input type="text" placeholder="Варіант відповіді ${optionCount + 1}" class="form-input">
+            `;
+            
+            optionsContainer.appendChild(optionDiv);
+        }
+
+        function saveDay() {
+            showNotification('День збережено!', 'success');
+            closeDayEditor();
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.className = `notification ${type}`;
+            document.getElementById('notificationText').textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // File upload handling
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'file') {
+                const label = e.target.nextElementSibling;
+                if (e.target.files.length > 0) {
+                    label.textContent = `📁 ${e.target.files[0].name}`;
+                    label.style.borderColor = '#4CAF50';
+                    label.style.backgroundColor = '#f0f8f0';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

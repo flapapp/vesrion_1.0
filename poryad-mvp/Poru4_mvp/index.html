@@ -1,0 +1,4221 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORU4 - Повний User Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .screen {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: calc(100vh - 40px);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 30px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        /* Content */
+        .content {
+            padding: 30px 20px;
+            flex: 1;
+        }
+
+        /* Auth Screen */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-input {
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-large {
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        /* Home Screen Cards */
+        .home-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .card-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Calendar */
+        .calendar {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #f8f9fa;
+            color: #667eea;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .calendar-day.today {
+            background: #ff4757;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .calendar-day.my-content {
+            background: #3742fa;
+            color: white;
+        }
+
+        .calendar-day.partner-content {
+            background: #ff6b9d;
+            color: white;
+        }
+
+        .calendar-day.both-content {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .calendar-day.future {
+            background: #f1f2f6;
+            color: #a4b0be;
+        }
+
+        .day-icons {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            font-size: 10px;
+        }
+
+        .avatar {
+            position: absolute;
+            bottom: 2px;
+            left: 2px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid #333;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Day Editor */
+        .day-editor {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .editor-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-icon {
+            font-size: 20px;
+        }
+
+        .photo-upload {
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .photo-upload:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .photo-preview {
+            width: 100%;
+            max-width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .question-form {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #e1e5e9;
+        }
+
+        .option-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+        }
+
+        .option-input input[type="radio"] {
+            margin: 0;
+        }
+
+        .surprise-form {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #e1e5e9;
+        }
+
+        .surprise-type {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .surprise-type label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            border: 1px solid #e1e5e9;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .surprise-type input[type="radio"]:checked + label {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .time-picker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .surprise-icon {
+            font-size: 24px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .surprise-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .surprise-icon.selected {
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        /* Content Items */
+        .content-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #e1e5e9;
+            transition: all 0.3s ease;
+        }
+
+        .content-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .item-icon {
+            font-size: 20px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-time {
+            font-size: 12px;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .item-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+
+        .status-ready {
+            color: #2ed573;
+        }
+
+        .status-waiting {
+            color: #ffa502;
+        }
+
+        .status-answered {
+            color: #2ed573;
+        }
+
+        .status-not-answered {
+            color: #ff4757;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-open {
+            background: #2ed573;
+            color: white;
+        }
+
+        .btn-answer {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #ffa502;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-show {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .add-new-section {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .add-new-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .add-btn {
+            padding: 12px;
+            border: 1px solid #667eea;
+            border-radius: 8px;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .add-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Content Items */
+        .content-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #e1e5e9;
+            transition: all 0.3s ease;
+        }
+
+        .content-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .item-icon {
+            font-size: 20px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-time {
+            font-size: 12px;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .item-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+
+        .status-ready {
+            color: #2ed573;
+        }
+
+        .status-waiting {
+            color: #ffa502;
+        }
+
+        .status-answered {
+            color: #2ed573;
+        }
+
+        .status-not-answered {
+            color: #ff4757;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-open {
+            background: #2ed573;
+            color: white;
+        }
+
+        .btn-answer {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #ffa502;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-show {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .add-new-section {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .add-new-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .add-btn {
+            padding: 12px;
+            border: 1px solid #667eea;
+            border-radius: 8px;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .add-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Daily Experience */
+        .daily-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .splash-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .splash-content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+        }
+
+        .splash-phrase {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .start-day-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .start-day-btn:hover {
+            background: white;
+            color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .daily-schedule {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .schedule-header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .schedule-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .answer-btn {
+            padding: 10px 15px;
+            border: 1px solid #e1e5e9;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .answer-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .answer-btn.correct {
+            background: #2ed573;
+            color: white;
+            border-color: #2ed573;
+        }
+
+        .answer-btn.incorrect {
+            background: #ff4757;
+            color: white;
+            border-color: #ff4757;
+        }
+
+        .surprise-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #f1f2f6;
+            text-align: center;
+        }
+
+        .surprise-card.ready {
+            border-color: #2ed573;
+            background: linear-gradient(135deg, #2ed573, #7bed9f);
+            color: white;
+        }
+
+        .surprise-icon-large {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .open-surprise-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .open-surprise-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border-left: 4px solid #2ed573;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .notification-text {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f1f2f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        /* Animations */
+        .heart-animation {
+            position: absolute;
+            font-size: 24px;
+            color: #ff4757;
+            pointer-events: none;
+            animation: heartFall 2s ease-out forwards;
+        }
+
+        @keyframes heartFall {
+            0% {
+                transform: translateY(-20px) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .fireworks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: fireworkExplode 1s ease-out forwards;
+        }
+
+        @keyframes fireworkExplode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+            
+            .screen {
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mb-20 { margin-bottom: 20px; }
+        .mt-20 { margin-top: 20px; }
+        .pulse { animation: pulse 2s infinite; }
+
+        /* New styles for updated UI */
+        .welcome-section {
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            margin-right: 15px;
+        }
+
+        .avatar-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .user-details h2 {
+            margin: 0 0 5px 0;
+            color: white;
+            font-size: 24px;
+        }
+
+        .user-details p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .profile-btn {
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .card.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .tabs-container {
+            margin-top: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #ffffff;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .tab.active {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Memories screen styles */
+        .memories-stats {
+            margin-bottom: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #ffffff;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .activity-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .activity-label {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .activity-value {
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .memories-gallery {
+            margin-top: 30px;
+        }
+
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .gallery-header h3 {
+            color: #ffffff;
+            margin: 0;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .gallery-filters {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .filter-btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            color: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            font-weight: bold;
+        }
+
+        .memories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .memory-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .memory-item:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .memory-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .memory-content {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .memory-time {
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Auth screens styles */
+        .auth-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .photo-upload {
+            text-align: center;
+            cursor: pointer;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .photo-upload:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .photo-upload img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .auth-switch a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Challenge cards styles */
+        .challenge-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .challenge-card:last-child {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .challenge-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .challenge-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .challenge-title {
+            flex: 1;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .challenge-progress {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .challenge-status {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .challenge-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .challenge-description {
+            color: #ffffff;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .challenge-stats {
+            margin-bottom: 15px;
+        }
+
+        .challenge-card.create-challenge {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .challenge-card.create-challenge .challenge-title {
+            color: #000000;
+            text-shadow: none;
+        }
+
+        .challenge-card.create-challenge .challenge-description {
+            color: #000000;
+            text-shadow: none;
+        }
+
+        .memory-preview {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .memory-status {
+            color: #10b981;
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* Challenge creation styles */
+        .challenge-creation {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .creation-step {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .creation-step.active {
+            display: block;
+        }
+
+        .creation-step h3 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .duration-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .duration-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .duration-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            font-weight: bold;
+        }
+
+        .duration-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tasks-list {
+            margin-bottom: 20px;
+        }
+
+        .task-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .task-day {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .task-content {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .step-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        /* Room cards enhanced styles */
+        .room-partner {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .partner-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .partner-name {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .progress-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+        }
+
+        .progress-percent {
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .room-stats {
+            margin-top: 10px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-icon {
+            font-size: 14px;
+        }
+
+        .stat-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Screen 1: Authentication -->
+    <div class="screen" id="auth-screen">
+        <div class="container">
+            <div class="header">
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">PORU4</div>
+                <div class="subtitle">Повний User Experience</div>
+            </div>
+            <div class="content">
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Email або телефон</label>
+                        <input type="text" class="form-input" placeholder="example@email.com" id="email-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Пароль</label>
+                        <input type="password" class="form-input" placeholder="••••••••" id="password-input">
+                    </div>
+                    <div class="form-group" id="name-group" style="display: none;">
+                        <label class="form-label">Ваше ім'я</label>
+                        <input type="text" class="form-input" placeholder="Введіть ваше ім'я" id="name-input">
+                    </div>
+                    <div class="form-group" id="photo-group" style="display: none;">
+                        <label class="form-label">Фото профілю</label>
+                        <div class="photo-upload" onclick="document.getElementById('photo-input').click()">
+                            <div>📷</div>
+                            <div>Натисніть для завантаження фото</div>
+                            <input type="file" id="photo-input" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-large" onclick="handleAuth()">Увійти</button>
+                    <button class="btn btn-secondary" onclick="toggleAuthMode()">Зареєструватися</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 2: Home -->
+    <div class="screen active" id="home-screen">
+        <div class="container">
+            <div class="header">
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">PORU4</div>
+                <div class="subtitle">Привіт, <span id="user-name">Користувач</span>! 👋</div>
+            </div>
+            <div class="content">
+                <div class="welcome-section">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=faces" alt="Аватарка" class="avatar-img">
+                        </div>
+                        <div class="user-details">
+                            <h2>Привіт, Анна! 👋</h2>
+                            <p>Готові до нового дня разом?</p>
+                        </div>
+                        <div class="profile-btn" onclick="showProfile()">
+                            <span>⚙️</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="home-cards">
+                    <div class="card primary" onclick="showScreen('rooms-list-screen')">
+                        <div class="card-icon">📋</div>
+                        <div class="card-title">Мої кімнати</div>
+                        <div class="card-description">Список всіх кімнат (створених та приєднаних)</div>
+                        <div class="card-badge">3 активні</div>
+                    </div>
+                    <div class="card" onclick="showScreen('create-room-screen')">
+                        <div class="card-icon">🏠</div>
+                        <div class="card-title">Створити кімнату</div>
+                        <div class="card-description">Створити нову спільну кімнату</div>
+                    </div>
+                    <div class="card" onclick="showScreen('join-room-screen')">
+                        <div class="card-icon">🔑</div>
+                        <div class="card-title">Приєднатися</div>
+                        <div class="card-description">Ввести код від партнера</div>
+                    </div>
+                    <div class="card" onclick="showScreen('memories-screen')">
+                        <div class="card-icon">⭐</div>
+                        <div class="card-title">Спогади</div>
+                        <div class="card-description">Галерея спільних моментів та статистика</div>
+                    </div>
+                    <div class="card" onclick="showScreen('create-challenge-screen')">
+                        <div class="card-icon">🏆</div>
+                        <div class="card-title">Створити челендж</div>
+                        <div class="card-description">Спільні завдання для вас двох</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 3: Create Room -->
+    <div class="screen" id="create-room-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('home-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Створити кімнату</div>
+                <div class="subtitle">Створіть спільний простір</div>
+            </div>
+            <div class="content">
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Назва кімнати</label>
+                        <input type="text" class="form-input" placeholder="Наша любов ❤️" id="room-name-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Опис (необов'язково)</label>
+                        <textarea class="form-input" placeholder="Опишіть вашу кімнату..." id="room-description-input" rows="3"></textarea>
+                    </div>
+                    <button class="btn btn-primary btn-large" onclick="createRoom()">Створити кімнату</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 4: Join Room -->
+    <div class="screen" id="join-room-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('home-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Приєднатися</div>
+                <div class="subtitle">Введіть код від партнера</div>
+            </div>
+            <div class="content">
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Код кімнати</label>
+                        <input type="text" class="form-input" placeholder="ABC123" id="room-code-input" maxlength="6" style="text-transform: uppercase; font-size: 24px; text-align: center; letter-spacing: 2px;">
+                    </div>
+                    <button class="btn btn-primary btn-large" onclick="joinRoom()">Приєднатися</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 5: Rooms List -->
+    <div class="screen" id="rooms-list-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('home-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Мої кімнати</div>
+                <div class="subtitle">Всі ваші спільні простори</div>
+            </div>
+            <div class="content">
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchRoomsTab('regular')">Звичайні кімнати</div>
+                        <div class="tab" onclick="switchRoomsTab('challenges')">Активні челендж</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="regular-rooms-tab">
+                        <div id="rooms-list">
+                            <!-- Regular rooms will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="challenges-tab">
+                        <div id="challenges-list">
+                            <!-- Challenges will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 6: Memories -->
+    <div class="screen" id="memories-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('home-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Спогади</div>
+                <div class="subtitle">Галерея спільних моментів</div>
+            </div>
+            <div class="content">
+                <div class="memories-stats">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">❤️</div>
+                            <div class="stat-number">127</div>
+                            <div class="stat-label">днів разом</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📷</div>
+                            <div class="stat-number">45</div>
+                            <div class="stat-label">фото обміняно</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">❓</div>
+                            <div class="stat-number">89</div>
+                            <div class="stat-label">питань відповіли</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎁</div>
+                            <div class="stat-number">156</div>
+                            <div class="stat-label">приємностей</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-info">
+                        <div class="activity-item">
+                            <span class="activity-label">Найактивніший день:</span>
+                            <span class="activity-value">❤️ Понеділок (67 дій)</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="activity-label">Улюблений контент:</span>
+                            <span class="activity-value">🎁 Приємності (38%)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="memories-gallery">
+                    <div class="gallery-header">
+                        <h3>Спогади за сьогодні</h3>
+                        <div class="gallery-filters">
+                            <button class="filter-btn active">Всі</button>
+                            <button class="filter-btn">Фото</button>
+                            <button class="filter-btn">Питання</button>
+                            <button class="filter-btn">Приємності</button>
+                        </div>
+                    </div>
+                    
+                    <div class="memories-grid">
+                        <div class="memory-item" onclick="viewMemory('photo')">
+                            <div class="memory-icon">📷</div>
+                            <div class="memory-content">
+                                <strong>Фото дня від партнера</strong>
+                                <div class="memory-preview">Красиве фото з прогулянки</div>
+                            </div>
+                            <div class="memory-time">09:00</div>
+                            <div class="memory-status">✅ Переглянуто</div>
+                        </div>
+                        <div class="memory-item" onclick="viewMemory('question')">
+                            <div class="memory-icon">❓</div>
+                            <div class="memory-content">
+                                <strong>Питання "Як ти мене кохаєш?"</strong>
+                                <div class="memory-preview">Відповідь: "Варіант 2" ✅</div>
+                            </div>
+                            <div class="memory-time">12:00</div>
+                            <div class="memory-status">✅ Відповіли</div>
+                        </div>
+                        <div class="memory-item" onclick="viewMemory('surprise')">
+                            <div class="memory-icon">🎁</div>
+                            <div class="memory-content">
+                                <strong>Приємність "Голос партнера"</strong>
+                                <div class="memory-preview">Голосове повідомлення 2:30</div>
+                            </div>
+                            <div class="memory-time">14:00</div>
+                            <div class="memory-status">✅ Відкрито</div>
+                        </div>
+                        <div class="memory-item" onclick="viewMemory('photo2')">
+                            <div class="memory-icon">📷</div>
+                            <div class="memory-content">
+                                <strong>Моє фото дня</strong>
+                                <div class="memory-preview">Селфі з партнером</div>
+                            </div>
+                            <div class="memory-time">16:00</div>
+                            <div class="memory-status">✅ Відправлено</div>
+                        </div>
+                        <div class="memory-item" onclick="viewMemory('question2')">
+                            <div class="memory-icon">❓</div>
+                            <div class="memory-content">
+                                <strong>Питання "Що ти їв на сніданок?"</strong>
+                                <div class="memory-preview">Відповідь: "Яйця" ✅</div>
+                            </div>
+                            <div class="memory-time">18:00</div>
+                            <div class="memory-status">✅ Відповіли</div>
+                        </div>
+                        <div class="memory-item" onclick="viewMemory('surprise2')">
+                            <div class="memory-icon">🎁</div>
+                            <div class="memory-content">
+                                <strong>Приємність "Відео танцю"</strong>
+                                <div class="memory-preview">Відео 1:45</div>
+                            </div>
+                            <div class="memory-time">20:00</div>
+                            <div class="memory-status">✅ Відкрито</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 7: Registration -->
+    <div class="screen" id="registration-screen">
+        <div class="container">
+            <div class="header">
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Реєстрація</div>
+                <div class="subtitle">Створіть свій профіль</div>
+            </div>
+            <div class="content">
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Ім'я користувача</label>
+                        <input type="text" class="form-input" placeholder="Введіть ваше ім'я" id="reg-name-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email або телефон</label>
+                        <input type="text" class="form-input" placeholder="example@email.com" id="reg-email-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Пароль</label>
+                        <input type="password" class="form-input" placeholder="Мінімум 6 символів" id="reg-password-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Фото профілю</label>
+                        <div class="photo-upload" onclick="document.getElementById('avatar-input').click()">
+                            <img id="avatar-preview" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=faces" alt="Аватарка">
+                            <div class="upload-text">Натисніть для зміни</div>
+                            <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="previewAvatar(this)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="dark-theme-checkbox"> Темна тема
+                        </label>
+                    </div>
+                    <button class="btn btn-primary btn-large" onclick="register()">Зареєструватися</button>
+                    <div class="auth-switch">
+                        <span>Вже маєте акаунт?</span>
+                        <a href="#" onclick="showScreen('login-screen')">Увійти</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 8: Login -->
+    <div class="screen" id="login-screen">
+        <div class="container">
+            <div class="header">
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Вхід</div>
+                <div class="subtitle">Увійдіть в свій акаунт</div>
+            </div>
+            <div class="content">
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Email або телефон</label>
+                        <input type="text" class="form-input" placeholder="example@email.com" id="login-email-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Пароль</label>
+                        <input type="password" class="form-input" placeholder="Введіть пароль" id="login-password-input">
+                    </div>
+                    <button class="btn btn-primary btn-large" onclick="login()">Увійти</button>
+                    <div class="auth-switch">
+                        <span>Немає акаунту?</span>
+                        <a href="#" onclick="showScreen('registration-screen')">Зареєструватися</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 9: Create Challenge -->
+    <div class="screen" id="create-challenge-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('rooms-list-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Створити челендж</div>
+                <div class="subtitle">Спільні завдання для вас двох</div>
+            </div>
+            <div class="content">
+                <div class="challenge-creation">
+                    <div class="creation-step active" id="step1">
+                        <h3>Крок 1: Базові налаштування</h3>
+                        <div class="form-group">
+                            <label class="form-label">Назва челенджу</label>
+                            <input type="text" class="form-input" placeholder="7 днів для нас" id="challenge-name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Тривалість</label>
+                            <div class="duration-buttons">
+                                <button class="duration-btn active" onclick="selectDuration(7)">7 днів</button>
+                                <button class="duration-btn" onclick="selectDuration(14)">14 днів</button>
+                                <button class="duration-btn" onclick="selectDuration(30)">30 днів</button>
+                                <button class="duration-btn" onclick="selectDuration(60)">60 днів</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Опис челенджу</label>
+                            <textarea class="form-input" placeholder="Спільна задача кожен день для нас двох" id="challenge-description" rows="3"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="nextStep()">Далі</button>
+                    </div>
+
+                    <div class="creation-step" id="step2">
+                        <h3>Крок 2: Завдання для кожного дня</h3>
+                        <div class="tasks-list" id="tasks-list">
+                            <div class="task-item">
+                                <div class="task-header">
+                                    <span class="task-day">День 1</span>
+                                    <button class="btn btn-small" onclick="editTask(1)">Редагувати</button>
+                                </div>
+                                <div class="task-content">Надішліть селфі разом</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-header">
+                                    <span class="task-day">День 2</span>
+                                    <button class="btn btn-small" onclick="editTask(2)">Редагувати</button>
+                                </div>
+                                <div class="task-content">Напишіть один одному 5 речей, за які ви вдячні</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-header">
+                                    <span class="task-day">День 3</span>
+                                    <button class="btn btn-small" onclick="editTask(3)">Редагувати</button>
+                                </div>
+                                <div class="task-content">Надішліть одне одному улюблену пісню</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" onclick="addTask()">+ Додати завдання</button>
+                        <div class="step-actions">
+                            <button class="btn btn-secondary" onclick="prevStep()">Назад</button>
+                            <button class="btn btn-primary" onclick="startChallenge()">Почати челендж</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 10: Calendar -->
+    <div class="screen" id="calendar-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('rooms-list-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo" id="current-room-name">Календар кімнати</div>
+                <div class="subtitle">Спільний календар</div>
+            </div>
+            <div class="content">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <div class="calendar-title" id="calendar-month">Жовтень 2024</div>
+                        <div class="calendar-nav">
+                            <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
+                            <button class="nav-btn" onclick="changeMonth(1)">›</button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid">
+                        <!-- Calendar days will be populated here -->
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-secondary" onclick="invitePartner()">Запросити партнера</button>
+                    <button class="btn btn-primary" onclick="goToToday()">Сьогодні</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 7: Day Editor -->
+    <div class="screen" id="day-editor-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('calendar-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo" id="editor-date">Редактор дня</div>
+                <div class="subtitle">Управління контентом дня</div>
+            </div>
+            <div class="content">
+                <div class="day-editor">
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab('for-me')">
+                            📥 МЕНІ
+                        </div>
+                        <div class="tab" onclick="switchTab('for-partner')">
+                            📤 ПАРТНЕРУ
+                        </div>
+                    </div>
+
+                    <!-- Tab: For Me -->
+                    <div class="tab-content active" id="for-me-tab">
+                        <div class="editor-section">
+                            <div class="section-title">
+                                <span class="section-icon">📥</span>
+                                ЩО МЕНІ ВІДПРАВИЛИ
+                            </div>
+                            <div id="for-me-content">
+                                <!-- Content from partner will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: For Partner -->
+                    <div class="tab-content" id="for-partner-tab">
+                        <div class="editor-section">
+                            <div class="section-title">
+                                <span class="section-icon">📤</span>
+                                ЩО Я ВІДПРАВИВ ПАРТНЕРУ
+                            </div>
+                            <div id="for-partner-content">
+                                <!-- My content for partner will be loaded here -->
+                            </div>
+                            
+                            <!-- Add New Section -->
+                            <div class="add-new-section">
+                                <div style="font-weight: bold; margin-bottom: 10px;">+ ДОДАТИ НОВИЙ ЕЛЕМЕНТ</div>
+                                <div class="add-new-buttons">
+                                    <div class="add-btn" onclick="addNewQuestion()">
+                                        ❓ Додати питання
+                                    </div>
+                                    <div class="add-btn" onclick="addNewPhrase()">
+                                        💬 Додати фразу дня
+                                    </div>
+                                    <div class="add-btn" onclick="addNewPhoto()">
+                                        📷 Додати фото дня
+                                    </div>
+                                    <div class="add-btn" onclick="addNewSurprise()">
+                                        🎁 Додати приємність
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 8: Daily Experience -->
+    <div class="screen" id="daily-experience-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('calendar-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Щоденний досвід</div>
+                <div class="subtitle">Сьогоднішній розклад</div>
+            </div>
+            <div class="content">
+                <div class="daily-schedule">
+                    <div class="schedule-header" id="schedule-date">Сьогодні, 10 жовтня ☀️</div>
+                    
+                    <!-- Photo and Phrase Section -->
+                    <div class="schedule-section">
+                        <div class="section-title">
+                            <span class="section-icon">📸</span>
+                            Фото та фраза
+                        </div>
+                        <div id="daily-photo-container">
+                            <div style="text-align: center; padding: 20px; color: #666;">
+                                Партнер ще не додав фото на сьогодні
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Questions Section -->
+                    <div class="schedule-section">
+                        <div class="section-title">
+                            <span class="section-icon">❓</span>
+                            Питання дня
+                        </div>
+                        <div id="daily-questions-container">
+                            <div style="text-align: center; padding: 20px; color: #666;">
+                                Партнер ще не додав питання на сьогодні
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Surprises Section -->
+                    <div class="schedule-section">
+                        <div class="section-title">
+                            <span class="section-icon">🎁</span>
+                            Приємності
+                        </div>
+                        <div id="daily-surprises-container">
+                            <div style="text-align: center; padding: 20px; color: #666;">
+                                Партнер ще не надіслав приємностей на сьогодні
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- My Responses -->
+                    <div class="schedule-section">
+                        <div class="section-title">
+                            <span class="section-icon">📤</span>
+                            Моя відповідь партнеру
+                        </div>
+                        <div id="my-responses-container">
+                            <div style="text-align: center; padding: 20px; color: #666;">
+                                Ви ще не відповіли на питання партнера
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 9: Statistics -->
+    <div class="screen" id="statistics-screen">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('calendar-screen')">←</button>
+                <img src="../logo.png" alt="PORU4" class="logo-img">
+                <div class="logo">Статистика кімнати</div>
+                <div class="subtitle">Ваш прогрес</div>
+            </div>
+            <div class="content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="days-together">0</div>
+                        <div class="stat-label">Днів разом</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="correct-answers">0</div>
+                        <div class="stat-label">Правильних відповідей</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="surprises-sent">0</div>
+                        <div class="stat-label">Приємностей відправлено</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="photos-uploaded">0</div>
+                        <div class="stat-label">Фото завантажено</div>
+                    </div>
+                </div>
+                <div class="calendar">
+                    <div class="calendar-title">Графік активності</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px; color: #666;">
+                        75% днів заповнено
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Splash Screen -->
+    <div class="daily-splash hidden" id="daily-splash">
+        <img class="splash-photo" id="splash-photo" src="" alt="Photo of the day">
+        <div class="splash-content">
+            <div class="splash-phrase" id="splash-phrase">Доброго ранку, кохана! 💕</div>
+            <button class="start-day-btn" onclick="startDay()">Почати день ❤️</button>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="notification hidden" id="notification">
+        <div class="notification-title" id="notification-title">У вас новий подарунок! 🎁</div>
+        <div class="notification-text" id="notification-text">Партнер надіслав вам приємність</div>
+    </div>
+
+    <script>
+        // Global state
+        let currentUser = null;
+        let currentRoom = null;
+        let currentDate = new Date();
+        let isAuthMode = false; // false = login, true = register
+        let questionsCount = 0;
+        let surprisesCount = 0;
+
+        // Sample data for demonstration
+        const sampleRooms = [
+            {
+                id: 1,
+                name: "Наша любов ❤️",
+                code: "ABC123",
+                createdBy: "me",
+                progress: 75,
+                lastActivity: "2024-10-10"
+            },
+            {
+                id: 2,
+                name: "Сімейні моменти 👨‍👩‍👧‍👦",
+                code: "XYZ789",
+                createdBy: "partner",
+                progress: 60,
+                lastActivity: "2024-10-09"
+            }
+        ];
+
+        // Get today's date for demo
+        const today = new Date();
+        const todayKey = formatDate(today);
+
+        const sampleCalendarData = {
+            [todayKey]: {
+                myContent: {
+                    photo: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=300&fit=crop&crop=faces",
+                    phrase: "Доброго ранку, кохана! 💕 Сьогодні буде чудовий день!",
+                    questions: [
+                        {
+                            id: 1,
+                            text: "Як ти мене кохаєш?",
+                            options: ["Багато", "Дуже багато", "Безмежно", "Більше за все на світі"],
+                            correct: 3,
+                            answered: false,
+                            correctAnswer: null
+                        },
+                        {
+                            id: 2,
+                            text: "Що ти хочеш зробити сьогодні?",
+                            options: ["Погуляти", "Подивитися фільм", "Приготувати щось", "Просто бути разом"],
+                            correct: 3,
+                            answered: false,
+                            correctAnswer: null
+                        }
+                    ],
+                    surprises: [
+                        {
+                            id: 1,
+                            type: "photo",
+                            content: "Фото з нашим першим побаченням",
+                            icon: "🌹",
+                            deliveryTime: "08:00",
+                            delivered: true,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300&h=200&fit=crop&crop=faces"
+                        },
+                        {
+                            id: 2,
+                            type: "audio",
+                            content: "Голосове повідомлення з піснею",
+                            icon: "💕",
+                            deliveryTime: "12:00",
+                            delivered: true,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=200&fit=crop"
+                        },
+                        {
+                            id: 3,
+                            type: "video",
+                            content: "Відео з танцем для тебе",
+                            icon: "✨",
+                            deliveryTime: "18:00",
+                            delivered: false,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=300&h=200&fit=crop"
+                        },
+                        {
+                            id: 4,
+                            type: "text",
+                            content: "Ти найкраща дівчина на світі! 💖",
+                            icon: "💌",
+                            deliveryTime: "22:00",
+                            delivered: false,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1524504388940-b1c172c3db96?w=300&h=200&fit=crop&crop=faces"
+                        }
+                    ]
+                },
+                partnerContent: {
+                    photo: "https://images.unsplash.com/photo-1524504388940-b1c172c3db96?w=400&h=300&fit=crop&crop=faces",
+                    phrase: "Сьогодні буде чудовий день! ☀️ Я так тебе люблю!",
+                    questions: [
+                        {
+                            id: 1,
+                            text: "Що ти їв на сніданок?",
+                            options: ["Каша з ягодами", "Яєчня з беконом", "Тост з авокадо", "Нічого не їв"],
+                            correct: 1,
+                            answered: false,
+                            correctAnswer: null
+                        },
+                        {
+                            id: 2,
+                            text: "Який твій улюблений колір?",
+                            options: ["Синій", "Рожевий", "Зелений", "Фіолетовий"],
+                            correct: 1,
+                            answered: true,
+                            correctAnswer: 1
+                        },
+                        {
+                            id: 3,
+                            text: "Що тебе найбільше радує?",
+                            options: ["Моя посмішка", "Спільні моменти", "Мої дотики", "Все вище"],
+                            correct: 3,
+                            answered: false,
+                            correctAnswer: null
+                        }
+                    ],
+                    surprises: [
+                        {
+                            id: 1,
+                            type: "text",
+                            content: "Ти найкраща! 💕 Не забувай про це!",
+                            icon: "💕",
+                            deliveryTime: "09:00",
+                            delivered: true,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1524504388940-b1c172c3db96?w=300&h=200&fit=crop&crop=faces"
+                        },
+                        {
+                            id: 2,
+                            type: "video",
+                            content: "Відео з танцем для тебе",
+                            icon: "✨",
+                            deliveryTime: "14:00",
+                            delivered: true,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=300&h=200&fit=crop"
+                        },
+                        {
+                            id: 3,
+                            type: "audio",
+                            content: "Голосове повідомлення з піснею",
+                            icon: "🎵",
+                            deliveryTime: "16:00",
+                            delivered: true,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=200&fit=crop"
+                        },
+                        {
+                            id: 4,
+                            type: "photo",
+                            content: "Фото з нашим улюбленим місцем",
+                            icon: "🌹",
+                            deliveryTime: "19:00",
+                            delivered: false,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300&h=200&fit=crop&crop=faces"
+                        },
+                        {
+                            id: 5,
+                            type: "text",
+                            content: "Добраніч, кохана! Сни про мене! 😘",
+                            icon: "🌙",
+                            deliveryTime: "23:00",
+                            delivered: false,
+                            opened: false,
+                            image: "https://images.unsplash.com/photo-1524504388940-b1c172c3db96?w=300&h=200&fit=crop&crop=faces"
+                        }
+                    ]
+                }
+            }
+        };
+
+        // Screen management
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Authentication
+        function toggleAuthMode() {
+            isAuthMode = !isAuthMode;
+            const nameGroup = document.getElementById('name-group');
+            const photoGroup = document.getElementById('photo-group');
+            const authBtn = document.querySelector('#auth-screen .btn-primary');
+            const toggleBtn = document.querySelector('#auth-screen .btn-secondary');
+
+            if (isAuthMode) {
+                nameGroup.style.display = 'block';
+                photoGroup.style.display = 'block';
+                authBtn.textContent = 'Зареєструватися';
+                toggleBtn.textContent = 'Увійти';
+            } else {
+                nameGroup.style.display = 'none';
+                photoGroup.style.display = 'none';
+                authBtn.textContent = 'Увійти';
+                toggleBtn.textContent = 'Зареєструватися';
+            }
+        }
+
+        function handleAuth() {
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
+            
+            if (!email || !password) {
+                showNotification('Помилка', 'Будь ласка, заповніть всі поля');
+                return;
+            }
+
+            if (isAuthMode) {
+                const name = document.getElementById('name-input').value;
+                if (!name) {
+                    showNotification('Помилка', 'Будь ласка, введіть ваше ім\'я');
+                    return;
+                }
+                currentUser = { name, email, photo: null };
+                showNotification('Успіх', 'Реєстрація пройшла успішно!');
+            } else {
+                currentUser = { name: 'Користувач', email, photo: null };
+                showNotification('Успіх', 'Вхід виконано успішно!');
+            }
+
+            document.getElementById('user-name').textContent = currentUser.name;
+            showScreen('home-screen');
+        }
+
+        // Room management
+        function createRoom() {
+            const roomName = document.getElementById('room-name-input').value;
+            const roomDescription = document.getElementById('room-description-input').value;
+
+            if (!roomName) {
+                showNotification('Помилка', 'Будь ласка, введіть назву кімнати');
+                return;
+            }
+
+            const roomCode = generateRoomCode();
+            currentRoom = {
+                id: Date.now(),
+                name: roomName,
+                code: roomCode,
+                description: roomDescription,
+                createdBy: 'me'
+            };
+
+            showNotification('Успіх', `Кімната створена! Код: ${roomCode}`);
+            showScreen('calendar-screen');
+            loadCalendar();
+        }
+
+        function joinRoom() {
+            const roomCode = document.getElementById('room-code-input').value.toUpperCase();
+
+            if (!roomCode || roomCode.length !== 6) {
+                showNotification('Помилка', 'Будь ласка, введіть правильний код кімнати');
+                return;
+            }
+
+            // Simulate finding room
+            currentRoom = {
+                id: Date.now(),
+                name: "Кімната партнера",
+                code: roomCode,
+                createdBy: 'partner'
+            };
+
+            showNotification('Успіх', 'Ви успішно приєдналися до кімнати!');
+            showScreen('calendar-screen');
+            loadCalendar();
+        }
+
+        function generateRoomCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        function loadRoomsList() {
+            const container = document.getElementById('rooms-list');
+            container.innerHTML = '';
+
+            sampleRooms.forEach(room => {
+                const progress = Math.floor(Math.random() * 100);
+                const daysTogether = Math.floor(Math.random() * 365) + 1;
+                const partnerAvatar = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=faces";
+                
+                const roomElement = document.createElement('div');
+                roomElement.className = 'card';
+                roomElement.innerHTML = `
+                    <div class="card-title">${room.name}</div>
+                    <div class="card-description">
+                        <div class="room-partner">
+                            <img src="${partnerAvatar}" alt="Партнер" class="partner-avatar">
+                            <span class="partner-name">Максим</span>
+                        </div>
+                        <div>Код: ${room.code}</div>
+                        <div>Створено: ${room.createdBy === 'me' ? 'Вами' : 'Партнером'}</div>
+                        <div class="progress-info">
+                            <span class="progress-text">${progress} з 31 днів заповнено</span>
+                            <span class="progress-percent">${progress}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%;"></div>
+                        </div>
+                        <div class="room-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">❤️</span>
+                                <span class="stat-text">${daysTogether} днів разом</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button class="btn btn-primary" onclick="openRoom(${room.id})">Відкрити</button>
+                        <button class="btn btn-secondary" onclick="shareRoomCode('${room.code}')">Поділитися кодом</button>
+                    </div>
+                `;
+                container.appendChild(roomElement);
+            });
+        }
+
+        function openRoom(roomId) {
+            const room = sampleRooms.find(r => r.id === roomId);
+            if (room) {
+                currentRoom = room;
+                // Show daily splash first
+                showDailySplash();
+            }
+        }
+
+        function shareRoomCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                showNotification('Успіх', `Код ${code} скопійовано в буфер обміну!`);
+            });
+        }
+
+        // Calendar
+        function loadCalendar() {
+            if (!currentRoom) return;
+
+            document.getElementById('current-room-name').textContent = currentRoom.name;
+            
+            const monthNames = ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень",
+                "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"];
+            
+            document.getElementById('calendar-month').textContent = 
+                `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+
+            const calendarGrid = document.getElementById('calendar-grid');
+            calendarGrid.innerHTML = '';
+
+            // Add day headers
+            const dayHeaders = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
+            dayHeaders.forEach(day => {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.style.background = '#f8f9fa';
+                dayElement.style.color = '#666';
+                dayElement.style.fontWeight = 'bold';
+                dayElement.textContent = day;
+                calendarGrid.appendChild(dayElement);
+            });
+
+            // Add calendar days
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay() + 1);
+
+            for (let i = 0; i < 42; i++) {
+                const dayDate = new Date(startDate);
+                dayDate.setDate(startDate.getDate() + i);
+                
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                
+                if (dayDate.getMonth() !== currentDate.getMonth()) {
+                    dayElement.classList.add('future');
+                } else {
+                    const dayKey = formatDate(dayDate);
+                    const dayData = sampleCalendarData[dayKey];
+                    
+                    if (dayKey === formatDate(new Date())) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    if (dayData) {
+                        if (dayData.myContent && dayData.partnerContent) {
+                            dayElement.classList.add('both-content');
+                        } else if (dayData.myContent) {
+                            dayElement.classList.add('my-content');
+                        } else if (dayData.partnerContent) {
+                            dayElement.classList.add('partner-content');
+                        }
+                        
+                        // Add icons
+                        const icons = [];
+                        if (dayData.myContent?.photo || dayData.partnerContent?.photo) icons.push('📷');
+                        if (dayData.myContent?.phrase || dayData.partnerContent?.phrase) icons.push('💬');
+                        if (dayData.myContent?.questions?.length || dayData.partnerContent?.questions?.length) icons.push('❓');
+                        if (dayData.myContent?.surprises?.length || dayData.partnerContent?.surprises?.length) icons.push('🎁');
+                        
+                        if (icons.length > 0) {
+                            const iconsElement = document.createElement('div');
+                            iconsElement.className = 'day-icons';
+                            iconsElement.textContent = icons.join(' ');
+                            dayElement.appendChild(iconsElement);
+                        }
+                    }
+                }
+                
+                dayElement.textContent = dayDate.getDate();
+                dayElement.onclick = () => openDayEditor(dayDate);
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        function changeMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            loadCalendar();
+        }
+
+        function goToToday() {
+            currentDate = new Date();
+            loadCalendar();
+            showNotification('Навігація', 'Перехід до сьогоднішнього дня');
+        }
+
+        function openDayEditor(date) {
+            const dayKey = formatDate(date);
+            document.getElementById('editor-date').textContent = `Редактор дня - ${formatDateDisplay(date)}`;
+            showScreen('day-editor-screen');
+            loadDayEditor(dayKey);
+        }
+
+        function loadDayEditor(dayKey) {
+            const dayData = sampleCalendarData[dayKey] || { myContent: {}, partnerContent: {} };
+            
+            // Load content for both tabs
+            loadForMeContent(dayData.partnerContent);
+            loadForPartnerContent(dayData.myContent);
+        }
+
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        function loadForMeContent(partnerContent) {
+            const container = document.getElementById('for-me-content');
+            let html = '';
+
+            if (!partnerContent || Object.keys(partnerContent).length === 0) {
+                html = '<div style="text-align: center; padding: 40px; color: #666;">Партнер ще нічого не додав на цей день</div>';
+            } else {
+                // Add header with current time info
+                const currentHour = new Date().getHours();
+                html += `
+                    <div style="background: #e3f2fd; border-radius: 8px; padding: 15px; margin-bottom: 20px; text-align: center;">
+                        <div style="font-weight: bold; color: #1976d2; margin-bottom: 5px;">📅 Сьогодні, ${formatDateDisplay(new Date())}</div>
+                        <div style="font-size: 14px; color: #666;">Поточний час: ${currentHour}:00 | Зараз 16:00 (для MVP)</div>
+                        <div style="font-size: 12px; color: #888; margin-top: 5px; font-style: italic;">
+                            Це контент, який партнер додав для вас на сьогодні
+                        </div>
+                    </div>
+                `;
+
+                // Add photo and phrase first
+                if (partnerContent.photo || partnerContent.phrase) {
+                    html += `
+                        <div class="content-item">
+                            <div class="item-header">
+                                <span class="item-icon">📸</span>
+                                <span class="item-title">Фото та фраза дня від партнера</span>
+                                <span class="item-time">00:00</span>
+                            </div>
+                            <div style="margin: 10px 0; font-size: 12px; color: #666; font-style: italic;">
+                                Це фото дня та фраза дня, які партнер додав для вас
+                            </div>
+                            ${partnerContent.photo ? `<img src="${partnerContent.photo}" style="width: 100%; border-radius: 8px; margin: 10px 0;">` : ''}
+                            ${partnerContent.phrase ? `<div style="margin: 10px 0; font-style: italic; padding: 10px; background: #f8f9fa; border-radius: 8px;">"${partnerContent.phrase}"</div>` : ''}
+                        </div>
+                    `;
+                }
+
+                // Add surprises
+                if (partnerContent.surprises && partnerContent.surprises.length > 0) {
+                    partnerContent.surprises.forEach(surprise => {
+                        const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                        const currentHour = 16; // For MVP demo
+                        const isReadyForDemo = parseInt(surprise.deliveryTime.split(':')[0]) <= currentHour;
+                        
+                        html += `
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <span class="item-icon">${surprise.icon}</span>
+                                    <span class="item-title">Приємність від партнера</span>
+                                    <span class="item-time">о ${surprise.deliveryTime}</span>
+                                </div>
+                                <div style="margin: 10px 0; font-size: 12px; color: #666; font-style: italic;">
+                                    ${surprise.type === 'photo' ? '📷 Фото' : 
+                                      surprise.type === 'audio' ? '🎵 Аудіо' : 
+                                      surprise.type === 'video' ? '🎬 Відео' : '📝 Текст'}: ${surprise.content}
+                                </div>
+                                ${surprise.image ? `<img src="${surprise.image}" style="width: 100%; max-width: 200px; border-radius: 8px; margin: 10px 0;" alt="Превью приємності">` : ''}
+                                <div class="item-status ${isReadyForDemo ? 'status-ready' : 'status-waiting'}">
+                                    ${isReadyForDemo ? '✓ Готово (час настав)' : `⏰ Очікуйте о ${surprise.deliveryTime}`}
+                                </div>
+                                <div class="item-actions">
+                                    ${isReadyForDemo ? 
+                                        `<button class="action-btn btn-open" onclick="openSurprise(${surprise.id})">Відкрити подарунок</button>` :
+                                        `<span style="color: #666;">Очікуйте о ${surprise.deliveryTime}</span>`
+                                    }
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Add questions
+                if (partnerContent.questions && partnerContent.questions.length > 0) {
+                    partnerContent.questions.forEach(question => {
+                        const status = question.answered ? 
+                            (question.correctAnswer === question.correct ? 'Відповів правильно ✅' : 'Відповів неправильно ❌') : 
+                            'Не відповів';
+                        const statusClass = question.answered ? 'status-answered' : 'status-not-answered';
+                        
+                        html += `
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <span class="item-icon">❓</span>
+                                    <span class="item-title">Питання від партнера</span>
+                                </div>
+                                <div style="margin: 10px 0; font-weight: 500; font-size: 14px;">"${question.text}"</div>
+                                <div style="margin: 10px 0; font-size: 12px; color: #666; font-style: italic;">
+                                    Партнер задав це питання для вас. Варіанти відповідей:
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    ${question.options.map((option, index) => 
+                                        `<div style="margin: 5px 0; padding: 5px; background: #f8f9fa; border-radius: 4px;">${index + 1}. ${option}</div>`
+                                    ).join('')}
+                                </div>
+                                <div class="item-status ${statusClass}">Статус: ${status}</div>
+                                <div class="item-actions">
+                                    ${!question.answered ? 
+                                        `<button class="action-btn btn-answer" onclick="answerQuestion(${question.id})">Відповісти на питання</button>` :
+                                        `<button class="action-btn btn-show" onclick="showReaction(${question.id})">Показати реакцію партнера</button>`
+                                    }
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Add photo and phrase
+                if (partnerContent.photo || partnerContent.phrase) {
+                    html += `
+                        <div class="content-item">
+                            <div class="item-header">
+                                <span class="item-icon">📸</span>
+                                <span class="item-title">Фото та фраза дня</span>
+                            </div>
+                            ${partnerContent.photo ? `<img src="${partnerContent.photo}" style="width: 100%; border-radius: 8px; margin: 10px 0;">` : ''}
+                            ${partnerContent.phrase ? `<div style="margin: 10px 0; font-style: italic;">"${partnerContent.phrase}"</div>` : ''}
+                        </div>
+                    `;
+                }
+            }
+
+            container.innerHTML = html;
+        }
+
+        function loadForPartnerContent(myContent) {
+            const container = document.getElementById('for-partner-content');
+            let html = '';
+
+            if (!myContent || Object.keys(myContent).length === 0) {
+                html = '<div style="text-align: center; padding: 40px; color: #666;">Ви ще нічого не додали на цей день</div>';
+            } else {
+                // Add my surprises
+                if (myContent.surprises && myContent.surprises.length > 0) {
+                    myContent.surprises.forEach(surprise => {
+                        const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                        html += `
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <span class="item-icon">${surprise.icon}</span>
+                                    <span class="item-title">Приємність</span>
+                                    <span class="item-time">о ${surprise.deliveryTime}</span>
+                                </div>
+                                <div class="item-status ${isReady ? 'status-ready' : 'status-waiting'}">
+                                    ${isReady ? '✓ Готово' : '⏰ Заплановано'}
+                                </div>
+                                <div style="margin: 5px 0; font-size: 12px; color: #666;">
+                                    ${surprise.type === 'photo' ? 'Фото' : 
+                                      surprise.type === 'audio' ? 'Голосове' : 
+                                      surprise.type === 'video' ? 'Відео' : 'Текст'}
+                                </div>
+                                <div class="item-actions">
+                                    <button class="action-btn btn-edit" onclick="editSurprise(${surprise.id})">Редагувати</button>
+                                    <button class="action-btn btn-delete" onclick="deleteSurprise(${surprise.id})">Видалити</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Add my questions
+                if (myContent.questions && myContent.questions.length > 0) {
+                    myContent.questions.forEach(question => {
+                        html += `
+                            <div class="content-item">
+                                <div class="item-header">
+                                    <span class="item-icon">❓</span>
+                                    <span class="item-title">Питання</span>
+                                </div>
+                                <div style="margin: 10px 0; font-weight: 500;">"${question.text}"</div>
+                                <div style="margin: 5px 0;">
+                                    ${question.options.map((option, index) => 
+                                        `<div style="margin: 2px 0;">• ${option} ${index === question.correct ? '✓' : ''}</div>`
+                                    ).join('')}
+                                </div>
+                                <div class="item-actions">
+                                    <button class="action-btn btn-edit" onclick="editQuestion(${question.id})">Редагувати</button>
+                                    <button class="action-btn btn-delete" onclick="deleteQuestion(${question.id})">Видалити</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Add photo and phrase
+                if (myContent.photo || myContent.phrase) {
+                    html += `
+                        <div class="content-item">
+                            <div class="item-header">
+                                <span class="item-icon">📸</span>
+                                <span class="item-title">Фото та фраза дня</span>
+                            </div>
+                            ${myContent.photo ? `<img src="${myContent.photo}" style="width: 100%; border-radius: 8px; margin: 10px 0;">` : ''}
+                            ${myContent.phrase ? `<div style="margin: 10px 0; font-style: italic;">"${myContent.phrase}"</div>` : ''}
+                            <div class="item-actions">
+                                <button class="action-btn btn-edit" onclick="editPhotoPhrase()">Редагувати</button>
+                                <button class="action-btn btn-delete" onclick="deletePhotoPhrase()">Видалити</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Add new content functions
+        function addNewQuestion() {
+            // Show demo of how question creation works
+            const demoModal = document.createElement('div');
+            demoModal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                align-items: center; justify-content: center; flex-direction: column;
+            `;
+            demoModal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 30px; max-width: 600px; text-align: center; margin: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">❓</div>
+                    <h3 style="margin-bottom: 20px; color: #333;">Створення питання для партнера</h3>
+                    <div style="text-align: left; margin-bottom: 20px;">
+                        <p><strong>1. Введіть текст питання:</strong></p>
+                        <input type="text" id="question-text" placeholder="Наприклад: Який твій улюблений колір?" 
+                               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0;">
+                        
+                        <p><strong>2. Додайте варіанти відповідей (2-4 варіанти):</strong></p>
+                        <input type="text" id="option1" placeholder="Варіант 1" 
+                               style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0;">
+                        <input type="text" id="option2" placeholder="Варіант 2" 
+                               style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0;">
+                        <input type="text" id="option3" placeholder="Варіант 3 (необов'язково)" 
+                               style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0;">
+                        <input type="text" id="option4" placeholder="Варіант 4 (необов'язково)" 
+                               style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0;">
+                        
+                        <p><strong>3. Оберіть правильну відповідь:</strong></p>
+                        <select id="correct-answer" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0;">
+                            <option value="1">Варіант 1</option>
+                            <option value="2">Варіант 2</option>
+                            <option value="3">Варіант 3</option>
+                            <option value="4">Варіант 4</option>
+                        </select>
+                        
+                        <p><strong>4. Додайте реакції:</strong></p>
+                        <p style="font-size: 14px; color: #666;">• На правильну відповідь: аудіо/відео/текст/фото</p>
+                        <p style="font-size: 14px; color: #666;">• На неправильну відповідь: аудіо/відео/текст/фото</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button onclick="createQuestion(); this.parentElement.parentElement.parentElement.remove();" 
+                                style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            ✅ Створити питання
+                        </button>
+                        <button onclick="this.parentElement.parentElement.remove();" 
+                                style="background: #f8f9fa; color: #666; border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            Скасувати
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(demoModal);
+        }
+
+        function createQuestion() {
+            const questionText = document.getElementById('question-text').value;
+            const option1 = document.getElementById('option1').value;
+            const option2 = document.getElementById('option2').value;
+            const option3 = document.getElementById('option3').value;
+            const option4 = document.getElementById('option4').value;
+            const correct = document.getElementById('correct-answer').value;
+            
+            if (questionText && option1 && option2) {
+                const options = [option1, option2];
+                if (option3) options.push(option3);
+                if (option4) options.push(option4);
+                
+                showNotification('✅ Питання створено!', `Питання "${questionText}" з ${options.length} варіантами відповідей створено для партнера. Партнер зможе відповісти на нього, а ви отримаєте реакцію!`);
+            }
+        }
+
+        function addNewPhrase() {
+            const demoModal = document.createElement('div');
+            demoModal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                align-items: center; justify-content: center; flex-direction: column;
+            `;
+            demoModal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; text-align: center; margin: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">💬</div>
+                    <h3 style="margin-bottom: 20px; color: #333;">Додавання фрази дня</h3>
+                    <div style="text-align: left; margin-bottom: 20px;">
+                        <p><strong>Фраза дня - це повідомлення, яке побачить партнер під вашим фото дня.</strong></p>
+                        <p style="font-size: 14px; color: #666; margin: 10px 0;">Наприклад: "Доброго ранку, кохана! 💕" або "Сьогодні буде чудовий день! ☀️"</p>
+                        <textarea id="phrase-text" placeholder="Введіть вашу фразу дня для партнера..." 
+                                  style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0; height: 80px; resize: vertical;"></textarea>
+                        <p style="font-size: 12px; color: #888;">Ця фраза з'явиться під вашим фото дня, коли партнер відкриє застосунок</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button onclick="createPhrase(); this.parentElement.parentElement.parentElement.remove();" 
+                                style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            ✅ Додати фразу
+                        </button>
+                        <button onclick="this.parentElement.parentElement.remove();" 
+                                style="background: #f8f9fa; color: #666; border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            Скасувати
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(demoModal);
+        }
+
+        function createPhrase() {
+            const phrase = document.getElementById('phrase-text').value;
+            if (phrase) {
+                showNotification('✅ Фраза додана!', `Фраза "${phrase}" додана для партнера. Вона з'явиться під вашим фото дня`);
+            }
+        }
+
+        function addNewPhoto() {
+            const demoModal = document.createElement('div');
+            demoModal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                align-items: center; justify-content: center; flex-direction: column;
+            `;
+            demoModal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; text-align: center; margin: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">📷</div>
+                    <h3 style="margin-bottom: 20px; color: #333;">Додавання фото дня</h3>
+                    <div style="text-align: left; margin-bottom: 20px;">
+                        <p><strong>Фото дня - це зображення, яке побачить партнер як заставку при відкритті застосунку.</strong></p>
+                        <p style="font-size: 14px; color: #666; margin: 10px 0;">Це може бути ваше фото, фото вас двох, або будь-яке зображення, яке ви хочете поділитися</p>
+                        
+                        <div style="border: 2px dashed #667eea; border-radius: 12px; padding: 30px; text-align: center; margin: 20px 0; cursor: pointer;" 
+                             onclick="document.getElementById('photo-input').click()">
+                            <div style="font-size: 24px; margin-bottom: 10px;">📷</div>
+                            <div>Натисніть для завантаження фото</div>
+                            <div style="font-size: 12px; color: #666; margin-top: 5px;">або перетягніть файл сюди</div>
+                            <input type="file" id="photo-input" accept="image/*" style="display: none;" onchange="previewPhoto(this)">
+                        </div>
+                        
+                        <div id="photo-preview-container" style="display: none; margin: 20px 0;">
+                            <img id="photo-preview" style="width: 100%; max-width: 300px; border-radius: 8px; margin: 10px 0;">
+                        </div>
+                        
+                        <p style="font-size: 12px; color: #888;">Це фото буде показане партнеру як заставка дня</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button onclick="createPhoto(); this.parentElement.parentElement.parentElement.remove();" 
+                                style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            ✅ Додати фото
+                        </button>
+                        <button onclick="this.parentElement.parentElement.remove();" 
+                                style="background: #f8f9fa; color: #666; border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            Скасувати
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(demoModal);
+        }
+
+        function previewPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('photo-preview');
+                    const container = document.getElementById('photo-preview-container');
+                    preview.src = e.target.result;
+                    container.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function createPhoto() {
+            const fileInput = document.getElementById('photo-input');
+            if (fileInput.files && fileInput.files[0]) {
+                showNotification('✅ Фото додано!', `Фото додано для партнера. Воно буде показане як заставка дня`);
+            } else {
+                showNotification('⚠️ Увага', 'Будь ласка, виберіть фото для завантаження');
+            }
+        }
+
+        function addNewSurprise() {
+            const demoModal = document.createElement('div');
+            demoModal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                align-items: center; justify-content: center; flex-direction: column;
+            `;
+            demoModal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 30px; max-width: 600px; text-align: center; margin: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">🎁</div>
+                    <h3 style="margin-bottom: 20px; color: #333;">Створення приємності для партнера</h3>
+                    <div style="text-align: left; margin-bottom: 20px;">
+                        <p><strong>Приємність - це сюрприз, який партнер отримає в зазначений час.</strong></p>
+                        
+                        <p><strong>1. Оберіть тип приємності:</strong></p>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 10px 0;">
+                            <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
+                                <input type="radio" name="surprise-type" value="text" style="margin-right: 8px;">
+                                📝 Текст
+                            </label>
+                            <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
+                                <input type="radio" name="surprise-type" value="photo" style="margin-right: 8px;">
+                                📷 Фото
+                            </label>
+                            <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
+                                <input type="radio" name="surprise-type" value="audio" style="margin-right: 8px;">
+                                🎵 Аудіо
+                            </label>
+                            <label style="display: flex; align-items: center; padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
+                                <input type="radio" name="surprise-type" value="video" style="margin-right: 8px;">
+                                🎬 Відео
+                            </label>
+                        </div>
+                        
+                        <p><strong>2. Введіть контент приємності:</strong></p>
+                        <textarea id="surprise-content" placeholder="Опишіть вашу приємність..." 
+                                  style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0; height: 80px; resize: vertical;"></textarea>
+                        
+                        <p><strong>3. Оберіть час доставки:</strong></p>
+                        <input type="time" id="surprise-time" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0;">
+                        
+                        <p><strong>4. Оберіть іконку:</strong></p>
+                        <div style="display: flex; gap: 10px; margin: 10px 0;">
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '🎁')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">🎁</span>
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '💕')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">💕</span>
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '✨')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">✨</span>
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '🌹')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">🌹</span>
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '🎉')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">🎉</span>
+                            <span class="surprise-icon-option" onclick="selectIcon(this, '💌')" style="font-size: 24px; cursor: pointer; padding: 5px; border-radius: 50%;">💌</span>
+                        </div>
+                        <input type="hidden" id="selected-icon" value="🎁">
+                        
+                        <p style="font-size: 12px; color: #888;">Приємність буде доставлена партнеру в зазначений час</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button onclick="createSurprise(); this.parentElement.parentElement.parentElement.remove();" 
+                                style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            ✅ Створити приємність
+                        </button>
+                        <button onclick="this.parentElement.parentElement.remove();" 
+                                style="background: #f8f9fa; color: #666; border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                            Скасувати
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(demoModal);
+        }
+
+        function selectIcon(element, icon) {
+            document.querySelectorAll('.surprise-icon-option').forEach(el => {
+                el.style.background = 'transparent';
+            });
+            element.style.background = '#667eea';
+            element.style.color = 'white';
+            document.getElementById('selected-icon').value = icon;
+        }
+
+        function createSurprise() {
+            const type = document.querySelector('input[name="surprise-type"]:checked')?.value;
+            const content = document.getElementById('surprise-content').value;
+            const time = document.getElementById('surprise-time').value;
+            const icon = document.getElementById('selected-icon').value;
+            
+            if (type && content && time && icon) {
+                const typeNames = { text: 'Текст', photo: 'Фото', audio: 'Аудіо', video: 'Відео' };
+                showNotification('✅ Приємність створена!', `${typeNames[type]} приємність "${content}" буде доставлена о ${time}`);
+            } else {
+                showNotification('⚠️ Увага', 'Будь ласка, заповніть всі поля');
+            }
+        }
+
+        // Action functions
+        function openSurprise(surpriseId) {
+            const surprise = sampleCalendarData[formatDate(new Date())].partnerContent.surprises.find(s => s.id === surpriseId);
+            if (surprise) {
+                const imageUrl = surprise.image || "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=300&fit=crop&crop=faces";
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                    background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                    align-items: center; justify-content: center; flex-direction: column;
+                `;
+                modal.innerHTML = `
+                    <div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; text-align: center; margin: 20px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">${surprise.icon}</div>
+                        <h3 style="margin-bottom: 20px; color: #333;">Подарунок від партнера!</h3>
+                        <img src="${imageUrl}" style="width: 100%; max-width: 400px; border-radius: 12px; margin-bottom: 20px;" alt="Подарунок">
+                        <p style="margin-bottom: 20px; color: #666; font-style: italic;">"${surprise.content}"</p>
+                        <div style="margin-bottom: 20px;">
+                            <button onclick="this.parentElement.parentElement.parentElement.remove(); createFireworksAnimation();" 
+                                    style="background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                                ❤️ Відповісти коханням
+                            </button>
+                            <button onclick="this.parentElement.parentElement.parentElement.remove(); createFireworksAnimation();" 
+                                    style="background: #ff6b9d; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin: 5px; cursor: pointer;">
+                                😍 Відповісти захопленням
+                            </button>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove();" 
+                                style="background: #f8f9fa; color: #666; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+                            Закрити
+                        </button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                createFireworksAnimation();
+            }
+        }
+
+        function answerQuestion(questionId) {
+            const question = sampleCalendarData[formatDate(new Date())].partnerContent.questions.find(q => q.id === questionId);
+            if (question) {
+                const answer = prompt(`Питання: "${question.text}"\n\nВаріанти:\n${question.options.map((opt, i) => `${i + 1}. ${opt}`).join('\n')}\n\nВведіть номер відповіді (1-${question.options.length}):`);
+                if (answer) {
+                    const answerIndex = parseInt(answer) - 1;
+                    const isCorrect = answerIndex === question.correct;
+                    
+                    if (isCorrect) {
+                        showNotification('🎉 Правильна відповідь!', 'Відмінно! Ви відповіли правильно! Партнер отримає вашу реакцію');
+                        createHeartAnimation();
+                        // Show correct reaction
+                        setTimeout(() => {
+                            showNotification('💕 Реакція партнера', 'Партнер радіє вашій правильній відповіді! ❤️✨');
+                        }, 1000);
+                    } else {
+                        showNotification('😔 Неправильна відповідь', 'На жаль, це неправильна відповідь. Спробуйте ще раз завтра!');
+                        // Show incorrect reaction
+                        setTimeout(() => {
+                            showNotification('💕 Реакція партнера', 'Партнер підтримує вас! Правильна відповідь: ' + question.options[question.correct]);
+                        }, 1000);
+                    }
+                }
+            }
+        }
+
+        function showReaction(questionId) {
+            showNotification('💕 Реакція партнера', 'Показуємо реакцію партнера на вашу відповідь: аудіо, відео, текст або фото');
+        }
+
+        function editSurprise(surpriseId) {
+            showNotification('✏️ Редагування приємності', 'Відкриваємо редактор для зміни приємності: контент, час доставки, іконка');
+        }
+
+        function deleteSurprise(surpriseId) {
+            showNotification('🗑️ Приємність видалена', 'Приємність успішно видалена з вашого контенту для партнера');
+        }
+
+        function editQuestion(questionId) {
+            showNotification('✏️ Редагування питання', 'Відкриваємо редактор для зміни питання: текст, варіанти відповідей, правильну відповідь');
+        }
+
+        function deleteQuestion(questionId) {
+            showNotification('🗑️ Питання видалено', 'Питання успішно видалено з вашого контенту для партнера');
+        }
+
+        function editPhotoPhrase() {
+            showNotification('✏️ Редагування фото та фрази', 'Відкриваємо редактор для зміни фото дня та фрази дня для партнера');
+        }
+
+        function deletePhotoPhrase() {
+            showNotification('🗑️ Фото та фраза видалені', 'Фото дня та фраза дня успішно видалені з вашого контенту для партнера');
+        }
+
+        function loadForMeContent(partnerContent) {
+            const container = document.getElementById('for-me-content');
+            let html = '';
+
+            if (!partnerContent || Object.keys(partnerContent).length === 0) {
+                html = '<div style="text-align: center; padding: 40px; color: #666;">Партнер ще нічого не додав на цей день</div>';
+            } else {
+                // Load partner's content in chronological order
+                const items = [];
+
+                // Add photo if exists
+                if (partnerContent.photo) {
+                    items.push({
+                        type: 'photo',
+                        icon: '📷',
+                        title: 'Фото дня',
+                        time: '00:00',
+                        status: 'ready',
+                        content: partnerContent.photo
+                    });
+                }
+
+                // Add phrase if exists
+                if (partnerContent.phrase) {
+                    items.push({
+                        type: 'phrase',
+                        icon: '💬',
+                        title: 'Фраза дня',
+                        time: '00:00',
+                        status: 'ready',
+                        content: partnerContent.phrase
+                    });
+                }
+
+                // Add questions
+                if (partnerContent.questions) {
+                    partnerContent.questions.forEach((question, index) => {
+                        items.push({
+                            type: 'question',
+                            icon: '❓',
+                            title: `Питання ${index + 1}`,
+                            time: '09:00',
+                            status: question.answered ? 'answered' : 'not-answered',
+                            content: question.text,
+                            question: question
+                        });
+                    });
+                }
+
+                // Add surprises
+                if (partnerContent.surprises) {
+                    partnerContent.surprises.forEach((surprise, index) => {
+                        const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                        items.push({
+                            type: 'surprise',
+                            icon: surprise.icon,
+                            title: `Приємність ${index + 1}`,
+                            time: surprise.deliveryTime,
+                            status: isReady ? 'ready' : 'waiting',
+                            content: surprise.content,
+                            surprise: surprise
+                        });
+                    });
+                }
+
+                // Sort by time
+                items.sort((a, b) => a.time.localeCompare(b.time));
+
+                // Generate HTML
+                items.forEach(item => {
+                    html += generateContentItemHtml(item, 'for-me');
+                });
+            }
+
+            container.innerHTML = html;
+        }
+
+        function loadForPartnerContent(myContent) {
+            const container = document.getElementById('for-partner-content');
+            let html = '';
+
+            if (!myContent || Object.keys(myContent).length === 0) {
+                html = '<div style="text-align: center; padding: 40px; color: #666;">Ви ще нічого не додали на цей день</div>';
+            } else {
+                // Load my content in chronological order
+                const items = [];
+
+                // Add photo if exists
+                if (myContent.photo) {
+                    items.push({
+                        type: 'photo',
+                        icon: '📷',
+                        title: 'Фото дня',
+                        time: '00:00',
+                        status: 'ready',
+                        content: myContent.photo
+                    });
+                }
+
+                // Add phrase if exists
+                if (myContent.phrase) {
+                    items.push({
+                        type: 'phrase',
+                        icon: '💬',
+                        title: 'Фраза дня',
+                        time: '00:00',
+                        status: 'ready',
+                        content: myContent.phrase
+                    });
+                }
+
+                // Add questions
+                if (myContent.questions) {
+                    myContent.questions.forEach((question, index) => {
+                        items.push({
+                            type: 'question',
+                            icon: '❓',
+                            title: `Питання ${index + 1}`,
+                            time: '09:00',
+                            status: 'ready',
+                            content: question.text,
+                            question: question
+                        });
+                    });
+                }
+
+                // Add surprises
+                if (myContent.surprises) {
+                    myContent.surprises.forEach((surprise, index) => {
+                        const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                        items.push({
+                            type: 'surprise',
+                            icon: surprise.icon,
+                            title: `Приємність ${index + 1}`,
+                            time: surprise.deliveryTime,
+                            status: isReady ? 'ready' : 'waiting',
+                            content: surprise.content,
+                            surprise: surprise
+                        });
+                    });
+                }
+
+                // Sort by time
+                items.sort((a, b) => a.time.localeCompare(b.time));
+
+                // Generate HTML
+                items.forEach(item => {
+                    html += generateContentItemHtml(item, 'for-partner');
+                });
+            }
+
+            container.innerHTML = html;
+        }
+
+        function generateContentItemHtml(item, context) {
+            let statusHtml = '';
+            let actionsHtml = '';
+
+            if (context === 'for-me') {
+                // For me tab - show what partner sent
+                switch (item.status) {
+                    case 'ready':
+                        statusHtml = '<div class="item-status status-ready">✓ Готово</div>';
+                        break;
+                    case 'waiting':
+                        statusHtml = '<div class="item-status status-waiting">⏰ Очікуйте</div>';
+                        break;
+                    case 'answered':
+                        statusHtml = '<div class="item-status status-answered">Відповів правильно ✅</div>';
+                        break;
+                    case 'not-answered':
+                        statusHtml = '<div class="item-status status-not-answered">Не відповів</div>';
+                        break;
+                }
+
+                switch (item.type) {
+                    case 'surprise':
+                        if (item.status === 'ready') {
+                            actionsHtml = '<button class="action-btn btn-open" onclick="openSurprise(' + item.surprise.id + ')">Відкрити</button>';
+                        }
+                        break;
+                    case 'question':
+                        if (item.status === 'not-answered') {
+                            actionsHtml = '<button class="action-btn btn-answer" onclick="answerQuestion(' + item.question.id + ')">Відповісти</button>';
+                        } else if (item.status === 'answered') {
+                            actionsHtml = '<button class="action-btn btn-show" onclick="showReaction(' + item.question.id + ')">Показати реакцію</button>';
+                        }
+                        break;
+                }
+            } else {
+                // For partner tab - show what I sent
+                switch (item.status) {
+                    case 'ready':
+                        statusHtml = '<div class="item-status status-ready">✓ Готово</div>';
+                        break;
+                    case 'waiting':
+                        statusHtml = '<div class="item-status status-waiting">⏰ Заплановано</div>';
+                        break;
+                }
+
+                actionsHtml = `
+                    <button class="action-btn btn-edit" onclick="editItem('${item.type}', ${item.id || 0})">Редагувати</button>
+                    <button class="action-btn btn-delete" onclick="deleteItem('${item.type}', ${item.id || 0})">Видалити</button>
+                `;
+            }
+
+            return `
+                <div class="content-item">
+                    <div class="item-header">
+                        <span class="item-icon">${item.icon}</span>
+                        <span class="item-title">${item.title}</span>
+                        <span class="item-time">о ${item.time}</span>
+                    </div>
+                    <div style="margin: 10px 0; color: #666;">
+                        ${item.content}
+                    </div>
+                    ${statusHtml}
+                    <div class="item-actions">
+                        ${actionsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // This function is no longer needed - using direct function calls
+
+        // New functions for updated UI
+        function showProfile() {
+            showNotification('Профіль', 'Налаштування профілю, темна тема та інші опції будуть доступні в наступних версіях');
+        }
+
+        function switchRoomsTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick="switchRoomsTab('${tabName}')"]`).classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabName}-rooms-tab`).classList.add('active');
+            
+            if (tabName === 'challenges') {
+                loadChallenges();
+            } else {
+                loadRoomsList();
+            }
+        }
+
+        // Load challenges when page loads
+        function initChallenges() {
+            // Load challenges when rooms list screen is shown
+            if (document.getElementById('challenges-list')) {
+                loadChallenges();
+            }
+        }
+
+        // Override showScreen to load challenges when needed
+        const originalShowScreen = showScreen;
+        showScreen = function(screenId) {
+            originalShowScreen(screenId);
+            if (screenId === 'rooms-list-screen') {
+                // Load challenges when rooms list is shown
+                setTimeout(() => {
+                    if (document.getElementById('challenges-list')) {
+                        loadChallenges();
+                    }
+                }, 100);
+            }
+        };
+
+        function loadChallenges() {
+            const container = document.getElementById('challenges-list');
+            if (!container) {
+                console.log('Challenges container not found');
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <div class="challenge-icon">🏆</div>
+                        <div class="challenge-title">"7 днів для нас"</div>
+                        <div class="challenge-progress">День 3 з 7 ✅</div>
+                    </div>
+                    <div class="challenge-description">
+                        <strong>Завдання сьогодні:</strong> Надішліть одне одному улюблену пісню
+                    </div>
+                    <div class="challenge-status">Ви обидва виконали сьогодні</div>
+                    <div class="challenge-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-text">Ти виконав: "Imagine" - Lennon</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-text">Партнер виконав: "Song for you"</span>
+                        </div>
+                    </div>
+                    <div class="challenge-actions">
+                        <button class="btn btn-primary" onclick="continueChallenge(1)">Продовжити</button>
+                        <button class="btn btn-secondary" onclick="viewChallengeDetails(1)">Деталі</button>
+                    </div>
+                </div>
+                
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <div class="challenge-icon">🏆</div>
+                        <div class="challenge-title">"30 днів щастя"</div>
+                        <div class="challenge-progress">День 15 з 30 ⏳</div>
+                    </div>
+                    <div class="challenge-description">
+                        <strong>Завдання сьогодні:</strong> Напишіть 5 речей, за які ви вдячні один одному
+                    </div>
+                    <div class="challenge-status">Очікуємо партнера</div>
+                    <div class="challenge-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-text">Ти виконав: Список готовий</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">⏳</span>
+                            <span class="stat-text">Партнер: Очікуємо виконання</span>
+                        </div>
+                    </div>
+                    <div class="challenge-actions">
+                        <button class="btn btn-primary" onclick="continueChallenge(2)">Продовжити</button>
+                        <button class="btn btn-secondary" onclick="viewChallengeDetails(2)">Деталі</button>
+                    </div>
+                </div>
+                
+                <div class="challenge-card create-challenge">
+                    <div class="challenge-header">
+                        <div class="challenge-icon">➕</div>
+                        <div class="challenge-title">Створити новий челендж</div>
+                    </div>
+                    <div class="challenge-description">
+                        Створіть власний челендж для вас двох
+                    </div>
+                    <div class="challenge-actions">
+                        <button class="btn btn-secondary" onclick="createChallenge()">Створити</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function continueChallenge(challengeId) {
+            showNotification('Челендж', `Переходимо до челенджу #${challengeId}. Детальна реалізація буде в наступних версіях`);
+        }
+
+        function createChallenge() {
+            showScreen('create-challenge-screen');
+        }
+
+        function selectDuration(days) {
+            document.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function nextStep() {
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+        }
+
+        function prevStep() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+        }
+
+        function editTask(dayNumber) {
+            const newTask = prompt(`Редагувати завдання для дня ${dayNumber}:`, `Завдання для дня ${dayNumber}`);
+            if (newTask) {
+                const taskItem = event.target.closest('.task-item');
+                taskItem.querySelector('.task-content').textContent = newTask;
+                showNotification('Завдання оновлено', `Завдання для дня ${dayNumber} змінено`);
+            }
+        }
+
+        function addTask() {
+            const tasksList = document.getElementById('tasks-list');
+            const currentTasks = tasksList.querySelectorAll('.task-item').length;
+            const newDayNumber = currentTasks + 1;
+            
+            const newTask = prompt(`Додати завдання для дня ${newDayNumber}:`, `Нове завдання для дня ${newDayNumber}`);
+            if (newTask) {
+                const taskElement = document.createElement('div');
+                taskElement.className = 'task-item';
+                taskElement.innerHTML = `
+                    <div class="task-header">
+                        <span class="task-day">День ${newDayNumber}</span>
+                        <button class="btn btn-small" onclick="editTask(${newDayNumber})">Редагувати</button>
+                    </div>
+                    <div class="task-content">${newTask}</div>
+                `;
+                tasksList.appendChild(taskElement);
+                showNotification('Завдання додано', `Завдання для дня ${newDayNumber} створено`);
+            }
+        }
+
+        function startChallenge() {
+            const challengeName = document.getElementById('challenge-name').value || 'Новий челендж';
+            const challengeDescription = document.getElementById('challenge-description').value || 'Спільний челендж';
+            
+            showNotification('Челендж створено!', `"${challengeName}" успішно створено! Тепер ви можете почати виконувати завдання разом з партнером.`);
+            
+            setTimeout(() => {
+                showScreen('rooms-list-screen');
+                switchRoomsTab('challenges');
+            }, 2000);
+        }
+
+        function viewChallengeDetails(challengeId) {
+            showNotification('Деталі челенджу', `Детальна інформація про челендж #${challengeId} буде доступна в наступних версіях`);
+        }
+
+        function viewMemory(memoryId) {
+            const memoryDetails = {
+                'photo': {
+                    title: 'Фото дня від партнера',
+                    content: 'Красиве фото з прогулянки по парку',
+                    time: '09:00',
+                    type: 'Фото',
+                    status: 'Переглянуто'
+                },
+                'question': {
+                    title: 'Питання "Як ти мене кохаєш?"',
+                    content: 'Варіанти: 1) Багато 2) Дуже багато 3) Безмежно. Ваша відповідь: "Варіант 2" ✅',
+                    time: '12:00',
+                    type: 'Питання',
+                    status: 'Відповіли правильно'
+                },
+                'surprise': {
+                    title: 'Приємність "Голос партнера"',
+                    content: 'Голосове повідомлення: "Доброго ранку, кохана! Сьогодні буде чудовий день!" (2:30)',
+                    time: '14:00',
+                    type: 'Приємність',
+                    status: 'Відкрито'
+                }
+            };
+
+            const memory = memoryDetails[memoryId] || {
+                title: 'Спогад',
+                content: 'Детальна інформація про цей спогад',
+                time: '00:00',
+                type: 'Контент',
+                status: 'Активний'
+            };
+
+            showNotification(`Спогад: ${memory.title}`, `${memory.content}\n\nЧас: ${memory.time}\nТип: ${memory.type}\nСтатус: ${memory.status}`);
+        }
+
+        function previewAvatar(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatar-preview').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function register() {
+            const name = document.getElementById('reg-name-input').value;
+            const email = document.getElementById('reg-email-input').value;
+            const password = document.getElementById('reg-password-input').value;
+            const darkTheme = document.getElementById('dark-theme-checkbox').checked;
+            
+            if (!name || !email || !password) {
+                showNotification('Помилка', 'Будь ласка, заповніть всі поля');
+                return;
+            }
+            
+            showNotification('Реєстрація', `Акаунт створено для ${name}! ${darkTheme ? 'Темна тема увімкнена.' : ''} Переходимо до головного меню.`);
+            setTimeout(() => {
+                showScreen('home-screen');
+            }, 2000);
+        }
+
+        function login() {
+            const email = document.getElementById('login-email-input').value;
+            const password = document.getElementById('login-password-input').value;
+            
+            if (!email || !password) {
+                showNotification('Помилка', 'Будь ласка, введіть email та пароль');
+                return;
+            }
+            
+            showNotification('Вхід', 'Успішно увійшли в акаунт! Переходимо до головного меню.');
+            setTimeout(() => {
+                showScreen('home-screen');
+            }, 2000);
+        }
+
+        // Old functions removed - using new modal-based functions
+
+        function editItem(type, id) {
+            showNotification('Редагування', `Редагування ${type} буде реалізовано`);
+        }
+
+        function deleteItem(type, id) {
+            showNotification('Видалення', `Видалення ${type} буде реалізовано`);
+        }
+
+        function showReaction(questionId) {
+            showNotification('Реакція', 'Показ реакції буде реалізовано');
+        }
+
+        function loadPartnerContent(partnerContent) {
+            // Partner's photo
+            const photoContainer = document.getElementById('partner-photo-container');
+            if (partnerContent.photo) {
+                photoContainer.innerHTML = `<img src="${partnerContent.photo}" class="photo-preview" style="width: 100%;">`;
+            } else {
+                photoContainer.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Партнер ще не додав фото на цей день</div>';
+            }
+
+            // Partner's phrase
+            const phraseContainer = document.getElementById('partner-phrase-container');
+            if (partnerContent.phrase) {
+                phraseContainer.innerHTML = `<div style="padding: 15px; background: #f8f9fa; border-radius: 8px;">${partnerContent.phrase}</div>`;
+            } else {
+                phraseContainer.innerHTML = '<div style="padding: 15px; background: #f8f9fa; border-radius: 8px; color: #666;">Партнер ще не додав фразу на цей день</div>';
+            }
+
+            // Partner's questions
+            const questionsContainer = document.getElementById('partner-questions-container');
+            if (partnerContent.questions && partnerContent.questions.length > 0) {
+                let questionsHtml = '';
+                partnerContent.questions.forEach(question => {
+                    questionsHtml += `
+                        <div class="question-card">
+                            <div class="question-text">${question.text}</div>
+                            <div class="answer-options">
+                                ${question.options.map((option, index) => `
+                                    <button class="answer-btn ${question.answered ? (index === question.correctAnswer ? 'correct' : 'incorrect') : ''}" 
+                                            onclick="answerQuestion(${question.id}, ${index})" 
+                                            ${question.answered ? 'disabled' : ''}>
+                                        ${option}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            ${question.answered ? `<div style="margin-top: 10px; color: #666;">Статус: ${question.correctAnswer === question.correct ? 'Правильно ✅' : 'Неправильно ❌'}</div>` : ''}
+                        </div>
+                    `;
+                });
+                questionsContainer.innerHTML = questionsHtml;
+            } else {
+                questionsContainer.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Партнер ще не додав питання на цей день</div>';
+            }
+
+            // Partner's surprises
+            const surprisesContainer = document.getElementById('partner-surprises-container');
+            if (partnerContent.surprises && partnerContent.surprises.length > 0) {
+                let surprisesHtml = '';
+                partnerContent.surprises.forEach(surprise => {
+                    const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                    surprisesHtml += `
+                        <div class="surprise-card ${isReady ? 'ready' : ''}">
+                            <div class="surprise-icon-large">${surprise.icon}</div>
+                            <div>${isReady ? 'Подарунок готовий!' : `Очікуйте о ${surprise.deliveryTime} ⏰`}</div>
+                            ${isReady ? `<button class="open-surprise-btn" onclick="openSurprise(${surprise.id})">Відкрити подарунок</button>` : ''}
+                        </div>
+                    `;
+                });
+                surprisesContainer.innerHTML = surprisesHtml;
+            } else {
+                surprisesContainer.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Партнер ще не надіслав приємностей на цей день</div>';
+            }
+        }
+
+        // Day Editor Functions
+        function addQuestion() {
+            questionsCount++;
+            const container = document.getElementById('questions-container');
+            const questionHtml = `
+                <div class="question-form">
+                    <div class="form-group">
+                        <label class="form-label">Текст питання</label>
+                        <input type="text" class="form-input" placeholder="Введіть питання" id="question-text-${questionsCount}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Кількість варіантів</label>
+                        <select class="form-input" id="question-options-count-${questionsCount}" onchange="updateQuestionOptions(${questionsCount})">
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div id="question-options-${questionsCount}">
+                        <!-- Options will be added here -->
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Правильна відповідь</label>
+                        <select class="form-input" id="question-correct-${questionsCount}">
+                            <option value="0">Варіант 1</option>
+                            <option value="1">Варіант 2</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="removeQuestion(${questionsCount})">Видалити питання</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', questionHtml);
+            updateQuestionOptions(questionsCount);
+        }
+
+        function updateQuestionOptions(questionId) {
+            const count = parseInt(document.getElementById(`question-options-count-${questionId}`).value);
+            const container = document.getElementById(`question-options-${questionId}`);
+            const correctSelect = document.getElementById(`question-correct-${questionId}`);
+            
+            let optionsHtml = '';
+            let correctOptions = '';
+            
+            for (let i = 0; i < count; i++) {
+                optionsHtml += `
+                    <div class="form-group">
+                        <label class="form-label">Варіант ${i + 1}</label>
+                        <input type="text" class="form-input" placeholder="Введіть варіант" id="question-option-${questionId}-${i}">
+                    </div>
+                `;
+                correctOptions += `<option value="${i}">Варіант ${i + 1}</option>`;
+            }
+            
+            container.innerHTML = optionsHtml;
+            correctSelect.innerHTML = correctOptions;
+        }
+
+        function removeQuestion(questionId) {
+            document.querySelector(`#questions-container .question-form:nth-child(${questionId})`).remove();
+        }
+
+        function addSurprise() {
+            surprisesCount++;
+            const container = document.getElementById('surprises-container');
+            const surpriseHtml = `
+                <div class="surprise-form">
+                    <div class="form-group">
+                        <label class="form-label">Тип приємності</label>
+                        <div class="surprise-type">
+                            <input type="radio" name="surprise-type-${surprisesCount}" value="audio" id="surprise-audio-${surprisesCount}">
+                            <label for="surprise-audio-${surprisesCount}">🎵 Аудіо</label>
+                            <input type="radio" name="surprise-type-${surprisesCount}" value="video" id="surprise-video-${surprisesCount}">
+                            <label for="surprise-video-${surprisesCount}">🎬 Відео</label>
+                            <input type="radio" name="surprise-type-${surprisesCount}" value="text" id="surprise-text-${surprisesCount}">
+                            <label for="surprise-text-${surprisesCount}">📝 Текст</label>
+                            <input type="radio" name="surprise-type-${surprisesCount}" value="photo" id="surprise-photo-${surprisesCount}">
+                            <label for="surprise-photo-${surprisesCount}">📷 Фото</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Контент</label>
+                        <textarea class="form-input" placeholder="Введіть текст або завантажте файл" id="surprise-content-${surprisesCount}" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Час доставки</label>
+                        <div class="time-picker">
+                            <input type="time" class="form-input" id="surprise-time-${surprisesCount}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Іконка сюрпризу</label>
+                        <div>
+                            <span class="surprise-icon" onclick="selectSurpriseIcon(${surprisesCount}, '🎁')">🎁</span>
+                            <span class="surprise-icon" onclick="selectSurpriseIcon(${surprisesCount}, '💕')">💕</span>
+                            <span class="surprise-icon" onclick="selectSurpriseIcon(${surprisesCount}, '✨')">✨</span>
+                            <span class="surprise-icon" onclick="selectSurpriseIcon(${surprisesCount}, '🌹')">🌹</span>
+                            <span class="surprise-icon" onclick="selectSurpriseIcon(${surprisesCount}, '🎉')">🎉</span>
+                            <span class="surprise-icon" onclick="selectSurpriseIcon(${surprisesCount}, '💌')">💌</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="removeSurprise(${surprisesCount})">Видалити приємність</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', surpriseHtml);
+        }
+
+        function selectSurpriseIcon(surpriseId, icon) {
+            // Remove previous selection
+            document.querySelectorAll(`#surprises-container .surprise-form:nth-child(${surpriseId}) .surprise-icon`).forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selection to clicked icon
+            event.target.classList.add('selected');
+        }
+
+        function removeSurprise(surpriseId) {
+            document.querySelector(`#surprises-container .surprise-form:nth-child(${surpriseId})`).remove();
+        }
+
+        function saveDayContent() {
+            const dayKey = formatDate(currentDate);
+            if (!sampleCalendarData[dayKey]) {
+                sampleCalendarData[dayKey] = { myContent: {}, partnerContent: {} };
+            }
+            
+            // Save my content
+            const photoInput = document.getElementById('my-photo-input');
+            const phraseInput = document.getElementById('my-phrase-input');
+            
+            if (photoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    sampleCalendarData[dayKey].myContent.photo = e.target.result;
+                };
+                reader.readAsDataURL(photoInput.files[0]);
+            }
+            
+            sampleCalendarData[dayKey].myContent.phrase = phraseInput.value;
+            
+            showNotification('Успіх', 'Контент збережено!');
+            showScreen('calendar-screen');
+            loadCalendar();
+        }
+
+        // Daily Experience
+        function showDailySplash() {
+            const splash = document.getElementById('daily-splash');
+            const photo = document.getElementById('splash-photo');
+            const phrase = document.getElementById('splash-phrase');
+            
+            // Simulate partner's content
+            const todayKey = formatDate(new Date());
+            const dayData = sampleCalendarData[todayKey];
+            
+            if (dayData && dayData.partnerContent) {
+                if (dayData.partnerContent.photo) {
+                    photo.src = dayData.partnerContent.photo;
+                    photo.alt = "Фото дня від партнера";
+                }
+                if (dayData.partnerContent.phrase) {
+                    phrase.textContent = dayData.partnerContent.phrase;
+                }
+            } else {
+                // Default content if no partner content
+                photo.src = "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&h=600&fit=crop&crop=faces";
+                photo.alt = "Фото дня";
+                phrase.textContent = "Доброго ранку! Сьогодні буде чудовий день! ☀️";
+            }
+            
+            splash.classList.remove('hidden');
+        }
+
+        function startDay() {
+            document.getElementById('daily-splash').classList.add('hidden');
+            showScreen('calendar-screen');
+            loadCalendar();
+        }
+
+        function loadDailyExperience() {
+            const todayKey = formatDate(new Date());
+            const dayData = sampleCalendarData[todayKey];
+            
+            if (!dayData || !dayData.partnerContent) {
+                return;
+            }
+            
+            // Load photo and phrase
+            const photoContainer = document.getElementById('daily-photo-container');
+            if (dayData.partnerContent.photo) {
+                photoContainer.innerHTML = `
+                    <img src="${dayData.partnerContent.photo}" class="photo-preview" style="width: 100%; opacity: 0.2; position: absolute; top: 0; left: 0; z-index: -1;">
+                    <div style="text-align: center; padding: 20px; position: relative; z-index: 1;">
+                        <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">${dayData.partnerContent.phrase}</div>
+                    </div>
+                `;
+            }
+            
+            // Load questions
+            const questionsContainer = document.getElementById('daily-questions-container');
+            if (dayData.partnerContent.questions && dayData.partnerContent.questions.length > 0) {
+                let questionsHtml = '';
+                dayData.partnerContent.questions.forEach(question => {
+                    questionsHtml += `
+                        <div class="question-card">
+                            <div class="question-text">${question.text}</div>
+                            <div class="answer-options">
+                                ${question.options.map((option, index) => `
+                                    <button class="answer-btn" onclick="answerDailyQuestion(${question.id}, ${index})">
+                                        ${option}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                questionsContainer.innerHTML = questionsHtml;
+            }
+            
+            // Load surprises
+            const surprisesContainer = document.getElementById('daily-surprises-container');
+            if (dayData.partnerContent.surprises && dayData.partnerContent.surprises.length > 0) {
+                let surprisesHtml = '';
+                dayData.partnerContent.surprises.forEach(surprise => {
+                    const isReady = surprise.delivered && new Date().getHours() >= parseInt(surprise.deliveryTime.split(':')[0]);
+                    surprisesHtml += `
+                        <div class="surprise-card ${isReady ? 'ready' : ''}">
+                            <div class="surprise-icon-large">${surprise.icon}</div>
+                            <div>${isReady ? 'Подарунок готовий!' : `Очікуйте о ${surprise.deliveryTime} ⏰`}</div>
+                            ${isReady ? `<button class="open-surprise-btn" onclick="openDailySurprise(${surprise.id})">Відкрити подарунок</button>` : ''}
+                        </div>
+                    `;
+                });
+                surprisesContainer.innerHTML = surprisesHtml;
+            }
+        }
+
+        function answerDailyQuestion(questionId, answerIndex) {
+            // Simulate answering question
+            showNotification('Відповідь', 'Ваша відповідь збережена!');
+            createHeartAnimation();
+        }
+
+        function openDailySurprise(surpriseId) {
+            showNotification('Подарунок', 'Ви відкрили подарунок! 🎁');
+            createFireworksAnimation();
+        }
+
+        // Utility functions
+        function formatDate(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function formatDateDisplay(date) {
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('uk-UA', options);
+        }
+
+        function previewPhoto(input, previewId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById(previewId);
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function showNotification(title, text) {
+            const notification = document.getElementById('notification');
+            document.getElementById('notification-title').textContent = title;
+            document.getElementById('notification-text').textContent = text;
+            
+            notification.classList.remove('hidden');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.classList.add('hidden'), 300);
+            }, 3000);
+        }
+
+        function createHeartAnimation() {
+            const heart = document.createElement('div');
+            heart.className = 'heart-animation';
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = '50px';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 2000);
+        }
+
+        function createFireworksAnimation() {
+            const fireworks = document.createElement('div');
+            fireworks.className = 'fireworks';
+            document.body.appendChild(fireworks);
+            
+            for (let i = 0; i < 20; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = Math.random() * window.innerWidth + 'px';
+                firework.style.top = Math.random() * window.innerHeight + 'px';
+                firework.style.background = `hsl(${Math.random() * 360}, 70%, 50%)`;
+                fireworks.appendChild(firework);
+            }
+            
+            setTimeout(() => fireworks.remove(), 1000);
+        }
+
+        function invitePartner() {
+            if (currentRoom) {
+                showNotification('Запрошення', `Код для приєднання: ${currentRoom.code}`);
+            }
+        }
+
+        function answerQuestion(questionId, answerIndex) {
+            // Simulate answering question
+            showNotification('Відповідь', 'Ваша відповідь збережена!');
+        }
+
+        function openSurprise(surpriseId) {
+            showNotification('Подарунок', 'Ви відкрили подарунок! 🎁');
+        }
+
+        // Initialize app
+        function initApp() {
+            loadRoomsList();
+            
+            // Show daily splash on app start (simulate)
+            setTimeout(() => {
+                // showDailySplash();
+            }, 1000);
+        }
+
+        // Start the app
+        initApp();
+        initChallenges();
+    </script>
+</body>
+</html>
